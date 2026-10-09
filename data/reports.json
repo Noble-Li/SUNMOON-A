@@ -1,9 +1,9 @@
 {
   "site": {
     "title": "国内霍尔电推进招标采购日报",
-    "subtitle": "每日跟踪 · 工作日 17:00 自动更新",
+    "subtitle": "每日 17:00 自动更新",
     "issuer": "中科院微小卫星创新研究院 · 商业航天电推进产业链",
-    "version": "v1.1",
+    "version": "v1.2",
     "tracked_projects": [
       {
         "id": "P01",
@@ -131,7 +131,8 @@
         "amount": "1639万（候选第一）",
         "next_milestone": "2026-03-27 中标候选公示（中招联合）"
       }
-    ]
+    ],
+    "homepage": "https://noble-li.github.io/hall-report/"
   },
   "reports": [
     {
