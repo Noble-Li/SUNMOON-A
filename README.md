@@ -2,7 +2,7 @@
 
 每日 17:00 自动更新国内霍尔电推进相关招标 / 采购 / 中标 / 成交公告。
 
-**线上地址**：https://noble-li.github.io/hall-report/
+**线上地址**：https://noble-li.github.io/SUNMOON-A/
 
 ---
 
