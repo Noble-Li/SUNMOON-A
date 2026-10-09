@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>国内霍尔电推进招标采购日报（离线单文件版）</title>
+<meta name="description" content="每日跟踪国内霍尔电推进相关招标、采购、中标、成交公告。工作日 17:00 自动更新。公开访问。">
+<style>
+  /* === Reset & Base === */
+  *,*::before,*::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #1a1d23;
+    background: #f6f8fb;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  a { color: #0F4C81; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  h1, h2, h3, h4 { margin: 0 0 .5em; font-weight: 600; line-height: 1.3; }
+  h1 { font-size: 1.65rem; }
+  h2 { font-size: 1.3rem; }
+  h3 { font-size: 1.1rem; }
+  p { margin: 0 0 .8em; }
+  ul { margin: 0 0 .8em; padding-left: 1.4em; }
+  li { margin: .2em 0; }
+  code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; background: #eef1f5; padding: 1px 5px; border-radius: 3px; font-size: .9em; }
+
+  /* === Layout === */
+  .container { max-width: 1100px; margin: 0 auto; padding: 24px 20px 60px; }
+  .header {
+    background: linear-gradient(135deg, #0F4C81 0%, #1a6aa8 100%);
+    color: #fff;
+    padding: 32px 20px 28px;
+    border-radius: 12px;
+    margin-bottom: 28px;
+    box-shadow: 0 6px 20px rgba(15, 76, 129, 0.15);
+  }
+  .header h1 { color: #fff; margin-bottom: 6px; font-size: 1.7rem; }
+  .header .sub { opacity: .9; font-size: .95rem; }
+  .header .meta { margin-top: 14px; font-size: .85rem; opacity: .85; }
+  .header .meta span { margin-right: 18px; }
+
+  /* === Cards === */
+  .card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 22px 24px;
+    margin-bottom: 22px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.04), 0 0 0 1px rgba(0,0,0,.04);
+  }
+  .card h2 {
+    display: flex; align-items: center; gap: 10px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eef0f3;
+    margin-bottom: 16px;
+  }
+  .card h2 .tag {
+    font-size: .7rem; font-weight: 600; padding: 2px 8px; border-radius: 4px;
+    background: #0F4C81; color: #fff; letter-spacing: .5px;
+  }
+  .card h2 .tag.history { background: #6b7280; }
+  .card h2 .tag.week { background: #d97706; }
+  .card h2 .tag.today { background: #E76F51; }
+
+  /* === Status badge === */
+  .badge {
+    display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: .75rem; font-weight: 600;
+    letter-spacing: .3px;
+  }
+  .badge.new { background: #fee2e2; color: #b91c1c; }
+  .badge.none { background: #e5e7eb; color: #4b5563; }
+
+  /* === Project items === */
+  .item {
+    background: #fafbfc;
+    border-left: 4px solid #0F4C81;
+    padding: 14px 16px;
+    margin: 12px 0;
+    border-radius: 4px;
+  }
+  .item-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; }
+  .item-id {
+    background: #0F4C81; color: #fff; font-size: .75rem; font-weight: 700;
+    padding: 2px 8px; border-radius: 4px;
+  }
+  .item-title { font-weight: 600; flex: 1; }
+  .item-meta { font-size: .85rem; color: #4b5563; }
+  .item-meta span { margin-right: 14px; }
+  .item-meta b { color: #1a1d23; font-weight: 600; }
+  .item-note { font-size: .88rem; color: #4b5563; margin-top: 6px; }
+
+  /* === Week summary grid === */
+  .week-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+  }
+  .week-card {
+    background: #fafbfc;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 12px 14px;
+    transition: transform .15s, box-shadow .15s;
+  }
+  .week-card:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,.06); }
+  .week-card .date { font-size: .8rem; color: #6b7280; margin-bottom: 4px; }
+  .week-card .day { font-size: 1.1rem; font-weight: 700; color: #1a1d23; }
+  .week-card .status { margin-top: 8px; font-size: .78rem; }
+
+  /* === Upcoming list === */
+  .upcoming-list { list-style: none; padding: 0; margin: 0; }
+  .upcoming-list li {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px dashed #eef0f3;
+    font-size: .92rem;
+  }
+  .upcoming-list li:last-child { border-bottom: 0; }
+  .upcoming-date { font-weight: 600; color: #0F4C81; min-width: 140px; }
+  .upcoming-event { font-weight: 600; }
+  .upcoming-detail { color: #6b7280; font-size: .88rem; width: 100%; padding-left: 148px; }
+
+  /* === Tracked table === */
+  .tracked-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+  .tracked-table th, .tracked-table td {
+    text-align: left; padding: 10px 8px; border-bottom: 1px solid #eef0f3; vertical-align: top;
+  }
+  .tracked-table th { background: #f3f4f6; font-weight: 600; color: #1a1d23; position: sticky; top: 0; }
+  .tracked-table tbody tr:hover { background: #fafbfc; }
+  .tracked-id { font-weight: 700; color: #0F4C81; }
+
+  /* === Footer === */
+  .footer {
+    text-align: center; color: #6b7280; font-size: .82rem; padding: 20px 0 0;
+  }
+  .footer a { color: #6b7280; }
+
+  /* === Responsive === */
+  @media (max-width: 640px) {
+    .header { padding: 24px 16px; }
+    .header h1 { font-size: 1.35rem; }
+    .card { padding: 18px 16px; }
+    .upcoming-date { min-width: 0; flex: 1 0 100%; }
+    .upcoming-detail { padding-left: 0; }
+    .item-head { flex-direction: column; gap: 4px; }
+    .tracked-table { font-size: .82rem; }
+    .tracked-table th, .tracked-table td { padding: 8px 4px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container" id="content">
+
+  <header class="header">
+    <h1 id="siteTitle">国内霍尔电推进招标采购日报</h1>
+    <div class="sub" id="siteSubtitle">每日跟踪 · 工作日 17:00 自动更新</div>
+    <div class="meta">
+      <span>📅 <b id="todayDate">—</b></span>
+      <span>🛰️ <b id="trackedCount">—</b> 个在跟项目（P01~P18）</span>
+      <span>📋 共 <b id="reportCount">—</b> 期记录（2025-06 起）</span>
+    </div>
+  </header>
+
+  <!-- 今日详情 -->
+  <section class="card" id="todayCard">
+    <h2><span class="tag today">今日详情</span><span id="todayDateLong">—</span></h2>
+    <p id="todaySummary" style="font-size: 1rem; color: #1a1d23;"></p>
+    <h3 style="margin-top: 18px;">📌 今日新增</h3>
+    <div id="todayNew"></div>
+    <h3 style="margin-top: 18px;">🗓️ 近期值得关注的时间节点</h3>
+    <ul class="upcoming-list" id="todayUpcoming"></ul>
+    <h3 style="margin-top: 18px;">⚠️ 检索受限说明</h3>
+    <p id="todayConstraints" style="color: #6b7280; font-size: .9rem;"></p>
+  </section>
+
+  <!-- 本周汇总卡 -->
+  <section class="card">
+    <h2><span class="tag week">本周汇总</span>最近 7 天动态</h2>
+    <div class="week-grid" id="weekGrid"></div>
+  </section>
+
+  <!-- 历史归档 -->
+  <section class="card">
+    <h2><span class="tag history">历史归档</span>按日期倒序 · 完整内容</h2>
+    <p style="color:#6b7280;font-size:.88rem;margin-top:-6px;">2026-10 起为每日跟踪记录；2025-06 ~ 2026-09 为事件式回填（依据《霍尔电推进招标采购与标书技术指标汇编》），标注「回填」的条目为非逐日覆盖。</p>
+    <div id="historyList"></div>
+  </section>
+
+  <!-- 跟踪项目全表 -->
+  <section class="card">
+    <h2><span class="tag">跟踪项目</span>P01 ~ P18 完整状态</h2>
+    <div style="overflow-x: auto;">
+      <table class="tracked-table" id="trackedTable">
+        <thead>
+          <tr><th>编号</th><th>项目名称</th><th>采购人</th><th>金额</th><th>下一关键节点</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="footer">
+    <p>数据来源：中国政府采购网、中招联合、上海机电设备招标、剑鱼标讯、谛听招标网、知了标讯、各采购人官网等公开渠道。</p>
+    <p>本日报为公开信息整理，仅供参考。引用请注明来源。</p>
+  </div>
+</div>
+
+<script id="offline-data" type="application/json">{
+  "site": {
+    "title": "国内霍尔电推进招标采购日报",
+    "subtitle": "每日跟踪 · 工作日 17:00 自动更新",
+    "issuer": "中科院微小卫星创新研究院 · 商业航天电推进产业链",
+    "version": "v1.1",
+    "tracked_projects": [
+      {
+        "id": "P01",
+        "name": "霍尔电推进电源处理控制单元（PPCU）采购（含首次流标重招）",
+        "buyer": "中科院微小卫星创新研究院",
+        "amount": "410万",
+        "next_milestone": "2026-10-10 13:30 开标（OITC-G260302311）"
+      },
+      {
+        "id": "P02",
+        "name": "EUHT技术试验卫星霍尔电推进组件（两轮流标后单一来源）",
+        "buyer": "中科院微小卫星创新研究院",
+        "amount": "未公示",
+        "next_milestone": "已单一来源成交（510所，2026年公示）"
+      },
+      {
+        "id": "P03",
+        "name": "霍尔电推进组件（降轨任务，ZC26G220060）",
+        "buyer": "中科院微小卫星创新研究院",
+        "amount": "未公示（2套）",
+        "next_milestone": "正样件 2026-04-30 前交付"
+      },
+      {
+        "id": "P04",
+        "name": "某项目卫星姿轨控分系统霍尔电推进组件（自筹，两轮）",
+        "buyer": "中科院微小卫星创新研究院",
+        "amount": "未公示",
+        "next_milestone": "二轮售标 2026-05-27~06-02"
+      },
+      {
+        "id": "P05",
+        "name": "eXTP 卫星推进子系统研制（含贮箱典试件）",
+        "buyer": "中科院微小卫星创新研究院",
+        "amount": "750万",
+        "next_milestone": "2026-09-28 已开标，等候选人公示（ZC26G220302）"
+      },
+      {
+        "id": "P06",
+        "name": "电推进贮供系统设计、加工测试及安装调试",
+        "buyer": "西安交通大学电气工程学院",
+        "amount": "未公示",
+        "next_milestone": "采购公告在发，90天内交付"
+      },
+      {
+        "id": "P07",
+        "name": "推进产品研制采购意向（含贮箱/气瓶/减压阀/电磁阀）",
+        "buyer": "中科院微小卫星创新研究院",
+        "amount": "800万（意向）",
+        "next_milestone": "预计 2026-06 启动正式采购"
+      },
+      {
+        "id": "P08",
+        "name": "小流量吸气电推项目（空气/氙气工质霍尔推力器+化学推力器）",
+        "buyer": "中科院力学研究所",
+        "amount": "295万（意向）",
+        "next_milestone": "意向 2026-09-10 公示，预计 2026-10 转正式采购"
+      },
+      {
+        "id": "P09",
+        "name": "微小推力器真空舱实验系统（清采比选20261178）",
+        "buyer": "清华大学",
+        "amount": "39.5万",
+        "next_milestone": "2026-09-15 已截止，等成交公示"
+      },
+      {
+        "id": "P10",
+        "name": "多工位霍尔电推进综合试验系统（0613-256025250883）",
+        "buyer": "上海格思信息技术有限公司",
+        "amount": "435.5万",
+        "next_milestone": "已中标（上海航天裕达，2025-04-01 公示）"
+      },
+      {
+        "id": "P11",
+        "name": "大功率电推进器空间环境模拟一体化实验系统（26AT187025400478）",
+        "buyer": "合肥综合性国家科学中心能源研究院",
+        "amount": "790万",
+        "next_milestone": "已中标（上海航天裕达，2026-03-09）"
+      },
+      {
+        "id": "P12",
+        "name": "用于推力试验的真空试验舱（0613-266025253987）",
+        "buyer": "上海霄元创新中心",
+        "amount": "68万",
+        "next_milestone": "已出结果（上海润理真空，2026-07-20 比选）"
+      },
+      {
+        "id": "P13",
+        "name": "大气量空心阴极筛选与寿命考核试验设备",
+        "buyer": "兰州空间技术物理研究所（510所）",
+        "amount": "3299万",
+        "next_milestone": "已中标（航天长屏，2019-01-29 公示）"
+      },
+      {
+        "id": "P14",
+        "name": "霍尔电推进系统健康监测诊断软件开发服务（2025-JT05-F1024，军队采购）",
+        "buyer": "某部队单位（西安）",
+        "amount": "130.65万",
+        "next_milestone": "已中标（北航，2025-11-27 公示）"
+      },
+      {
+        "id": "P15",
+        "name": "螺旋阴极等耗材采购（CL202507030002）",
+        "buyer": "中科院国家空间科学中心",
+        "amount": "0.39万",
+        "next_milestone": "已成交（国光电气，2025-07-11）"
+      },
+      {
+        "id": "P16",
+        "name": "极低轨空间飞行技术研究（吸气式电推进增压泵组驱动器）",
+        "buyer": "中科院力学研究所",
+        "amount": "220万（意向）",
+        "next_milestone": "意向 2026-09-10 公示，预计 2026-10 转正式采购"
+      },
+      {
+        "id": "P17",
+        "name": "推进操纵装置测试系统（OITC-G260531716）",
+        "buyer": "中科院沈阳自动化研究所",
+        "amount": "705.47万",
+        "next_milestone": "已中标（四川诚邦浩然，2026-10-08 公告）"
+      },
+      {
+        "id": "P18",
+        "name": "高压气瓶采购项目（ZKX20260202A002，汇编收录补编）",
+        "buyer": "西安航天动力试验技术研究所",
+        "amount": "1639万（候选第一）",
+        "next_milestone": "2026-03-27 中标候选公示（中招联合）"
+      }
+    ]
+  },
+  "reports": [
+    {
+      "date": "2026-10-09",
+      "weekday": "星期五",
+      "has_new": true,
+      "summary": "今日有 1 条新发现：中科院沈阳自动化研究所「推进操纵装置测试系统」公布中标结果（705.47 万元，10-08 发布）。属电推进地面测试设备，相关项新增 P17。P01 PPCU 明日（10-10）13:30 开标。",
+      "new_items": [
+        {
+          "id": "P17",
+          "title": "中科院沈阳自动化研究所推进操纵装置测试系统中标公告",
+          "buyer": "中科院沈阳自动化研究所",
+          "winner": "四川诚邦浩然测控技术股份有限公司",
+          "amount": "705.47 万元",
+          "publish_date": "2026-10-08",
+          "url": "https://www.ccgp.gov.cn/cggg/zygg/zbgg/202610/t20261008_27442516.htm",
+          "note": "项目编号 OITC-G260531716。属电推进地面测试系统，与霍尔电推进试验系统相关；新增至跟踪表 P17。"
+        }
+      ],
+      "upcoming": [
+        {
+          "date": "2026-10-10 13:30",
+          "event": "P01 PPCU 二次招标开标",
+          "detail": "OITC-G260302311，预算 410 万（中科院微小卫星创新研究院）"
+        },
+        {
+          "date": "持续关注",
+          "event": "P05 eXTP 卫星推进子系统中标候选人公示",
+          "detail": "09-28 已开标，750 万，公开渠道暂未检索到候选人公示"
+        },
+        {
+          "date": "持续关注",
+          "event": "P09 清华微小推力器真空舱实验系统成交公示",
+          "detail": "09-15 已截止，39.5 万，校内比选结果未公开"
+        },
+        {
+          "date": "2026-10（预计）",
+          "event": "P08 力学所小流量吸气电推项目转正式采购",
+          "detail": "295 万，意向 09-10 发布"
+        },
+        {
+          "date": "2026-10（预计）",
+          "event": "P16 力学所极低轨空间飞行技术研究（泵组驱动器）转正式采购",
+          "detail": "220 万，意向 09-10 发布"
+        }
+      ],
+      "constraints": "中招联合招标采购平台、军队采购网（P14）内容在登录墙后，公开检索无法覆盖全量。中标候选人公示通常在开标后 1~15 天内发布，P05/P09 的结果未出现不代表异常。"
+    },
+    {
+      "date": "2026-10-08",
+      "weekday": "星期四",
+      "has_new": false,
+      "summary": "今日无新增公告/中标结果。共执行 6 轮检索，覆盖整机、PPCU/电源、空心阴极/中和器、贮供、真空罐/空间环境模拟等细分方向。",
+      "new_items": [],
+      "upcoming": [
+        {
+          "date": "2026-10-10 13:30",
+          "event": "P01 PPCU 二次招标开标",
+          "detail": "OITC-G260302311，预算 410 万"
+        },
+        {
+          "date": "持续关注",
+          "event": "P05 eXTP 卫星推进子系统中标候选人公示",
+          "detail": "09-28 已开标，750 万"
+        },
+        {
+          "date": "持续关注",
+          "event": "P09 清华微小推力器真空舱实验系统成交公示",
+          "detail": "09-15 已截止，39.5 万"
+        },
+        {
+          "date": "2026-10（预计）",
+          "event": "P08 力学所小流量吸气电推项目转正式采购",
+          "detail": "295 万"
+        },
+        {
+          "date": "2026-10（预计）",
+          "event": "P16 力学所极低轨空间飞行技术研究（泵组驱动器）转正式采购",
+          "detail": "220 万"
+        }
+      ],
+      "constraints": "中招联合招标采购平台、军队采购网登录墙后内容无法覆盖全量。"
+    },
+    {
+      "date": "2026-09-28",
+      "weekday": "星期一",
+      "has_new": true,
+      "summary": "P05 eXTP 卫星推进子系统研制（ZC26G220302，750 万元）今日 09:30 开标。开标后进入候选人公示窗口期，公开渠道暂未见公示，持续跟踪中招联合渠道。",
+      "new_items": [
+        {
+          "id": "P05",
+          "title": "eXTP 卫星推进子系统研制 开标",
+          "buyer": "中科院微小卫星创新研究院",
+          "amount": "750 万元",
+          "publish_date": "2026-09-28",
+          "url": "https://www.ccgp.gov.cn/cggg/zygg/gkzb/202609/t20260907_27282706.htm",
+          "note": "采购初样件一套（含 2 台贮箱典试件及配套管路）＋正样件一套；初样件 2027-03-31 前、正样件 2028-05-31 前交付。状态更新：已开标。"
+        }
+      ],
+      "upcoming": [],
+      "constraints": "中招联合渠道内容在登录墙后，开标详情未能覆盖。",
+      "backfill": true
+    },
+    {
+      "date": "2026-09-19",
+      "weekday": "星期六",
+      "has_new": true,
+      "summary": "P01 霍尔电推进 PPCU 二次招标公告发布（OITC-G260302311），预算 410 万元。此前 09-11 首次开标流标，本次为重新招标，定于 10-10 13:30 开标。",
+      "new_items": [
+        {
+          "id": "P01",
+          "title": "霍尔电推进电源处理控制单元（PPCU）采购 二次招标公告",
+          "buyer": "中科院微小卫星创新研究院",
+          "amount": "410 万元",
+          "publish_date": "2026-09-19",
+          "url": "https://www.ccgp.gov.cn/cggg/zygg/gkzb/202609/t20260919_27360832.htm",
+          "note": "1 套＝电性件 1＋鉴定件 1＋飞行件 6。09-28 截止购标，10-10 13:30 开标（上海岳阳路319号）。状态更新：重新发标。"
+        }
+      ],
+      "upcoming": [],
+      "constraints": "",
+      "backfill": true
+    },
+    {
+      "date": "2026-09-15",
+      "weekday": "星期二",
+      "has_new": true,
+      "summary": "P09 清华大学微小推力器真空舱实验系统（清采比选20261178，39.5 万元）今日 13:00 截止报价。成交公示待校内渠道发布。",
+      "new_items": [
+        {
+          "id": "P09",
+          "title": "微小推力器真空舱实验系统 比选截止",
+          "buyer": "清华大学",
+          "amount": "39.5 万元",
+          "publish_date": "2026-09-15",
+          "url": "https://www.infochina.cn/rili-zhaobiao-20260912164736256269.html",
+          "note": "交钥匙工程，合同签订后 75 个自然日内交付至唐山曹妃甸。状态更新：已截止。"
+        }
+      ],
+      "upcoming": [],
+      "constraints": "清华校内比选结果公示渠道公开检索覆盖有限。",
+      "backfill": true
+    },
+    {
+      "date": "2026-09-12",
+      "weekday": "星期六",
+      "has_new": true,
+      "summary": "P09 清华大学微小推力器真空舱实验系统因报价供应商不足发布延期公告，截止时间延至 09-15 13:00。",
+      "new_items": [
+        {
+          "id": "P09",
+          "title": "微小推力器真空舱实验系统 延期公告",
+          "buyer": "清华大学",
+          "amount": "39.5 万元",
+          "publish_date": "2026-09-12",
+          "url": "https://www.infochina.cn/rili-zhaobiao-20260912164736256269.html",
+          "note": "状态更新：延期（原截止期报价供应商不足）。"
+        }
+      ],
+      "upcoming": [],
+      "constraints": "",
+      "backfill": true
+    },
+    {
+      "date": "2026-09-11",
+      "weekday": "星期五",
+      "has_new": true,
+      "summary": "P01 霍尔电推进 PPCU 首次招标（OITC-G260302319）今日开标后流标，后续重新招标。",
+      "new_items": [
+        {
+          "id": "P01",
+          "title": "霍尔电推进 PPCU 采购 首次开标流标",
+          "buyer": "中科院微小卫星创新研究院",
+          "amount": "410 万元",
+          "publish_date": "2026-09-11",
+          "url": "https://www.ccgp.gov.cn/cggg/zygg/gkzb/202609/t20260919_27360832.htm",
+          "note": "首次公告编号 OITC-G260302319（08-21 发布），开标后流标。状态更新：流标。"
+        }
+      ],
+      "upcoming": [],
+      "constraints": "",
+      "backfill": true
+    },
+    {
+      "date": "2026-09-10",
+      "weekday": "星期四",
+      "has_new": true,
+      "summary": "中科院力学研究所两项电推进相关采购意向同日公示：小流量吸气电推项目 295 万元（P08）、极低轨空间飞行技术研究（吸气式电推进增压泵组驱动器）220 万元（P16），预计 2026-10 转正式采购。",
+      "new_items": [
+        {
+          "id": "P08",
+          "title": "小流量吸气电推项目 采购意向",
+          "buyer": "中科院力学研究所",
+          "amount": "295 万元",
+          "publish_date": "2026-09-10",
+          "url": "",
+          "note": "空气/氙气工质霍尔推力器＋化学推力器。新增跟踪 P08。"
+        },
+        {
+          "id": "P16",
+          "title": "极低轨空间飞行技术研究（吸气式电推进增压泵组驱动器）采购意向",
+          "buyer": "中科院力学研究所",
+          "amount": "220 万元",
+          "publish_date": "2026-09-10",
+          "url": "",
+          "note": "新增跟踪 P16。"
+        }
+      ],
+      "upcoming": [],
+      "constraints": "",
+      "backfill": true
+    },
+    {
+      "date": "2026-09-07",
+      "weekday": "星期一",
+      "has_new": true,
+      "summary": "P05 eXTP 卫星推进子系统研制招标公告发布（ZC26G220302，750 万元），09-28 开标。",
+      "new_items": [
+        {
+          "id": "P05",
+          "title": "eXTP 卫星推进子系统研制 招标公告",
+          "buyer": "中科院微小卫星创新研究院",
+          "amount": "750 万元",
+          "publish_date": "2026-09-07",
+          "url": "https://www.ccgp.gov.cn/cggg/zygg/gkzb/202609/t20260907_27282706.htm",
+          "note": "初样件一套（含 2 台贮箱典试件及配套管路，加模拟液配重）＋正样件一套。新增跟踪 P05。"
+        }
+      ],
+      "upcoming": [],
+      "constraints": "",
+      "backfill": true
+    },
+    {
+      "date": "2026-08-21",
+      "weekday": "星期五",
+      "has_new": true,
+      "summary": "P01 霍尔电推进 PPCU 首次招标公告发布（OITC-G260302319），预算 410 万元。",
+      "new_items": [
+        {
+          "id": "P01",
+          "title": "霍尔电推进电源处理控制单元（PPCU）采购 首次招标公告",
+          "buyer": "中科院微小卫星创新研究院",
+          "amount": "410 万元",
+          "publish_date": "2026-08-21",
+          "url": "https://www.ccgp.gov.cn/cggg/zygg/gkzb/202609/t20260919_27360832.htm",
+          "note": "编号 OITC-G260302319。首次公告原始链接未留存，链接指向二次公告页（含项目沿革）。新增跟踪 P01，标书级技术指标已取得（氪工质、总效率≥88%、阳极 200~420V 可调等）。"
+        }
+      ],
+      "upcoming": [],
+      "constraints": "",
+      "backfill": true
+    },
+    {
+      "date": "2026-07-20",
+      "weekday": "星期一",
+      "has_new": true,
+      "summary": "P12 上海霄元创新中心「用于推力试验的真空试验舱」比选出结果：上海润理真空技术有限公司中标，68 万元（预算 70 万）。",
+      "new_items": [
+        {
+          "id": "P12",
+          "title": "用于推力试验的真空试验舱 比选结果",
+          "buyer": "上海霄元创新中心",
+          "winner": "上海润理真空技术有限公司",
+          "amount": "68 万元",
+          "publish_date": "2026-07-20",
+          "url": "https://www.shbid.com/html/jidian/gonggaogongshi/zhongbiaogonggao/2082025474829217794.html",
+          "note": "项目编号 0613-266025253987，合同签订后 3 个月内交付。状态更新：已中标。"
+        }
+      ],
+      "upcoming": [],
+      "constraints": "",
+      "backfill": true
+    },
+    {
+      "date": "2026-05-27",
+      "weekday": "星期三",
+      "has_new": true,
+      "summary": "P04 某项目卫星姿轨控分系统霍尔电推进组件（自筹）第二轮售标启动（05-27 至 06-02），招标文件 800 元/套。",
+      "new_items": [
+        {
+          "id": "P04",
+          "title": "某项目卫星姿轨控分系统霍尔电推进组件 第二轮售标",
+          "buyer": "中科院微小卫星创新研究院",
+          "amount": "未公示",
+          "publish_date": "2026-05-27",
+          "url": "https://www.shbid.com/html/jidian/gonggaogongshi/zhaobiaogonggao/2051963868208656385.html",
+          "note": "代理机构：上海机电设备招标。面向微小卫星名录内供应商。状态更新：二轮售标。"
+        }
+      ],
+      "upcoming": [],
+      "constraints": "",
+      "backfill": true
+    },
+    {
+      "date": "2026-05-06",
+      "weekday": "星期三",
+      "has_new": true,
+      "summary": "P04 某项目卫星姿轨控分系统霍尔电推进组件（自筹）首轮招标售标批次发布（05-06 批次）。",
+      "new_items": [
+        {
+          "id": "P04",
+          "title": "某项目卫星姿轨控分系统霍尔电推进组件 首轮售标",
+          "buyer": "中科院微小卫星创新研究院",
+          "amount": "未公示",
+          "publish_date": "2026-05-06",
+          "url": "https://www.365trade.com.cn/zhwzb/826586.jhtml",
+          "note": "首轮批次（05-06 批次），后续于 05-27 启动二轮售标。新增跟踪 P04。"
+        }
+      ],
+      "upcoming": [],
+      "constraints": "",
+      "backfill": true
+    },
+    {
+      "date": "2026-03-27",
+      "weekday": "星期五",
+      "has_new": true,
+      "summary": "西安航天动力试验技术研究所「高压气瓶采购项目」（ZKX20260202A002）中标候选公示，候选第一 1639 万元。汇编收录项目，补编为 P18。",
+      "new_items": [
+        {
+          "id": "P18",
+          "title": "高压气瓶采购项目 中标候选公示",
+          "buyer": "西安航天动力试验技术研究所",
+          "amount": "1639 万元（候选第一）",
+          "publish_date": "2026-03-27",
+          "url": "https://365trade.com.cn/jhwzb/805491.jhtml",
+          "note": "贮供领域（气瓶）。汇编 v5 收录项目，纳入网站跟踪表补编为 P18。"
+        }
+      ],
+      "upcoming": [],
+      "constraints": "",
+      "backfill": true
+    },
+    {
+      "date": "2026-03-09",
+      "weekday": "星期一",
+      "has_new": true,
+      "summary": "P11 合肥综合性国家科学中心能源研究院「大功率电推进器空间环境模拟一体化实验系统」中标公告发布：上海航天裕达科技中标，790 万元（预算 1000 万）。",
+      "new_items": [
+        {
+          "id": "P11",
+          "title": "大功率电推进器空间环境模拟一体化实验系统 中标公告",
+          "buyer": "合肥综合性国家科学中心能源研究院",
+          "winner": "上海航天裕达科技",
+          "amount": "790 万元",
+          "publish_date": "2026-03-09",
+          "url": "https://www.ahtba.org.cn/site/trade/affiche/detail/3e5e3639-1b62-11f1-b7f6-00163e1f3e9b",
+          "note": "项目编号 26AT187025400478，8 个月内供货安装。状态更新：已中标。"
+        }
+      ],
+      "upcoming": [],
+      "constraints": "",
+      "backfill": true
+    },
+    {
+      "date": "2026-03-01",
+      "weekday": "星期日",
+      "has_new": true,
+      "summary": "P03 中科院微小卫星创新研究院「霍尔电推进组件」（降轨任务，ZC26G220060）招标公告发布，采购 2 套正样件，国拨资金。",
+      "new_items": [
+        {
+          "id": "P03",
+          "title": "霍尔电推进组件（降轨任务）招标公告",
+          "buyer": "中科院微小卫星创新研究院",
+          "amount": "未公示（2套）",
+          "publish_date": "2026-03-01",
+          "url": "https://shanghai.jianyu360.cn/jybx/20260301_26022836486776.html",
+          "note": "用于 800km→375km 降轨任务；正样件 2026-04-30 前交付；须具备国军标质量体系。招标文件 03-24~03-29 线上发售（800元/套）。新增跟踪 P03。"
+        }
+      ],
+      "upcoming": [],
+      "constraints": "",
+      "backfill": true
+    },
+    {
+      "date": "2025-11-27",
+      "weekday": "星期四",
+      "has_new": true,
+      "summary": "军队采购项目「霍尔电推进系统健康监测诊断软件开发服务」（2025-JT05-F1024）中标公示：北京航空航天大学中标，130.65 万元。军口亦有电推进采购需求（多走军队采购网，登录墙内）。",
+      "new_items": [
+        {
+          "id": "P14",
+          "title": "霍尔电推进系统健康监测诊断软件开发服务 中标公示（军队采购）",
+          "buyer": "某部队单位（西安）",
+          "winner": "北京航空航天大学",
+          "amount": "130.65 万元",
+          "publish_date": "2025-11-27",
+          "url": "https://www.xinecai.com/markerswebnotice/227529521642005523.html",
+          "note": "整机关联/测控方向。新增跟踪 P14；同类军口项目多在军队采购网发布，公开检索受限。"
+        }
+      ],
+      "upcoming": [],
+      "constraints": "",
+      "backfill": true
+    },
+    {
+      "date": "2025-07-11",
+      "weekday": "星期五",
+      "has_new": true,
+      "summary": "P15 中科院国家空间科学中心「螺旋阴极等耗材采购」（CL202507030002）成交：成都国光电气，0.39 万元。",
+      "new_items": [
+        {
+          "id": "P15",
+          "title": "螺旋阴极等耗材采购 成交公告",
+          "buyer": "中科院国家空间科学中心",
+          "winner": "成都国光电气",
+          "amount": "0.39 万元",
+          "publish_date": "2025-07-11",
+          "url": "http://jjxt.nssc.ac.cn/front/noticenofilter/viewStrikeNotice?id=ff80808196f1399b0197f78e1edd0de5",
+          "note": "阴极耗材方向小额采购。新增跟踪 P15。"
+        }
+      ],
+      "upcoming": [],
+      "constraints": "",
+      "backfill": true
+    },
+    {
+      "date": "2025-06-01",
+      "weekday": "星期日",
+      "has_new": false,
+      "summary": "历史归档起点（2025 年 6 月）。本归档 2025-06 至 2026-08 区间为「事件式回填」：依据《国内霍尔电推进招标采购与标书技术指标汇编》（2026-09-22 编制）收录公开可查的关键节点，非逐日全量覆盖，未检索到的日期不代表当日无公告。另：P02 EUHT 技术试验卫星霍尔电推进组件经两轮公开招标流标后转单一来源，由兰州空间技术物理研究所（510所）成交，2026 年内公示（具体日期未公开）；P06 西安交大电推进贮供系统采购公告在发（90 天内交付）；P07 推进产品研制采购意向（800 万，含贮箱/气瓶/减压阀/电磁阀）已公示，预计 2026-06 启动正式采购。P10 格思多工位试验系统（2025-04-01 中标公示）与 P13 510所阴极试验设备（2019-01-29 中标公示）早于归档起点，仅在跟踪表中保留。",
+      "new_items": [],
+      "upcoming": [],
+      "constraints": "2025-06 至 2026-08 为事件式回填，覆盖不全；中招联合、军队采购网等登录墙平台历史内容无法检索。",
+      "backfill": true
+    }
+  ]
+}</script>
+<script>
+/* === Data loading === */
+let siteData = null;
+async function loadData() {
+  try {
+    const inline = document.getElementById("offline-data");
+    if (inline) {
+      siteData = JSON.parse(inline.textContent);
+    } else {
+      const res = await fetch("./data/reports.json?v=" + Date.now());
+      if (!res.ok) throw new Error("加载失败");
+      siteData = await res.json();
+    }
+    render();
+  } catch (err) {
+    document.getElementById("todaySummary").innerHTML =
+      '<span style="color:#b91c1c;">⚠️ 数据加载失败：' + err.message + '</span>';
+  }
+}
+
+window.addEventListener("DOMContentLoaded", loadData);
+
+function render() {
+  if (!siteData) return;
+  const s = siteData.site;
+  document.getElementById("siteTitle").textContent = s.title;
+  document.getElementById("siteSubtitle").textContent = s.subtitle;
+
+  const reports = (siteData.reports || []).slice().sort((a, b) => b.date.localeCompare(a.date));
+  const today = reports[0];
+
+  // 顶部 meta
+  document.getElementById("todayDate").textContent = today.date;
+  document.getElementById("trackedCount").textContent = (s.tracked_projects || []).length;
+  document.getElementById("reportCount").textContent = reports.length;
+  document.getElementById("todayDateLong").textContent = today.date + " " + today.weekday;
+
+  // 今日详情
+  document.getElementById("todaySummary").textContent = today.summary;
+
+  const newEl = document.getElementById("todayNew");
+  if (today.new_items && today.new_items.length > 0) {
+    newEl.innerHTML = today.new_items.map(it => `
+      <div class="item">
+        <div class="item-head">
+          <span class="item-id">${escapeHtml(it.id)}</span>
+          <span class="item-title">${escapeHtml(it.title)}</span>
+        </div>
+        <div class="item-meta">
+          <span>采购人：<b>${escapeHtml(it.buyer)}</b></span>
+          ${it.winner ? `<span>中标人：<b>${escapeHtml(it.winner)}</b></span>` : ''}
+          <span>金额：<b>${escapeHtml(it.amount)}</b></span>
+          <span>日期：<b>${escapeHtml(it.publish_date || '—')}</b></span>
+        </div>
+        <div class="item-meta">
+          ${it.url ? `<a href="${escapeHtml(it.url)}" target="_blank" rel="noopener">🔗 原文链接</a>` : '<span style="color:#9ca3af;">（无公开原文链接）</span>'}
+        </div>
+        ${it.note ? `<div class="item-note">💡 ${escapeHtml(it.note)}</div>` : ''}
+      </div>
+    `).join("");
+  } else {
+    newEl.innerHTML = '<div class="item" style="border-left-color:#9ca3af;"><div class="item-note">无新增。</div></div>';
+  }
+
+  const upEl = document.getElementById("todayUpcoming");
+  upEl.innerHTML = (today.upcoming || []).map(u => `
+    <li>
+      <span class="upcoming-date">📅 ${escapeHtml(u.date)}</span>
+      <span class="upcoming-event">${escapeHtml(u.event)}</span>
+      <div class="upcoming-detail">${escapeHtml(u.detail || '')}</div>
+    </li>
+  `).join("");
+
+  document.getElementById("todayConstraints").textContent = today.constraints || "无";
+
+  // 本周汇总（按自然日：最近 7 天内的日报）
+  const weekGrid = document.getElementById("weekGrid");
+  const dayLabels = ["周日","周一","周二","周三","周四","周五","周六"];
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - 6);
+  const cutoffStr = cutoff.toISOString().slice(0, 10);
+  const last7 = reports.filter(r => r.date >= cutoffStr);
+  if (last7.length === 0) {
+    weekGrid.innerHTML = '<p style="color:#6b7280;font-size:.9rem;">近 7 天无日报记录。</p>';
+  } else {
+    weekGrid.innerHTML = last7.map(r => {
+      const d = new Date(r.date + "T00:00:00");
+      const weekday = dayLabels[d.getDay()];
+      return `
+        <div class="week-card">
+          <div class="date">${r.date}</div>
+          <div class="day">${weekday}</div>
+          <div class="status">
+            ${r.has_new
+              ? '<span class="badge new">🆕 有新内容</span>'
+              : '<span class="badge none">无新增</span>'}
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  // 历史归档（按月份分组）
+  const hist = document.getElementById("historyList");
+  if (reports.length <= 1) {
+    hist.innerHTML = '<p style="color:#6b7280;">暂无更多历史归档。</p>';
+  } else {
+    let html = "";
+    let curMonth = "";
+    reports.slice(1).forEach(r => {
+      const month = r.date.slice(0, 7);
+      if (month !== curMonth) {
+        curMonth = month;
+        html += `<div style="margin:18px 0 8px;font-weight:700;color:#0F4C81;font-size:.95rem;border-left:3px solid #0F4C81;padding-left:8px;">${month.replace('-', ' 年 ')} 月</div>`;
+      }
+      const newSection = (r.new_items && r.new_items.length > 0)
+        ? r.new_items.map(it => `
+          <div class="item">
+            <div class="item-head">
+              <span class="item-id">${escapeHtml(it.id)}</span>
+              <span class="item-title">${escapeHtml(it.title)}</span>
+            </div>
+            <div class="item-meta">
+              <span>采购人：<b>${escapeHtml(it.buyer)}</b></span>
+              ${it.winner ? `<span>中标人：<b>${escapeHtml(it.winner)}</b></span>` : ''}
+              <span>金额：<b>${escapeHtml(it.amount)}</b></span>
+              ${it.publish_date ? `<span>日期：<b>${escapeHtml(it.publish_date)}</b></span>` : ''}
+            </div>
+            <div class="item-meta">
+              ${it.url ? `<a href="${escapeHtml(it.url)}" target="_blank" rel="noopener">🔗 原文链接</a>` : '<span style="color:#9ca3af;">（无公开原文链接）</span>'}
+            </div>
+            ${it.note ? `<div class="item-note">💡 ${escapeHtml(it.note)}</div>` : ''}
+          </div>
+        `).join("")
+        : '<p style="color:#6b7280;font-size:.9rem;">无新增。</p>';
+      const upSection = (r.upcoming || []).map(u => `
+        <li>
+          <span class="upcoming-date">📅 ${escapeHtml(u.date)}</span>
+          <span class="upcoming-event">${escapeHtml(u.event)}</span>
+          <div class="upcoming-detail">${escapeHtml(u.detail || '')}</div>
+        </li>
+      `).join("");
+      html += `
+        <details style="border:1px solid #eef0f3;border-radius:6px;padding:0;margin-bottom:10px;background:#fafbfc;">
+          <summary style="padding:12px 16px;cursor:pointer;font-weight:600;list-style:none;">
+            <span style="margin-right:8px;">📅 ${r.date} ${r.weekday}</span>
+            ${r.has_new ? '<span class="badge new">有新</span>' : '<span class="badge none">无新增</span>'}
+            ${r.backfill ? '<span class="badge" style="background:#eef2ff;color:#3730a3;">回填</span>' : ''}
+            <span style="color:#6b7280;font-weight:400;margin-left:10px;font-size:.88rem;">${escapeHtml(r.summary.slice(0, 60))}${r.summary.length > 60 ? '...' : ''}</span>
+          </summary>
+          <div style="padding:0 16px 14px;">
+            <p>${escapeHtml(r.summary)}</p>
+            <h4 style="font-size:.95rem;margin:10px 0 6px;">新增</h4>
+            ${newSection}
+            ${upSection ? ` <h4 style="font-size:.95rem;margin:10px 0 6px;">近期节点</h4><ul class="upcoming-list">${upSection}</ul>` : ''}
+            ${r.constraints ? `<p style="color:#6b7280;font-size:.85rem;margin-top:10px;">⚠️ ${escapeHtml(r.constraints)}</p>` : ''}
+          </div>
+        </details>
+      `;
+    });
+    hist.innerHTML = html;
+  }
+
+  // 跟踪项目全表
+  const tbody = document.querySelector("#trackedTable tbody");
+  tbody.innerHTML = (s.tracked_projects || []).map(p => `
+    <tr>
+      <td class="tracked-id">${escapeHtml(p.id)}</td>
+      <td>${escapeHtml(p.name)}</td>
+      <td>${escapeHtml(p.buyer)}</td>
+      <td>${escapeHtml(p.amount)}</td>
+      <td>${escapeHtml(p.next_milestone)}</td>
+    </tr>
+  `).join("");
+}
+
+function escapeHtml(s) {
+  if (s == null) return "";
+  return String(s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>国内霍尔电推进招标采购日报</title>
+<meta name="description" content="每日跟踪国内霍尔电推进相关招标、采购、中标、成交公告。工作日 17:00 自动更新。公开访问。">
+<style>
+  /* === Reset & Base === */
+  *,*::before,*::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #1a1d23;
+    background: #f6f8fb;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  a { color: #0F4C81; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  h1, h2, h3, h4 { margin: 0 0 .5em; font-weight: 600; line-height: 1.3; }
+  h1 { font-size: 1.65rem; }
+  h2 { font-size: 1.3rem; }
+  h3 { font-size: 1.1rem; }
+  p { margin: 0 0 .8em; }
+  ul { margin: 0 0 .8em; padding-left: 1.4em; }
+  li { margin: .2em 0; }
+  code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; background: #eef1f5; padding: 1px 5px; border-radius: 3px; font-size: .9em; }
+
+  /* === Layout === */
+  .container { max-width: 1100px; margin: 0 auto; padding: 24px 20px 60px; }
+  .header {
+    background: linear-gradient(135deg, #0F4C81 0%, #1a6aa8 100%);
+    color: #fff;
+    padding: 32px 20px 28px;
+    border-radius: 12px;
+    margin-bottom: 28px;
+    box-shadow: 0 6px 20px rgba(15, 76, 129, 0.15);
+  }
+  .header h1 { color: #fff; margin-bottom: 6px; font-size: 1.7rem; }
+  .header .sub { opacity: .9; font-size: .95rem; }
+  .header .meta { margin-top: 14px; font-size: .85rem; opacity: .85; }
+  .header .meta span { margin-right: 18px; }
+
+  /* === Cards === */
+  .card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 22px 24px;
+    margin-bottom: 22px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.04), 0 0 0 1px rgba(0,0,0,.04);
+  }
+  .card h2 {
+    display: flex; align-items: center; gap: 10px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eef0f3;
+    margin-bottom: 16px;
+  }
+  .card h2 .tag {
+    font-size: .7rem; font-weight: 600; padding: 2px 8px; border-radius: 4px;
+    background: #0F4C81; color: #fff; letter-spacing: .5px;
+  }
+  .card h2 .tag.history { background: #6b7280; }
+  .card h2 .tag.week { background: #d97706; }
+  .card h2 .tag.today { background: #E76F51; }
+
+  /* === Status badge === */
+  .badge {
+    display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: .75rem; font-weight: 600;
+    letter-spacing: .3px;
+  }
+  .badge.new { background: #fee2e2; color: #b91c1c; }
+  .badge.none { background: #e5e7eb; color: #4b5563; }
+
+  /* === Project items === */
+  .item {
+    background: #fafbfc;
+    border-left: 4px solid #0F4C81;
+    padding: 14px 16px;
+    margin: 12px 0;
+    border-radius: 4px;
+  }
+  .item-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; }
+  .item-id {
+    background: #0F4C81; color: #fff; font-size: .75rem; font-weight: 700;
+    padding: 2px 8px; border-radius: 4px;
+  }
+  .item-title { font-weight: 600; flex: 1; }
+  .item-meta { font-size: .85rem; color: #4b5563; }
+  .item-meta span { margin-right: 14px; }
+  .item-meta b { color: #1a1d23; font-weight: 600; }
+  .item-note { font-size: .88rem; color: #4b5563; margin-top: 6px; }
+
+  /* === Week summary grid === */
+  .week-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+  }
+  .week-card {
+    background: #fafbfc;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 12px 14px;
+    transition: transform .15s, box-shadow .15s;
+  }
+  .week-card:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,.06); }
+  .week-card .date { font-size: .8rem; color: #6b7280; margin-bottom: 4px; }
+  .week-card .day { font-size: 1.1rem; font-weight: 700; color: #1a1d23; }
+  .week-card .status { margin-top: 8px; font-size: .78rem; }
+
+  /* === Upcoming list === */
+  .upcoming-list { list-style: none; padding: 0; margin: 0; }
+  .upcoming-list li {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px dashed #eef0f3;
+    font-size: .92rem;
+  }
+  .upcoming-list li:last-child { border-bottom: 0; }
+  .upcoming-date { font-weight: 600; color: #0F4C81; min-width: 140px; }
+  .upcoming-event { font-weight: 600; }
+  .upcoming-detail { color: #6b7280; font-size: .88rem; width: 100%; padding-left: 148px; }
+
+  /* === Tracked table === */
+  .tracked-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+  .tracked-table th, .tracked-table td {
+    text-align: left; padding: 10px 8px; border-bottom: 1px solid #eef0f3; vertical-align: top;
+  }
+  .tracked-table th { background: #f3f4f6; font-weight: 600; color: #1a1d23; position: sticky; top: 0; }
+  .tracked-table tbody tr:hover { background: #fafbfc; }
+  .tracked-id { font-weight: 700; color: #0F4C81; }
+
+  /* === Footer === */
+  .footer {
+    text-align: center; color: #6b7280; font-size: .82rem; padding: 20px 0 0;
+  }
+  .footer a { color: #6b7280; }
+
+  /* === Responsive === */
+  @media (max-width: 640px) {
+    .header { padding: 24px 16px; }
+    .header h1 { font-size: 1.35rem; }
+    .card { padding: 18px 16px; }
+    .upcoming-date { min-width: 0; flex: 1 0 100%; }
+    .upcoming-detail { padding-left: 0; }
+    .item-head { flex-direction: column; gap: 4px; }
+    .tracked-table { font-size: .82rem; }
+    .tracked-table th, .tracked-table td { padding: 8px 4px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container" id="content">
+
+  <header class="header">
+    <h1 id="siteTitle">国内霍尔电推进招标采购日报</h1>
+    <div class="sub" id="siteSubtitle">每日跟踪 · 工作日 17:00 自动更新</div>
+    <div class="meta">
+      <span>📅 <b id="todayDate">—</b></span>
+      <span>🛰️ <b id="trackedCount">—</b> 个在跟项目（P01~P18）</span>
+      <span>📋 共 <b id="reportCount">—</b> 期记录（2025-06 起）</span>
+    </div>
+  </header>
+
+  <!-- 今日详情 -->
+  <section class="card" id="todayCard">
+    <h2><span class="tag today">今日详情</span><span id="todayDateLong">—</span></h2>
+    <p id="todaySummary" style="font-size: 1rem; color: #1a1d23;"></p>
+    <h3 style="margin-top: 18px;">📌 今日新增</h3>
+    <div id="todayNew"></div>
+    <h3 style="margin-top: 18px;">🗓️ 近期值得关注的时间节点</h3>
+    <ul class="upcoming-list" id="todayUpcoming"></ul>
+    <h3 style="margin-top: 18px;">⚠️ 检索受限说明</h3>
+    <p id="todayConstraints" style="color: #6b7280; font-size: .9rem;"></p>
+  </section>
+
+  <!-- 本周汇总卡 -->
+  <section class="card">
+    <h2><span class="tag week">本周汇总</span>最近 7 天动态</h2>
+    <div class="week-grid" id="weekGrid"></div>
+  </section>
+
+  <!-- 历史归档 -->
+  <section class="card">
+    <h2><span class="tag history">历史归档</span>按日期倒序 · 完整内容</h2>
+    <p style="color:#6b7280;font-size:.88rem;margin-top:-6px;">2026-10 起为每日跟踪记录；2025-06 ~ 2026-09 为事件式回填（依据《霍尔电推进招标采购与标书技术指标汇编》），标注「回填」的条目为非逐日覆盖。</p>
+    <div id="historyList"></div>
+  </section>
+
+  <!-- 跟踪项目全表 -->
+  <section class="card">
+    <h2><span class="tag">跟踪项目</span>P01 ~ P18 完整状态</h2>
+    <div style="overflow-x: auto;">
+      <table class="tracked-table" id="trackedTable">
+        <thead>
+          <tr><th>编号</th><th>项目名称</th><th>采购人</th><th>金额</th><th>下一关键节点</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="footer">
+    <p>数据来源：中国政府采购网、中招联合、上海机电设备招标、剑鱼标讯、谛听招标网、知了标讯、各采购人官网等公开渠道。</p>
+    <p>本日报为公开信息整理，仅供参考。引用请注明来源。</p>
+  </div>
+</div>
+
+<script>
+/* === Data loading === */
+let siteData = null;
+async function loadData() {
+  try {
+    const res = await fetch("./data/reports.json?v=" + Date.now());
+    if (!res.ok) throw new Error("加载失败");
+    siteData = await res.json();
+    render();
+  } catch (err) {
+    document.getElementById("todaySummary").innerHTML =
+      '<span style="color:#b91c1c;">⚠️ 数据加载失败：' + err.message + '</span>';
+  }
+}
+
+window.addEventListener("DOMContentLoaded", loadData);
+
+function render() {
+  if (!siteData) return;
+  const s = siteData.site;
+  document.getElementById("siteTitle").textContent = s.title;
+  document.getElementById("siteSubtitle").textContent = s.subtitle;
+
+  const reports = (siteData.reports || []).slice().sort((a, b) => b.date.localeCompare(a.date));
+  const today = reports[0];
+
+  // 顶部 meta
+  document.getElementById("todayDate").textContent = today.date;
+  document.getElementById("trackedCount").textContent = (s.tracked_projects || []).length;
+  document.getElementById("reportCount").textContent = reports.length;
+  document.getElementById("todayDateLong").textContent = today.date + " " + today.weekday;
+
+  // 今日详情
+  document.getElementById("todaySummary").textContent = today.summary;
+
+  const newEl = document.getElementById("todayNew");
+  if (today.new_items && today.new_items.length > 0) {
+    newEl.innerHTML = today.new_items.map(it => `
+      <div class="item">
+        <div class="item-head">
+          <span class="item-id">${escapeHtml(it.id)}</span>
+          <span class="item-title">${escapeHtml(it.title)}</span>
+        </div>
+        <div class="item-meta">
+          <span>采购人：<b>${escapeHtml(it.buyer)}</b></span>
+          ${it.winner ? `<span>中标人：<b>${escapeHtml(it.winner)}</b></span>` : ''}
+          <span>金额：<b>${escapeHtml(it.amount)}</b></span>
+          <span>日期：<b>${escapeHtml(it.publish_date || '—')}</b></span>
+        </div>
+        <div class="item-meta">
+          ${it.url ? `<a href="${escapeHtml(it.url)}" target="_blank" rel="noopener">🔗 原文链接</a>` : '<span style="color:#9ca3af;">（无公开原文链接）</span>'}
+        </div>
+        ${it.note ? `<div class="item-note">💡 ${escapeHtml(it.note)}</div>` : ''}
+      </div>
+    `).join("");
+  } else {
+    newEl.innerHTML = '<div class="item" style="border-left-color:#9ca3af;"><div class="item-note">无新增。</div></div>';
+  }
+
+  const upEl = document.getElementById("todayUpcoming");
+  upEl.innerHTML = (today.upcoming || []).map(u => `
+    <li>
+      <span class="upcoming-date">📅 ${escapeHtml(u.date)}</span>
+      <span class="upcoming-event">${escapeHtml(u.event)}</span>
+      <div class="upcoming-detail">${escapeHtml(u.detail || '')}</div>
+    </li>
+  `).join("");
+
+  document.getElementById("todayConstraints").textContent = today.constraints || "无";
+
+  // 本周汇总（按自然日：最近 7 天内的日报）
+  const weekGrid = document.getElementById("weekGrid");
+  const dayLabels = ["周日","周一","周二","周三","周四","周五","周六"];
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - 6);
+  const cutoffStr = cutoff.toISOString().slice(0, 10);
+  const last7 = reports.filter(r => r.date >= cutoffStr);
+  if (last7.length === 0) {
+    weekGrid.innerHTML = '<p style="color:#6b7280;font-size:.9rem;">近 7 天无日报记录。</p>';
+  } else {
+    weekGrid.innerHTML = last7.map(r => {
+      const d = new Date(r.date + "T00:00:00");
+      const weekday = dayLabels[d.getDay()];
+      return `
+        <div class="week-card">
+          <div class="date">${r.date}</div>
+          <div class="day">${weekday}</div>
+          <div class="status">
+            ${r.has_new
+              ? '<span class="badge new">🆕 有新内容</span>'
+              : '<span class="badge none">无新增</span>'}
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  // 历史归档（按月份分组）
+  const hist = document.getElementById("historyList");
+  if (reports.length <= 1) {
+    hist.innerHTML = '<p style="color:#6b7280;">暂无更多历史归档。</p>';
+  } else {
+    let html = "";
+    let curMonth = "";
+    reports.slice(1).forEach(r => {
+      const month = r.date.slice(0, 7);
+      if (month !== curMonth) {
+        curMonth = month;
+        html += `<div style="margin:18px 0 8px;font-weight:700;color:#0F4C81;font-size:.95rem;border-left:3px solid #0F4C81;padding-left:8px;">${month.replace('-', ' 年 ')} 月</div>`;
+      }
+      const newSection = (r.new_items && r.new_items.length > 0)
+        ? r.new_items.map(it => `
+          <div class="item">
+            <div class="item-head">
+              <span class="item-id">${escapeHtml(it.id)}</span>
+              <span class="item-title">${escapeHtml(it.title)}</span>
+            </div>
+            <div class="item-meta">
+              <span>采购人：<b>${escapeHtml(it.buyer)}</b></span>
+              ${it.winner ? `<span>中标人：<b>${escapeHtml(it.winner)}</b></span>` : ''}
+              <span>金额：<b>${escapeHtml(it.amount)}</b></span>
+              ${it.publish_date ? `<span>日期：<b>${escapeHtml(it.publish_date)}</b></span>` : ''}
+            </div>
+            <div class="item-meta">
+              ${it.url ? `<a href="${escapeHtml(it.url)}" target="_blank" rel="noopener">🔗 原文链接</a>` : '<span style="color:#9ca3af;">（无公开原文链接）</span>'}
+            </div>
+            ${it.note ? `<div class="item-note">💡 ${escapeHtml(it.note)}</div>` : ''}
+          </div>
+        `).join("")
+        : '<p style="color:#6b7280;font-size:.9rem;">无新增。</p>';
+      const upSection = (r.upcoming || []).map(u => `
+        <li>
+          <span class="upcoming-date">📅 ${escapeHtml(u.date)}</span>
+          <span class="upcoming-event">${escapeHtml(u.event)}</span>
+          <div class="upcoming-detail">${escapeHtml(u.detail || '')}</div>
+        </li>
+      `).join("");
+      html += `
+        <details style="border:1px solid #eef0f3;border-radius:6px;padding:0;margin-bottom:10px;background:#fafbfc;">
+          <summary style="padding:12px 16px;cursor:pointer;font-weight:600;list-style:none;">
+            <span style="margin-right:8px;">📅 ${r.date} ${r.weekday}</span>
+            ${r.has_new ? '<span class="badge new">有新</span>' : '<span class="badge none">无新增</span>'}
+            ${r.backfill ? '<span class="badge" style="background:#eef2ff;color:#3730a3;">回填</span>' : ''}
+            <span style="color:#6b7280;font-weight:400;margin-left:10px;font-size:.88rem;">${escapeHtml(r.summary.slice(0, 60))}${r.summary.length > 60 ? '...' : ''}</span>
+          </summary>
+          <div style="padding:0 16px 14px;">
+            <p>${escapeHtml(r.summary)}</p>
+            <h4 style="font-size:.95rem;margin:10px 0 6px;">新增</h4>
+            ${newSection}
+            ${upSection ? ` <h4 style="font-size:.95rem;margin:10px 0 6px;">近期节点</h4><ul class="upcoming-list">${upSection}</ul>` : ''}
+            ${r.constraints ? `<p style="color:#6b7280;font-size:.85rem;margin-top:10px;">⚠️ ${escapeHtml(r.constraints)}</p>` : ''}
+          </div>
+        </details>
+      `;
+    });
+    hist.innerHTML = html;
+  }
+
+  // 跟踪项目全表
+  const tbody = document.querySelector("#trackedTable tbody");
+  tbody.innerHTML = (s.tracked_projects || []).map(p => `
+    <tr>
+      <td class="tracked-id">${escapeHtml(p.id)}</td>
+      <td>${escapeHtml(p.name)}</td>
+      <td>${escapeHtml(p.buyer)}</td>
+      <td>${escapeHtml(p.amount)}</td>
+      <td>${escapeHtml(p.next_milestone)}</td>
+    </tr>
+  `).join("");
+}
+
+function escapeHtml(s) {
+  if (s == null) return "";
+  return String(s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+</script>
+</body>
+</html>
