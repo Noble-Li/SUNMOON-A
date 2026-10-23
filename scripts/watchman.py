@@ -13,6 +13,7 @@
   - 抓不到不等于没问题，断更告警是保底能力（100% 可靠，因为只读仓库自身数据）
 """
 
+import base64
 import io
 import json
 import os
@@ -49,6 +50,21 @@ MUST_HIT = ["推进", "推力器", "阴极", "真空", "贮箱", "气瓶", "模�
 
 # 明显无关的直接丢
 BLACKLIST = ["霍尔效应", "霍尔传感器", "霍尔元件", "SimpleFOC", "汽车", "电梯", "空调"]
+
+# 采购信号词：标题必须命中其一，否则视为科普/词典噪音
+PROCURE_HINT = [
+    "招标", "中标", "采购", "成交", "公告", "公示", "询价", "磋商", "谈判",
+    "废标", "终止", "候选", "开标", "邀标", "竞标", "单一来源", "竞争性",
+    "结果公告", "采购意向", "需求公示", "更正公告", "澄清",
+]
+
+# 词典 / 科普 / 内容农场噪音
+NOISE_HINT = [
+    "词典", "意思", "拼音", "造句", "翻译", "近义词", "反义词", "例句",
+    "怎么读", "怎么说", "是什么", "词语", "汉语", "国学", "百科", "知道",
+    "文库", "下载", "论文", "专利", "招聘", "论坛", "博客", "视频",
+    "工作原理", "简介", "浅谈", "综述", "发展现状", "百度",
+]
 
 STALE_DAYS = 2          # 落后多少天判定为断更
 LOOKBACK_DAYS = 10      # ccgp 搜索的时间窗口
@@ -158,11 +174,142 @@ def bing_rss(kw):
     return items
 
 
+# ---------------- 源 3：搜索引擎网页版（海外 IP 可用） ----------------
+# Actions runner 在境外，DuckDuckGo / Bing 网页版可直连（本机国内网络反而不通）。
+# 用它们做「广撒网 + 领域词过滤」，弥补 ccgp 接口限流。
+SE_QUERIES = [
+    "site:ccgp.gov.cn 电推进 招标",
+    "site:ccgp.gov.cn 霍尔 推进",
+    "site:ccgp.gov.cn 推进子系统 中标",
+    "电推进 中标公告 采购 卫星",
+    "霍尔推力器 采购 招标",
+    "空心阴极 中和器 采购 招标",
+    "空间环境模拟 真空舱 招标 采购",
+    "姿轨控 推进分系统 招标 中标",
+]
+
+# 明显不是采购公告的站点，直接丢
+SE_BLACK_DOMAINS = [
+    "zhihu.com", "baike.baidu", "baidu.com", "wikipedia", "bilibili",
+    "csdn.net", "cnblogs", "jianshu", "weibo", "douban", "toutiao",
+    "taobao", "jd.com", "zhidao", "sogou", "so.com",
+]
+
+
+def _clean(t):
+    t = re.sub(r"<[^>]+>", "", t)
+    t = re.sub(r"&[a-zA-Z#0-9]+;", " ", t)
+    return re.sub(r"\s+", " ", t).strip()
+
+
+def ddg_html(q):
+    """DuckDuckGo HTML 版（境外可达）。POST 表单比 GET 稳。"""
+    data = urllib.parse.urlencode({"q": q, "kl": "cn-zh"}).encode()
+    try:
+        req = urllib.request.Request("https://html.duckduckgo.com/html/", data=data)
+        req.add_header("User-Agent", UA)
+        req.add_header("Accept-Language", "zh-CN,zh;q=0.9")
+        req.add_header("Content-Type", "application/x-www-form-urlencoded")
+        with urllib.request.urlopen(req, timeout=30) as r:
+            raw = r.read()
+        html = raw.decode("utf-8", "replace")
+    except Exception as e:  # noqa
+        log("ddg failed:", repr(e)[:100])
+        return []
+    items = []
+    for m in re.finditer(
+            r'<a[^>]*class="result__a"[^>]*href="([^"]+)"[^>]*>(.*?)</a>', html, re.S):
+        href, title = m.group(1), _clean(m.group(2))
+        # DDG 的链接是跳转地址，真实 URL 藏在 uddg 参数里
+        if "uddg=" in href:
+            href = urllib.parse.unquote(re.search(r"uddg=([^&]+)", href).group(1))
+        if not href.startswith("http") or len(title) < 8:
+            continue
+        items.append({"title": title, "url": href, "date": "", "source": "ddg", "query": q})
+    return items
+
+
+def _decode_bing(href):
+    """Bing 的 /ck/a? 跳转链接，真实地址 base64 藏在 u= 参数里（前缀 a1）。"""
+    if "/ck/a" not in href:
+        return href
+    m = re.search(r"[?&]u=([^&]+)", href)
+    if not m:
+        return href
+    raw = urllib.parse.unquote(m.group(1))
+    try:
+        dec = base64.b64decode(raw + "=" * (-len(raw) % 4)).decode("utf-8", "replace")
+    except Exception:  # noqa
+        return href
+    if dec.startswith("a1"):
+        dec = dec[2:]
+    return dec if dec.startswith("http") else href
+
+
+def bing_html(q):
+    """Bing 网页版（ensearch=1 走国际索引，对境外 runner 更稳）。"""
+    url = ("https://www.bing.com/search?q=" + urllib.parse.quote(q)
+           + "&setlang=zh-CN&ensearch=1&count=20")
+    html = fetch(url, referer="https://www.bing.com/")
+    if not html:
+        return []
+    items = []
+    for m in re.finditer(r'<h2><a[^>]+href="([^"]+)"[^>]*>(.*?)</a></h2>', html, re.S):
+        href, title = _decode_bing(m.group(1).replace("&amp;", "&")), _clean(m.group(2))
+        if not href.startswith("http") or len(title) < 8:
+            continue
+        items.append({"title": title, "url": href, "date": "", "source": "bing", "query": q})
+    return items
+
+
+def se_black(url):
+    low = url.lower()
+    return any(d in low for d in SE_BLACK_DOMAINS)
+
+
+def search_engine_fallback():
+    """ccgp 被限流时的兜底检索：先 DDG，再 Bing。"""
+    items = []
+    tried = []
+    for fn, name in ((ddg_html, "ddg"), (bing_html, "bing")):
+        got = fn(SE_QUERIES[0])
+        if got:
+            tried.append(name)
+            break
+    if not tried:
+        log("搜索引擎全部不可用")
+        return [], []
+    use = ddg_html if tried[0] == "ddg" else bing_html
+    for q in SE_QUERIES:
+        got = use(q)
+        got = [g for g in got if not se_black(g["url"])]
+        items.extend(got)
+        log("%s[%s] -> %d 条" % (tried[0], q[:22], len(got)))
+        time.sleep(2)
+    return items, tried
+
+
 # ---------------- 过滤 ----------------
-def relevant(title):
+def relevant(title, url=""):
     if any(b in title for b in BLACKLIST):
         return False
-    return any(k in title for k in MUST_HIT)
+    if any(n in title for n in NOISE_HINT):
+        return False
+    if not any(k in title for k in MUST_HIT):
+        return False
+    # 必须带采购信号（招标/中标/公告/公示…），否则多半是科普页
+    if not any(p in title for p in PROCURE_HINT):
+        return False
+    if url:
+        low = url.lower()
+        if "bing.com" in low or "microsoft" in low or "duckduckgo" in low:
+            return False
+        if se_black(url):
+            return False
+        # 只保留看起来像公告详情页的链接（含数字 id 的 .htm/.html 或明确目录）
+        if not re.search(r"(cggg|/t\d{8}_|\.shtml|\?.*id=|notice|detail|zbgg|gkzb|fblbgg)", low):
+            return False
+    return True
 
 
 def load_known():
@@ -205,30 +352,44 @@ def main():
     sources = []
     blocked = True
 
-    for kw in KEYWORDS:
-        html = ccgp_search(kw, start, end)
-        got, is_blocked = parse_ccgp(html)
-        if not is_blocked:
-            blocked = False
-            if kw not in sources:
-                sources.append("ccgp")
-        for it in got:
-            it["keyword"] = kw
-            it["source"] = "ccgp"
-        raw_items.extend(got)
-        log("ccgp[%s] -> %d 条%s" % (kw, len(got), "（被限流）" if is_blocked else ""))
-        time.sleep(6)
-
-    if blocked:
-        log("ccgp 全部被限流，启用 Bing RSS 备用")
-        for kw in KEYWORDS[:4]:
-            got = bing_rss(kw)
+    # 先探一次，被限流就立刻止损（不空跑 6 次各 6 秒）
+    probe, probe_blocked = parse_ccgp(ccgp_search(KEYWORDS[0], start, end))
+    if probe_blocked or not probe:
+        log("ccgp 不可用（限流/无结果），跳过，直接走搜索引擎通道")
+    else:
+        blocked = False
+        sources.append("ccgp")
+        raw_items.extend(probe)
+        log("ccgp[探] -> %d 条" % len(probe))
+        for kw in KEYWORDS[1:]:
+            got, is_blocked = parse_ccgp(ccgp_search(kw, start, end))
+            if is_blocked:
+                break
             for it in got:
                 it["keyword"] = kw
-                it["source"] = "bing"
+                it["source"] = "ccgp"
             raw_items.extend(got)
-            log("bing[%s] -> %d 条" % (kw, len(got)))
-            time.sleep(2)
+            log("ccgp[%s] -> %d 条" % (kw, len(got)))
+            time.sleep(6)
+
+    if blocked:
+        se_items, se_src = search_engine_fallback()
+        sources.extend(se_src)
+        for it in se_items:
+            it.setdefault("keyword", it.get("query", ""))
+        raw_items.extend(se_items)
+
+    # 原始结果全量落盘 + 摘要打印，方便在 Actions 日志里核对抓取源到底返回了什么
+    try:
+        json.dump(raw_items, io.open(os.path.join(OUT_DIR, "raw_dump.json"), "w",
+                                     encoding="utf-8"), ensure_ascii=False, indent=2)
+    except Exception:  # noqa
+        pass
+    if os.environ.get("WATCHMAN_DEBUG") == "1":
+        log("--- 原始结果 %d 条 ---" % len(raw_items))
+        for it in raw_items:
+            log("   [%s] %s | %s" % ("保留" if relevant(it["title"], it["url"])
+                                     else "丢弃", it["title"][:52], it["url"][:72]))
 
     # --- 3. 去重 + 过滤 ---
     known = load_known()
@@ -246,7 +407,7 @@ def main():
         u = it["url"].strip()
         if not u or u in seen:
             continue
-        if not relevant(it["title"]):
+        if not relevant(it["title"], u):
             continue
         seen.add(u)
         rec = {
@@ -295,8 +456,12 @@ def main():
                 r["title"].replace("|", "／")[:70],
                 r["url"], r["keyword"], r["source"]))
         lines.append("\n核实后请更新 `data/reports.json` 并发布；已核实的线索把 `status` 改为 `done`。\n")
-    if blocked and not added:
-        lines.append("> 本次运行 ccgp 搜索接口被限流，未获取到可靠结果。")
+    if not added:
+        if blocked and sources:
+            lines.append("> 说明：ccgp 接口被限流，本次走的是 **%s** 搜索引擎通道，结果未经人工核实。"
+                         % " / ".join(sources))
+        elif blocked:
+            lines.append("> 说明：ccgp 接口被限流且搜索引擎通道不可用，本次未获取到任何线索。")
 
     title = None
     if need:
