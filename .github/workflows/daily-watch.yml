@@ -24,6 +24,8 @@ jobs:
 
       - name: 运行哨兵
         id: watch
+        env:
+          WATCHMAN_DEBUG: '1'
         run: python scripts/watchman.py
 
       - name: 提交线索
