@@ -111,3 +111,15 @@
 - 如需恢复访问密码：在 `index.html` 的 `<body>` 顶部加回 `#gate` 表单，并在脚本中加回 `VALID_PASSWORDS` 校验函数
 
 <!-- sentinel-active -->
+
+## 运维脚本（在本机工作区执行，不在仓库内）
+
+| 脚本 | 作用 |
+|---|---|
+| `deploy_report.py "说明"` | 校验数据 → 生成离线单文件版 → 比对远端 → 提交并发布（git 不通时自动转 API） |
+| `sync_from_remote.py [--commit]` | 把远端 main 的最新内容拉回本地（走 codeload 源码包，绕开 git 协议） |
+| `push_via_api.py <目录> "说明" <文件...>` | 直接用 GitHub API 单次 commit 提交指定文件 |
+
+`.github/workflows/daily-watch.yml` 为云端哨兵：每天 17:00 检测日报是否断更（≥2 天告警）
+并抓取公开渠道新线索，有动静就开 Issue 提醒（会发邮件）。手动验证通知：
+Actions → 日报哨兵 → Run workflow → 勾选 `force_alert`。
