@@ -3,3 +3,5 @@ days/
 *.zip
 _check.js
 _c.js
+.watch_out/
+__pycache__/
