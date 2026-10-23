@@ -109,3 +109,5 @@
 - 部署方式：GitHub Pages，源为 `main` 分支根目录
 - 数据更新后，本地整理好 `data/reports.json` → 生成离线单文件版 → 提交推送，站点自动重新构建
 - 如需恢复访问密码：在 `index.html` 的 `<body>` 顶部加回 `#gate` 表单，并在脚本中加回 `VALID_PASSWORDS` 校验函数
+
+<!-- sentinel-active -->
