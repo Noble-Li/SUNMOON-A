@@ -1,0 +1,66 @@
+name: 日报哨兵
+
+on:
+  schedule:
+    # 每天 17:00 北京时间（= 09:00 UTC）。GitHub cron 可能有 5~30 分钟延迟，属正常。
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 准备 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 运行哨兵
+        id: watch
+        run: python scripts/watchman.py
+
+      - name: 提交线索
+        run: |
+          git config user.name "sunmoon-watchman"
+          git config user.email "watchman@users.noreply.github.com"
+          if [ -n "$(git status --porcelain)" ]; then
+            git add -A
+            git commit -m "哨兵更新 $(date -u -d '+8 hours' +%F)"
+            git push
+            echo "已提交线索"
+          else
+            echo "无变化，跳过提交"
+          fi
+
+      - name: 发送提醒
+        if: steps.watch.outputs.need_alert == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TITLE=$(cat .watch_out/issue_title.txt)
+          TODAY=$(date -u -d '+8 hours' +%F)
+          # 同一天只开一个 Issue，避免刷屏
+          EXISTING=$(gh issue list --label daily-watch --state open --search "$TODAY" --json title --jq '.[].title' | head -1)
+          if [ -n "$EXISTING" ]; then
+            echo "今日已有提醒 Issue：$EXISTING，跳过"
+            gh issue comment "$EXISTING" --body-file .watch_out/issue_body.md || true
+          else
+            gh issue create --title "$TITLE" --body-file .watch_out/issue_body.md --label daily-watch
+            echo "已创建提醒 Issue"
+          fi
+
+      - name: 运行摘要
+        if: always()
+        run: |
+          echo "### 哨兵本次运行结果" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- 新增线索：${{ steps.watch.outputs.added || 0 }}" >> $GITHUB_STEP_SUMMARY
+          echo "- 日报落后天数：${{ steps.watch.outputs.stale_days || 'n/a' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- ccgp 是否被限流：${{ steps.watch.outputs.ccgp_blocked || 'n/a' }}" >> $GITHUB_STEP_SUMMARY
