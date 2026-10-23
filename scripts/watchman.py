@@ -495,6 +495,14 @@ def main():
         elif blocked:
             lines.append("> 说明：ccgp 接口被限流且搜索引擎通道不可用，本次未获取到任何线索。")
 
+    # 手动验证通知链路用（workflow_dispatch 的 force_alert）
+    if os.environ.get("FORCE_ALERT") == "true" and not need:
+        need = True
+        lines.append("## ✅ 通知链路测试\n")
+        lines.append("这是一条**手动触发的测试提醒**，用来确认提醒能正常送达。")
+        lines.append("当前日报状态正常（最新条目 %s，落后 %s 天），无需处理。\n"
+                     % (latest or "未知", stale_days))
+
     title = None
     if need:
         if stale_days >= STALE_DAYS and added:
