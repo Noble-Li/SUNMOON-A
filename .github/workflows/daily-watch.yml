@@ -28,7 +28,41 @@ jobs:
           WATCHMAN_DEBUG: '1'
         run: python scripts/watchman.py
 
+      - name: 发送提醒
+        # Issues 若被关闭也不允许让整个 job 失败 —— 提醒失败不等于断更没检测到
+        continue-on-error: true
+        if: steps.watch.outputs.need_alert == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set +e
+          # 仓库可能关闭了 Issues，先探一下
+          if ! gh issue list --limit 1 >/dev/null 2>&1; then
+            echo "::warning::仓库未启用 Issues，改为写入 ALERT.md 提醒"
+            {
+              echo "# $(cat .watch_out/issue_title.txt)"
+              echo
+              echo "> 本文件由云端哨兵自动生成（仓库未启用 Issues，改用文件提醒）。"
+              echo "> 生成时间：$(date -u -d '+8 hours' '+%F %H:%M') 北京时间"
+              echo
+              cat .watch_out/issue_body.md
+            } > ALERT.md
+            exit 0
+          fi
+          gh label create daily-watch --description "云端哨兵提醒" --color ededed 2>/dev/null || true
+          TITLE=$(cat .watch_out/issue_title.txt)
+          TODAY=$(date -u -d '+8 hours' +%F)
+          EXISTING=$(gh issue list --label daily-watch --state open --search "$TODAY" --json title --jq '.[].title' | head -1)
+          if [ -n "$EXISTING" ]; then
+            echo "今日已有提醒 Issue：$EXISTING，追加评论"
+            gh issue comment "$EXISTING" --body-file .watch_out/issue_body.md
+          else
+            gh issue create --title "$TITLE" --body-file .watch_out/issue_body.md --label daily-watch
+            echo "已创建提醒 Issue"
+          fi
+
       - name: 提交线索
+        # 放在“发送提醒”之后，这样 Issues 不可用时的 ALERT.md 也能一并提交
         run: |
           git config user.name "sunmoon-watchman"
           git config user.email "watchman@users.noreply.github.com"
@@ -39,23 +73,6 @@ jobs:
             echo "已提交线索"
           else
             echo "无变化，跳过提交"
-          fi
-
-      - name: 发送提醒
-        if: steps.watch.outputs.need_alert == 'true'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          TITLE=$(cat .watch_out/issue_title.txt)
-          TODAY=$(date -u -d '+8 hours' +%F)
-          # 同一天只开一个 Issue，避免刷屏
-          EXISTING=$(gh issue list --label daily-watch --state open --search "$TODAY" --json title --jq '.[].title' | head -1)
-          if [ -n "$EXISTING" ]; then
-            echo "今日已有提醒 Issue：$EXISTING，跳过"
-            gh issue comment "$EXISTING" --body-file .watch_out/issue_body.md || true
-          else
-            gh issue create --title "$TITLE" --body-file .watch_out/issue_body.md --label daily-watch
-            echo "已创建提醒 Issue"
           fi
 
       - name: 运行摘要
