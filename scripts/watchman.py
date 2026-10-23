@@ -68,6 +68,13 @@ NOISE_HINT = [
 
 STALE_DAYS = 2          # 落后多少天判定为断更
 LOOKBACK_DAYS = 10      # ccgp 搜索的时间窗口
+RECENT_DAYS = 45        # 公告日期距今超过这个天数就丢弃（避免翻出陈年旧帖）
+
+# 这些域名下的链接本身就是采购公告，可豁免「必须带采购信号词」的限制
+TRUSTED_DOMAINS = [
+    "ccgp.gov.cn", "cebpubservice.com", "chinabidding", "weain",
+    "caigou", "bidding", "ztb",
+]
 
 
 def log(*a):
@@ -290,24 +297,49 @@ def search_engine_fallback():
 
 
 # ---------------- 过滤 ----------------
-def relevant(title, url=""):
+def url_date(u):
+    """政采网公告 URL 形如 /t20260919_27360832.htm，可直接取日期。"""
+    m = re.search(r"/t(20\d{6})_", u or "")
+    if not m:
+        return None
+    s = m.group(1)
+    try:
+        return datetime.datetime(int(s[:4]), int(s[4:6]), int(s[6:8]))
+    except ValueError:
+        return None
+
+
+def relevant(title, url="", now=None):
     if any(b in title for b in BLACKLIST):
         return False
     if any(n in title for n in NOISE_HINT):
         return False
     if not any(k in title for k in MUST_HIT):
         return False
-    # 必须带采购信号（招标/中标/公告/公示…），否则多半是科普页
-    if not any(p in title for p in PROCURE_HINT):
-        return False
+
     if url:
         low = url.lower()
         if "bing.com" in low or "microsoft" in low or "duckduckgo" in low:
             return False
         if se_black(url):
             return False
-        # 只保留看起来像公告详情页的链接（含数字 id 的 .htm/.html 或明确目录）
+        # 只保留看起来像公告详情页的链接
         if not re.search(r"(cggg|/t\d{8}_|\.shtml|\?.*id=|notice|detail|zbgg|gkzb|fblbgg)", low):
+            return False
+
+        trusted = any(d in low for d in TRUSTED_DOMAINS)
+
+        # 太旧的公告直接丢（标题常被搜索引擎截断，日期比标题可靠）
+        if now is not None:
+            d = url_date(url)
+            if d is not None and (now - d).days > RECENT_DAYS:
+                return False
+
+        # 非可信域名必须带采购信号词，否则多半是科普/词典页
+        if not trusted and not any(p in title for p in PROCURE_HINT):
+            return False
+    else:
+        if not any(p in title for p in PROCURE_HINT):
             return False
     return True
 
@@ -388,7 +420,7 @@ def main():
     if os.environ.get("WATCHMAN_DEBUG") == "1":
         log("--- 原始结果 %d 条 ---" % len(raw_items))
         for it in raw_items:
-            log("   [%s] %s | %s" % ("保留" if relevant(it["title"], it["url"])
+            log("   [%s] %s | %s" % ("保留" if relevant(it["title"], it["url"], now)
                                      else "丢弃", it["title"][:52], it["url"][:72]))
 
     # --- 3. 去重 + 过滤 ---
@@ -407,7 +439,7 @@ def main():
         u = it["url"].strip()
         if not u or u in seen:
             continue
-        if not relevant(it["title"], u):
+        if not relevant(it["title"], u, now):
             continue
         seen.add(u)
         rec = {
