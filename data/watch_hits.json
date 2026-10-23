@@ -1,41 +1,13 @@
 {
-  "updated_at": "2026-10-23 08:52:55",
-  "hits": [
-    {
-      "found_at": "2026-10-23",
-      "title": "中国科学院沈阳自动化研究所推进操纵装置测试系统采购项目 ...",
-      "url": "https://www.ccgp.gov.cn/cggg/zygg/gkzb/202609/t20260902_27255914.htm",
-      "date": "",
-      "keyword": "site:ccgp.gov.cn 电推进 招标",
-      "source": "ddg",
-      "status": "pending"
-    },
-    {
-      "found_at": "2026-10-23",
-      "title": "空间型等离子体电推进电源及储供系统开发中标结果公告",
-      "url": "https://www.ccgp.gov.cn/cggg/zygg/zbgg/202508/t20250815_25169853.htm",
-      "date": "",
-      "keyword": "site:ccgp.gov.cn 电推进 招标",
-      "source": "ddg",
-      "status": "pending"
-    },
-    {
-      "found_at": "2026-10-23",
-      "title": "作业级水下机器人用电动推进器采购招标公告",
-      "url": "https://www.ccgp.gov.cn/cggg/dfgg/gkzb/202510/t20251010_25471473.htm",
-      "date": "",
-      "keyword": "site:ccgp.gov.cn 电推进 招标",
-      "source": "ddg",
-      "status": "pending"
-    }
-  ],
+  "updated_at": "2026-10-23 08:45:02",
+  "hits": [],
   "last_run": {
     "date": "2026-10-23",
     "sources": [
-      "ddg"
+      "bing"
     ],
     "ccgp_blocked": true,
-    "raw": 10,
+    "raw": 32,
     "added": 0,
     "stale_days": 0
   }
