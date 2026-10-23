@@ -5,6 +5,11 @@ on:
     # 每天 17:00 北京时间（= 09:00 UTC）。GitHub cron 可能有 5~30 分钟延迟，属正常。
     - cron: '0 9 * * *'
   workflow_dispatch:
+    inputs:
+      force_alert:
+        description: '强制发一条提醒（用于验证通知链路是否正常）'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -26,6 +31,7 @@ jobs:
         id: watch
         env:
           WATCHMAN_DEBUG: '1'
+          FORCE_ALERT: '${{ inputs.force_alert }}'
         run: python scripts/watchman.py
 
       - name: 发送提醒
