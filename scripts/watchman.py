@@ -509,8 +509,10 @@ def main():
             title = "[哨兵] %s 日报断更 %d 天 + %d 条新线索" % (today, stale_days, len(added))
         elif stale_days >= STALE_DAYS:
             title = "[哨兵] %s 日报已 %d 天未更新" % (today, stale_days)
-        else:
+        elif added:
             title = "[哨兵] %s 发现 %d 条新线索待核实" % (today, len(added))
+        else:
+            title = "[哨兵] %s 通知链路测试（状态正常）" % today
 
     io.open(os.path.join(OUT_DIR, "need_alert.txt"), "w", encoding="utf-8").write(
         "true" if need else "false")
