@@ -1,1293 +1,2148 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>霍尔电推进器 · 3D 拆解可视化</title>
-<meta name="description" content="用 Three.js 代码生成的霍尔电推进器三维拆解视图：点击部件拆解、自由旋转缩放、查看结构与典型参数。">
-<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAIaklEQVR4nG1WC3CVxRX+zv7/f+/NzU0MhpAAgTyABDQWLAgBkdgZeYiKKKU61ZniY3SU6VirpVNqdZw6lvHR2o4COhamPpk6ClOrpVXqk1BRAgooRhiBSNKQ5D6Sm9x7/3/3nM7evJC6c+Z/7J79zu7Zc76zJCL4dhOBMXBdzv+pY0mcbEX6RH+mI+lqP1ChSEVJrKpwUh2mlkLBqhmjlAIR/r/RWQaMgePY9/EuZ/t2dL2xf1LL67XtH07kozEkQwgCeH0oOYUpRysWnph1Renlc1Zei/pKDbjDc89e72jTWkT49Gl953pZNv7D57A8ARLAioKEhsXN9wBJ4EUsWzL2/Zt+LifatAjnEb7VcBb6y9v0zLnysLs+O4gLaCtKgwwwIpqcgNwRhT+pe2Y1BJuf0SLmLBtDLtIariv33ad3vuu+oG+c3v0Sr6w3UU+9fgrnhujzXnRlaVUlPIKrpD1Db3UC4NqYNJU7vqaC1DfFP/rxx082XCAbn3KNUSO+sgYGfXf/ev+dQ6Fd9feGXng89/aVXl2YRNCRk6gjt36i/vFfnLwCYQWHpLUPi96ljOF19erhBnTkdGWxd/ubKLjhquSTk8L+xqdDo+cxuKNXX8k1NHJ2X7MB/E1zuPtqfUOVuXy8+dtC7r/G/KLeumVxhTm8lFuXmSNLzdSY7dlykTlxBR9frjfNDkojGpDP3p+/mJ/emBv2uYBZkkkztSZ78ITI9Vf5IN67xHyxVIccBnSRZw4tNW9cYgAudnn/Yv3WIj69Qi+psAbe/4F+exH3rDA3TmYgAPHKZd+kpLYq29ZmmMUYUUR44g9m0dJQQ2WH/9q/HRLp96nEwyuNvGICZYzcdUBaEjbEoy5cwr6kAFQXw4QCxBx8moKnrBAcJcEb702MnLpuTfih32oiMENpLW/+ne9aR7LvS+X3k0D+1YkiT80qURu/j3eaMDlKvzlkA1oLQgqtfejOYXqRNJZSIsDxfnswLDaeXMcJMrLn0J0/w+4PJJ0W14U6cEA8FxfUQNoSdjuk8LsvzFPHhACHqDqq/jhTHmyw8UCwBjqyaE3jvGJZWi6HU5QK4CqbLHkNRWTak5UlGFfGH31ke1VLCyonEwlMNGZZIubggfPpsVZZ2cxbjku3j96ArqvksWFkDDxF6UBaEqgrUovL8Z+EXfgIQ9i8EFNQKIJpdc6BA3kDySSKiq0HZVodvJBopttrsXaKakmoXx+Ua/fwkTSd46nyiGUdi0U42EsFChGFz5IUUkM2FEEb8TyaPoMIRcVOqtdqK8+DNkqEqbZK5s1DhrG/V91abS4ps2Bfp3GkDyGShI8BnU9cxsdxCQTxAIdSYsQuLhB7DIDMnk11tQBrJtdmOtTUqdLRwUTsEPCrdXafnVmMCakX5/ITs/D7merGybyzE51ZeahBFHBvnY2fbh/H0jKvFD+pwukcbqmRReXCgl+uU4oAaWvj2po8Gzc2UlcXEnFHCdPyK2XZKtn/Ne84jeYedWs13VzN73Xhnk+p0KVrJ1KPT5eUoSKCw72yL6FmFNH3SnBygGaPRWVOFq9QK69Rwr6vjh3DxRfnD0dEVq3yN2/Oc6FvONUbLGuyjOZ5ZuYYM6PYphhgXDLnhrg8wuPCxlN8jmcKXRNxzPgCnhjjQgRN8zmR1IFh5u3bdVOTL8LG5Nm0uVmfd35gDAc+W0ZN9uofrh7EZYAdhx019H2mkLKSJ9fgyqtNPCkiQc4izJ0b7NhhiUJrGeKiNWuCu+8ORCSXzdsQ0Vu36umWgkYRlbKWzjBm2aJumv7zsybPzLmsfW/YoFessFDGDHOR1pLJmFmz/GeesQN+jlnbQR7oN9u26dWrTXW18dxRXNc1VVV61Srz0kvcn7aahv382l97TU+r83t6jDHCtiPvokFT7e1mxgz/sceC/AYkyOq8grAIZzLmq69M826za5d9trZyJjMyGmSHSsyWLXrKFP/IET2COVrRBv97esxll/nXX+93dAyOs85pnbPbGYQbbCxiRAaHBkcSCXPbbcGCBf7Jk3bimUVttGQO2+RHHgnmzcs98EBw/PiZsBZzWEYtnjrFGzbo+fP9++8f2vp3l8yRCwvE0l1nJ2/axLubMa4MF11EF15I1dUYU6KUYxk4mZK2k7J/v+zdy+0dNGc27rhDVVUpW0QZSn3HtYUBlX/aJByuqBIEsnu3aW6mo0clnUbgi8C1GeJKYUzV1prGRnfhQolGXYDtLGVpIw9iACdPfnT2vWj07sVwv33J8TXYiFIU8kYVAdJaHPc7L10jRT/zKfe9xUGbO+Ymk9zmjLkBuotzR0GeCbqocDmnd7oFdch+4FU8yqm/BgOH3XEP+l2bYOJuZKJXusb07zG9/wQ53tjbTfpDzrQ4595i4lu98vXWYTq+FW6ZU3wVuA/iK2cMOcXklKhwHcefdvhrLzLRidT7pzexTvndW5QqkP6dynxZMOFeHtijU6/r7s1e2VqncIHf+agK15vE85I9SN4EUhEFiDf2p9y3S8efp3ANUQQqDFUAFSGn0B27VsefJSdGKurELtWJreSOp3CNZFrcoiWgsBO71KR2UGgSuWUqOgecFO51y9bp+PMg17IpQKb3zVDlU07hAhN/TkCie0R3A0p0t1t0GVGUBz62TFG4iJOvqnANOEehWjOw195h+z9QsSbxv4EYzn4OCkOMis5Wocmcfm/oDIL4X3hgH7nj3JLVwmnds4XcMm/cXTr+MoUmqdAUzn4Gp4QzB+GWkWQlaPcq7gs6N4CiAIfK1+nUDjvKGbf0Zh74RCTnFC02ye1e2dqhKBLOAYZUNP+dJQrZdBCdjwO7UxFNIJAD4Xyy5ANZ95BbOhRPptdOJ1ckyGvaWQD+B7kR6j3GWAR8AAAAAElFTkSuQmCC">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>霍尔电推进系统 · 三维拆解（真实尺寸） | SUNMOON-A</title>
 <link rel="canonical" href="https://noble-li.github.io/SUNMOON-A/hall-thruster.html">
-<meta name="theme-color" content="#05070C">
+<meta name="description" content="按招标文件真实尺寸生成的三维拆解：PPCU 包络 325×257×150 mm、支耳 6 mm、阳极 320 V/900 W，推力器头部与内部模块逐层拆解、尺寸标注与剖面。">
 <meta property="og:type" content="website">
-<meta property="og:title" content="霍尔电推进器 · 3D 拆解可视化">
-<meta property="og:description" content="代码生成的霍尔电推进器三维模型：点击部件拆解、旋转缩放、部件清单与典型参数。">
+<meta property="og:title" content="霍尔电推进系统 · 三维拆解">
+<meta property="og:description" content="1:1 毫米级建模的霍尔电推进系统拆解视图：PPCU 与推力器头部按招标文件技术指标展开，模块级参数与数据出处逐条对应。">
 <meta property="og:url" content="https://noble-li.github.io/SUNMOON-A/hall-thruster.html">
+<meta name="theme-color" content="#05070C">
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAAWklEQVR4nGNkYPjPQApgYqAQjBoAoxhGDYBRDKMGwCiGUQNgFMOoATCKYdQAGMUwagCMYhg1AEYxjBoAoxhGDYBRDKMGwCiGUQNgFMOoATCKYdQAGMUwagCMYhg1AEYxjBoAoxhGDYBRDKMGwCiGUQNgFMOoATCKYdQAGMUwagCMYhg1AEYxjBoAoxhGDYBRDKMGwCiGUQNgFMOoATCKYdQAGMUwagCMYhg1AEYxjBoAoxhGDYBRDKMGwCiGUQNgFMOoATCKYdQAGMUwagCMYhg1AEYxjBoAoxhGDYBRDKMGwCiGUQNgFMOoATCKYdQAGMUwagCMYhg1AEYxjBoAoxhGDYBRDKMGwCiGUQNgFMOoATCKYdQAGMVAAwAA//8DAJb2F/0AAAAASUVORK5CYII=">
 <style>
-  /* === 令牌：与日报页同一套尺度，这里只换成深色科技底 === */
-  :root {
-    --bg: #05070C;
-    --surface: #0B1018;
-    --surface-2: #0E151F;
-    --line: #1E2733;
-    --line-2: #141C27;
-    --ink: #E8EDF5;
-    --ink-2: #9AA7B8;
-    --ink-3: #6B7889;
-    --accent: #38BDF8;
-    --accent-2: #F59E0B;
-    --accent-tint: rgba(56, 189, 248, 0.12);
-    --warn: #FCA5A5;
-    --ease: cubic-bezier(0.22, 1, 0.36, 1);
-    --s25: 2px;  --s50: 4px;  --s75: 8px;  --s100: 12px;
-    --s200: 16px; --s300: 24px; --s400: 32px; --s500: 40px;
-    --s600: 48px; --s700: 64px;
-    --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-xl: 12px; --r-2xl: 16px; --r-full: 9999px;
+  /* ============ 设计令牌（与日报页同源，此处为全屏深空舞台） ============ */
+  :root{
+    --bg:#04060A;
+    --bg-2:#070B12;
+    --panel:rgba(9,14,21,.72);
+    --panel-solid:#0A1018;
+    --line:rgba(120,150,190,.16);
+    --line-2:rgba(120,150,190,.10);
+    --ink:#E9EFF7;
+    --ink-2:#9AABBF;
+    --ink-3:#67788D;
+    --accent:#38BDF8;
+    --accent-2:#F59E0B;
+    --accent-tint:rgba(56,189,248,.13);
+    --ease:cubic-bezier(.22,1,.36,1);
+    --s25:2px;--s50:4px;--s75:8px;--s100:12px;--s150:16px;
+    --s200:20px;--s300:24px;--s400:32px;--s500:40px;
+    --r-sm:4px;--r-md:8px;--r-lg:12px;--r-xl:16px;--r-full:9999px;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
   }
-  *, *::before, *::after { box-sizing: border-box; }
-  html, body { margin: 0; height: 100%; }
-  body {
-    background: var(--bg);
-    color: var(--ink);
-    font-family: "PingFang SC", "HarmonyOS Sans SC", "MiSans", "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 16px;
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{
+    background:var(--bg);color:var(--ink);
+    font-family:"PingFang SC","HarmonyOS Sans SC","MiSans","Noto Sans SC","Source Han Sans SC","Microsoft YaHei",-apple-system,BlinkMacSystemFont,sans-serif;
+    font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow:hidden;
   }
-  h1, h2, h3 { margin: 0; font-weight: 600; line-height: 1.25; }
-  p { margin: 0; }
-  a { color: var(--accent); text-decoration: none; }
-  a:hover { text-decoration: underline; text-underline-offset: 3px; }
-  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--r-sm); }
-  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-variant-numeric: tabular-nums; }
-  .ico { width: 16px; height: 16px; flex: none; }
-  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  h1,h2,h3,h4{margin:0;font-weight:600;line-height:1.25}
+  p{margin:0}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline;text-underline-offset:3px}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:var(--r-sm)}
+  .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 
-  /* === 外壳布局 === */
-  .app { display: flex; flex-direction: column; height: 100vh; }
-  .topbar {
-    display: flex; align-items: center; gap: var(--s100);
-    padding: var(--s100) var(--s200);
-    border-bottom: 1px solid var(--line);
-    background: var(--surface);
-    flex: 0 0 auto;
-  }
-  .back {
-    display: inline-flex; align-items: center; gap: var(--s50);
-    padding: var(--s75) var(--s100); border-radius: var(--r-lg);
-    border: 1px solid var(--line); color: var(--ink-2);
-    font-size: 14px; font-weight: 600;
-    transition: color 300ms var(--ease), border-color 300ms var(--ease);
-  }
-  .back:hover { color: var(--ink); border-color: var(--ink-3); text-decoration: none; }
-  .topbar h1 { font-size: 18px; line-height: 28px; }
-  .topbar .tag {
-    padding: var(--s25) var(--s75); border-radius: var(--r-sm);
-    background: var(--accent-tint); color: var(--accent);
-    font-size: 12px; line-height: 16px; font-weight: 600;
-  }
-  .topbar .spacer { margin-left: auto; }
-  .badge-live {
-    display: inline-flex; align-items: center; gap: var(--s50);
-    font-size: 12px; line-height: 16px; color: var(--ink-3);
-  }
-  .badge-live .dot { width: 6px; height: 6px; border-radius: var(--r-full); background: #22C55E; }
+  /* ============ 舞台 ============ */
+  #stage{position:fixed;inset:0;overflow:hidden;background:
+      radial-gradient(120% 90% at 50% -10%,#0B1622 0%,#06090F 45%,#04060A 100%)}
+  #view{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+  #vignette{position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(115% 85% at 50% 45%,rgba(0,0,0,0) 42%,rgba(0,0,0,.55) 100%)}
+  #leads{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+  #labels,#dims{position:absolute;inset:0;pointer-events:none}
 
-  .layout {
-    flex: 1 1 auto; min-height: 0;
-    display: grid; grid-template-columns: 272px minmax(0, 1fr) 328px;
-    gap: var(--s200); padding: var(--s200);
+  /* ============ 通用玻璃面板 ============ */
+  .glass{
+    background:var(--panel);backdrop-filter:blur(18px) saturate(1.1);
+    -webkit-backdrop-filter:blur(18px) saturate(1.1);
+    border:1px solid var(--line);border-radius:var(--r-lg);
   }
-  .col { min-height: 0; display: flex; flex-direction: column; gap: var(--s200); overflow: auto; }
-  .panel {
-    background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-xl);
-    padding: var(--s200);
-  }
-  .panel-head { display: flex; align-items: center; gap: var(--s75); margin-bottom: var(--s100); }
-  .panel-head h2 { font-size: 14px; line-height: 20px; letter-spacing: 0.04em; color: var(--ink-2); }
-  .panel-head .ico { color: var(--ink-3); }
-  .panel-note { font-size: 12px; line-height: 16px; color: var(--ink-3); margin-top: var(--s100); }
+  .panel-head{display:flex;align-items:center;gap:var(--s75);
+    padding:10px 12px;border-bottom:1px solid var(--line-2)}
+  .panel-head h2{font-size:12px;font-weight:600;letter-spacing:.06em;color:var(--ink-2);text-transform:uppercase}
+  .panel-head .count{margin-left:auto;font-size:11px;color:var(--ink-3)}
 
-  /* === 舞台 === */
-  .stage {
-    position: relative; min-height: 0; height: 100%;
-    border: 1px solid var(--line); border-radius: var(--r-xl);
-    background: var(--bg); overflow: hidden;
-  }
-  .stage canvas { display: block; width: 100%; height: 100%; }
-  .stage.is-loading::after {
-    content: "正在生成模型";
-    position: absolute; inset: 0; display: grid; place-items: center;
-    color: var(--ink-3); font-size: 14px; letter-spacing: 0.08em;
-  }
-  .labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
-  .lbl {
-    position: absolute; transform: translate(-50%, -50%);
-    display: flex; align-items: center; gap: var(--s50);
-    padding: var(--s25) var(--s75);
-    background: var(--surface-2); border: 1px solid var(--line);
-    border-radius: var(--r-sm); white-space: nowrap;
-    font-size: 12px; line-height: 16px; color: var(--ink);
-    opacity: 0; transition: opacity 300ms var(--ease);
-  }
-  .lbl.is-on { opacity: 1; }
-  .lbl .dot { width: 5px; height: 5px; border-radius: var(--r-full); background: var(--accent); }
-  .lbl .sp { color: var(--ink-3); }
-  .lbl.is-active { border-color: var(--accent); color: var(--accent); }
-  .lead { position: absolute; height: 1px; width: 0; display: none; background: rgba(56, 189, 248, 0.75);
-    transform-origin: 0 50%; pointer-events: none; }
-  .lead.is-active { background: rgba(56, 189, 248, 1); }
-  .lead-dot { position: absolute; width: 6px; height: 6px; margin: -3px 0 0 -3px; display: none;
-    border: 1px solid rgba(56, 189, 248, 0.75); border-radius: 50%; background: rgba(5, 7, 12, 0.9);
-    pointer-events: none; }
-  .lead-dot.is-active { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.18); }
-  .lbl.is-active .sp { color: var(--accent); opacity: 0.8; }
+  /* ============ 标题区 ============ */
+  .hud-title{position:absolute;top:0;left:0;padding:var(--s200) var(--s300);max-width:min(560px,52vw)}
+  .hud-title .back{
+    display:inline-flex;align-items:center;gap:6px;margin-bottom:14px;
+    padding:6px 10px;border-radius:var(--r-md);border:1px solid var(--line);
+    background:rgba(9,14,21,.6);font-size:12px;color:var(--ink-2);transition:color .3s var(--ease),border-color .3s var(--ease)}
+  .hud-title .back:hover{color:var(--ink);border-color:rgba(120,150,190,.4);text-decoration:none}
+  .kicker{display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--accent);font-family:var(--mono)}
+  .kicker .bar{width:26px;height:1px;background:linear-gradient(90deg,var(--accent),transparent)}
+  .hud-title h1{margin-top:8px;font-size:clamp(21px,2.2vw,30px);letter-spacing:.01em;
+    text-shadow:0 2px 24px rgba(0,0,0,.7)}
+  .hud-title h1 em{font-style:normal;color:var(--accent)}
+  .hud-title .sub{margin-top:6px;font-size:12.5px;color:var(--ink-2);letter-spacing:.02em}
+  .hud-title .sub b{color:var(--ink);font-weight:600}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+  .chip{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:var(--r-full);
+    border:1px solid var(--line);font-size:11px;color:var(--ink-2);background:rgba(9,14,21,.55)}
+  .chip i{width:5px;height:5px;border-radius:50%;background:var(--accent);flex:none}
+  .chip.amber i{background:var(--accent-2)}
 
-  .hud {
-    position: absolute; left: var(--s100); top: var(--s100);
-    display: flex; flex-wrap: wrap; gap: var(--s50); max-width: calc(100% - 24px);
-  }
-  .hint {
-    position: absolute; left: var(--s100); bottom: var(--s100);
-    display: flex; flex-wrap: wrap; align-items: center; gap: var(--s50) var(--s100);
-    padding: var(--s75) var(--s100);
-    background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg);
-    font-size: 12px; line-height: 16px; color: var(--ink-2);
-  }
-  .hint .k {
-    padding: 0 var(--s50); border-radius: var(--r-sm);
-    border: 1px solid var(--line); color: var(--ink);
-    font-size: 12px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  }
+  /* ============ 左：部件清单 ============ */
+  .hud-parts{position:absolute;left:var(--s300);top:236px;width:286px;
+    max-height:calc(100vh - 400px);display:flex;flex-direction:column;overflow:hidden}
+  .hud-parts .list{overflow:auto;padding:6px;scrollbar-width:thin;scrollbar-color:rgba(120,150,190,.32) transparent}
+  .hud-parts .list::-webkit-scrollbar{width:6px}
+  .hud-parts .list::-webkit-scrollbar-thumb{background:rgba(120,150,190,.28);border-radius:3px}
+  .grouplabel{display:flex;align-items:center;gap:6px;padding:8px 8px 4px;font-size:10.5px;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-family:var(--mono)}
+  .grouplabel::after{content:"";flex:1;height:1px;background:var(--line-2)}
+  .part{display:flex;align-items:flex-start;gap:8px;width:100%;text-align:left;
+    padding:6px 8px;border-radius:var(--r-md);border:1px solid transparent;
+    color:var(--ink-2);transition:background-color .25s var(--ease),color .25s var(--ease),border-color .25s var(--ease)}
+  .part:hover{color:var(--ink);background:rgba(255,255,255,.045)}
+  .part .no{font-family:var(--mono);font-size:10px;color:var(--ink-3);padding-top:2px;min-width:16px}
+  .part .txt{min-width:0;flex:1}
+  .part .nm{display:block;font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .part .mt{display:block;font-size:10.5px;color:var(--ink-3);overflow:hidden;
+    text-overflow:ellipsis;white-space:nowrap;font-family:var(--mono)}
+  .part .src{flex:none;margin-top:1px;font-size:9px;font-family:var(--mono);letter-spacing:.04em;
+    padding:1px 4px;border-radius:3px;border:1px solid var(--line);color:var(--ink-3)}
+  .part .src.est{color:#C79A3F;border-color:rgba(245,158,11,.34)}
+  .part[aria-current="true"]{color:var(--ink);background:var(--accent-tint);border-color:rgba(56,189,248,.42)}
+  .part[aria-current="true"] .no{color:var(--accent)}
 
-  /* === 按钮 === */
-  .btn {
-    display: inline-flex; align-items: center; gap: var(--s50);
-    padding: var(--s50) var(--s100); border-radius: var(--r-md);
-    border: 1px solid var(--line); background: var(--surface-2); color: var(--ink-2);
-    font-family: inherit; font-size: 12px; line-height: 16px; font-weight: 600;
-    cursor: pointer;
-    transition: color 300ms var(--ease), border-color 300ms var(--ease), background-color 300ms var(--ease), transform 500ms var(--ease);
-  }
-  .btn:hover { color: var(--ink); border-color: var(--ink-3); }
-  .btn:active { transform: scale(0.98); }
-  .btn[aria-pressed="true"] { color: var(--accent); border-color: var(--accent); background: var(--accent-tint); }
-  .btn-primary { background: var(--accent); border-color: var(--accent); color: #04121C; }
-  .btn-primary:hover { background: #6FD0FA; border-color: #6FD0FA; color: #04121C; }
-  .btn-row { display: flex; flex-wrap: wrap; gap: var(--s50); margin-top: var(--s100); }
+  /* ============ 右：参数 ============ */
+  .hud-specs{position:absolute;right:var(--s300);top:var(--s200);width:314px;
+    max-height:calc(100vh - 170px);display:flex;flex-direction:column;overflow:hidden;
+    transition:max-height .35s var(--ease)}
+  body.has-detail .hud-specs{max-height:calc(100vh - 496px)}
+  .tabs{display:flex;gap:2px;padding:6px;border-bottom:1px solid var(--line-2)}
+  .tab{flex:1;padding:6px 4px;border-radius:var(--r-sm);font-size:11.5px;color:var(--ink-3);
+    text-align:center;transition:color .25s var(--ease),background-color .25s var(--ease)}
+  .tab:hover{color:var(--ink-2)}
+  .tab[aria-selected="true"]{color:var(--accent);background:var(--accent-tint)}
+  .panel-body{overflow:auto;padding:12px;scrollbar-width:thin;scrollbar-color:rgba(120,150,190,.32) transparent}
+  .panel-body::-webkit-scrollbar{width:6px}
+  .panel-body::-webkit-scrollbar-thumb{background:rgba(120,150,190,.28);border-radius:3px}
+  .kv{display:grid;grid-template-columns:1fr auto;gap:6px 10px;font-size:12px}
+  .kv dt{color:var(--ink-3);min-width:0}
+  .kv dd{margin:0;color:var(--ink);font-family:var(--mono);font-size:11.5px;text-align:right;
+    font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+  .kv dd.hl{color:var(--accent)}
+  .kv dt span{display:block;font-size:10px;color:var(--ink-3);opacity:.62;font-family:var(--mono)}
+  .sec-title{display:flex;align-items:center;gap:6px;margin:14px 0 8px;font-size:10.5px;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-family:var(--mono)}
+  .sec-title:first-child{margin-top:0}
+  .sec-title::after{content:"";flex:1;height:1px;background:var(--line-2)}
+  .note{font-size:11px;line-height:1.6;color:var(--ink-3)}
+  .note b{color:var(--ink-2);font-weight:600}
+  .bar-row{display:grid;grid-template-columns:76px 1fr 50px;align-items:center;gap:8px;
+    font-size:11px;color:var(--ink-2);margin-bottom:5px}
+  .bar-row .track{height:4px;border-radius:2px;background:rgba(120,150,190,.14);overflow:hidden}
+  .bar-row .fill{height:100%;border-radius:2px;background:linear-gradient(90deg,rgba(56,189,248,.55),var(--accent));
+    transform-origin:left center;animation:grow .9s var(--ease) both}
+  .bar-row .fill.amber{background:linear-gradient(90deg,rgba(245,158,11,.5),var(--accent-2))}
+  .bar-row .val{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--ink)}
+  @keyframes grow{from{transform:scaleX(.02)}to{transform:scaleX(1)}}
 
-  /* === 部件清单 === */
-  .parts { display: flex; flex-direction: column; gap: var(--s25); }
-  .part {
-    display: flex; align-items: center; gap: var(--s75); width: 100%;
-    padding: var(--s75); border-radius: var(--r-md);
-    border: 1px solid transparent; background: transparent;
-    color: var(--ink-2); font-family: inherit; font-size: 14px; line-height: 20px;
-    text-align: left; cursor: pointer;
-    transition: color 300ms var(--ease), background-color 300ms var(--ease), border-color 300ms var(--ease);
-  }
-  .part:hover { color: var(--ink); background: var(--surface-2); }
-  .part .idx {
-    min-width: 20px; font-size: 12px; line-height: 16px; color: var(--ink-3);
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  }
-  .part .nm { flex: 1; }
-  .part .en { display: block; font-size: 12px; line-height: 16px; color: var(--ink-3); }
-  .part .flag { width: 5px; height: 5px; border-radius: var(--r-full); background: var(--line); transition: background-color 300ms var(--ease); }
-  .part[aria-current="true"] { color: var(--ink); background: var(--accent-tint); border-color: rgba(56, 189, 248, 0.4); }
-  .part[aria-current="true"] .flag { background: var(--accent); }
+  /* 选中部件详情卡 */
+  .detail{position:absolute;right:var(--s300);bottom:150px;width:314px;
+    padding:14px;opacity:0;transform:translateY(8px);pointer-events:none;
+    transition:opacity .35s var(--ease),transform .35s var(--ease)}
+  .detail.on{opacity:1;transform:none;pointer-events:auto}
+  .detail .dhead{display:flex;align-items:baseline;gap:8px;margin-bottom:2px}
+  .detail .dno{font-family:var(--mono);font-size:10px;color:var(--accent)}
+  .detail h3{font-size:15px}
+  .detail .drole{font-size:11px;color:var(--ink-3);margin-bottom:10px}
+  .detail .specs{display:grid;gap:4px;font-size:11.5px}
+  .detail .spec-row{display:grid;grid-template-columns:78px 1fr;gap:8px}
+  .detail .spec-row span{color:var(--ink-3)}
+  .detail .spec-row b{font-weight:500;color:var(--ink);font-family:var(--mono);font-size:11px;word-break:break-word}
+  .detail .close{position:absolute;top:10px;right:10px;width:22px;height:22px;border-radius:var(--r-sm);
+    color:var(--ink-3);display:grid;place-items:center;transition:color .2s var(--ease),background-color .2s var(--ease)}
+  .detail .close:hover{color:var(--ink);background:rgba(255,255,255,.07)}
 
-  /* === 详情 === */
-  .detail-title { font-size: 20px; line-height: 28px; }
-  .detail-en { margin-top: var(--s25); font-size: 12px; line-height: 16px; color: var(--ink-3); }
-  .detail-role {
-    display: inline-block; margin-top: var(--s75);
-    padding: var(--s25) var(--s75); border-radius: var(--r-sm);
-    background: var(--accent-tint); color: var(--accent);
-    font-size: 12px; line-height: 16px; font-weight: 600;
-  }
-  .detail-desc { margin-top: var(--s100); font-size: 14px; line-height: 20px; color: var(--ink-2); }
-  .specs { margin: var(--s200) 0 0; display: grid; gap: var(--s50); }
-  .spec { display: grid; grid-template-columns: 88px 1fr; gap: var(--s75); font-size: 14px; line-height: 20px; }
-  .spec dt { color: var(--ink-3); }
-  .spec dd { margin: 0; color: var(--ink); }
-  .detail-empty { font-size: 14px; line-height: 20px; color: var(--ink-2); }
+  /* ============ 工具条 ============ */
+  .hud-tools{position:absolute;top:var(--s200);left:50%;transform:translateX(-50%);
+    display:flex;align-items:center;gap:6px;padding:6px;white-space:nowrap}
+  .toolset{display:flex;align-items:center;gap:2px}
+  .toolset+.toolset{padding-left:6px;margin-left:2px;border-left:1px solid var(--line-2)}
+  .tbtn{padding:6px 9px;border-radius:var(--r-sm);font-size:11.5px;color:var(--ink-3);
+    display:inline-flex;align-items:center;gap:5px;transition:color .22s var(--ease),background-color .22s var(--ease)}
+  .tbtn:hover{color:var(--ink-2);background:rgba(255,255,255,.05)}
+  .tbtn[aria-pressed="true"]{color:var(--accent);background:var(--accent-tint)}
+  .tbtn svg{width:13px;height:13px;flex:none}
 
-  /* === 操作引导 === */
-  .guide {
-    flex: 0 0 auto; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)) 1.2fr;
-    gap: var(--s200); padding: var(--s200);
-    border-top: 1px solid var(--line); background: var(--surface);
-  }
-  .guide-item { display: flex; gap: var(--s75); }
-  .guide-item .ico { color: var(--accent); margin-top: var(--s25); }
-  .guide-item h3 { font-size: 14px; line-height: 20px; }
-  .guide-item p { margin-top: var(--s25); font-size: 12px; line-height: 16px; color: var(--ink-3); }
-  .guide-note { font-size: 12px; line-height: 16px; color: var(--ink-3); }
+  /* ============ 时间轴 / 字幕 ============ */
+  .hud-timeline{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);
+    width:min(620px,calc(100vw - 48px));padding:12px 16px 10px;display:flex;flex-direction:column;gap:8px}
+  .tl-top{display:flex;align-items:center;gap:10px}
+  .play{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;flex:none;
+    border:1px solid rgba(56,189,248,.45);background:rgba(56,189,248,.14);color:var(--accent);
+    transition:background-color .25s var(--ease),transform .2s var(--ease)}
+  .play:hover{background:rgba(56,189,248,.26)}
+  .play:active{transform:scale(.94)}
+  .tl-caption{flex:1;min-width:0;font-size:12px;color:var(--ink-2);
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .tl-caption b{color:var(--ink);font-weight:600}
+  .tl-range{position:relative;display:flex;align-items:center;gap:10px}
+  .tl-range input[type=range]{-webkit-appearance:none;appearance:none;flex:1;height:3px;border-radius:2px;
+    background:linear-gradient(90deg,var(--accent) 0%,var(--accent) var(--pct,0%),rgba(120,150,190,.2) var(--pct,0%),rgba(120,150,190,.2) 100%);
+    outline:none;cursor:pointer}
+  .tl-range input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;
+    background:#EAF6FF;border:2px solid var(--accent);box-shadow:0 0 12px rgba(56,189,248,.7);cursor:grab}
+  .tl-range input[type=range]::-moz-range-thumb{width:11px;height:11px;border-radius:50%;
+    background:#EAF6FF;border:2px solid var(--accent)}
+  .tl-range .ends{display:flex;justify-content:space-between;font-size:10px;color:var(--ink-3);
+    font-family:var(--mono);letter-spacing:.08em;flex:none;gap:8px}
 
-  /* === 响应式：小屏改为单列，画布在上 === */
-  @media (max-width: 1080px) {
-    .app { height: auto; min-height: 100vh; }
-    .layout { grid-template-columns: minmax(0, 1fr); }
-    .col { overflow: visible; }
-    .col-stage { order: -1; }
-    .stage { height: 62vh; min-height: 360px; }
-    .guide { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* ============ 标注胶囊 ============ */
+  .lbl{position:absolute;left:0;top:0;display:flex;align-items:center;gap:6px;padding:3px 8px;
+    border-radius:var(--r-full);border:1px solid rgba(120,150,190,.26);
+    background:rgba(7,11,17,.86);font-size:11px;color:var(--ink-2);white-space:nowrap;
+    transform:translate(-50%,-50%);opacity:0;transition:opacity .3s var(--ease),border-color .3s var(--ease),color .3s var(--ease);
+    box-shadow:0 4px 18px rgba(0,0,0,.5)}
+  .lbl.on{opacity:1}
+  .lbl .dot{width:4px;height:4px;border-radius:50%;background:var(--accent);flex:none;box-shadow:0 0 8px var(--accent)}
+  .lbl .nm{color:var(--ink)}
+  .lbl .vl{color:var(--accent);font-family:var(--mono);font-size:10.5px}
+  .lbl.est .dot{background:var(--accent-2);box-shadow:0 0 8px var(--accent-2)}
+  .lbl.est .vl{color:var(--accent-2)}
+  .lbl.sel{border-color:var(--accent);color:var(--ink)}
+  .dimg{position:absolute;left:0;top:0;transform:translate(-50%,-50%);
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.02em;color:#BFE8FF;
+    padding:1px 6px;border-radius:3px;background:rgba(4,8,12,.72);
+    border:1px solid rgba(56,189,248,.3);opacity:0;transition:opacity .3s var(--ease);white-space:nowrap}
+  .dimg.on{opacity:1}
+  .dimg.est{color:#F3CE8A;border-color:rgba(245,158,11,.34)}
+
+  /* ============ 载入 ============ */
+  #loader{position:absolute;inset:0;display:grid;place-items:center;background:var(--bg);
+    transition:opacity .6s var(--ease);z-index:20}
+  #loader.off{opacity:0;pointer-events:none}
+  .load-inner{text-align:center}
+  .load-inner .lg{font-family:var(--mono);font-size:11px;letter-spacing:.24em;color:var(--accent);text-transform:uppercase}
+  .load-inner .bar{margin:14px auto 0;width:180px;height:2px;background:rgba(120,150,190,.2);overflow:hidden;border-radius:2px}
+  .load-inner .bar i{display:block;height:100%;width:36%;background:var(--accent);
+    animation:slide 1.1s var(--ease) infinite}
+  @keyframes slide{0%{transform:translateX(-100%)}100%{transform:translateX(380%)}}
+  .fallback{position:absolute;inset:0;display:grid;place-items:center;padding:32px;text-align:center;
+    color:var(--ink-2);font-size:14px}
+
+  /* ============ 影院模式：面板让位，画面满幅 ============ */
+  .hud-title, .hud-parts, .hud-specs, .hud-timeline { transition: opacity .45s var(--ease), transform .45s var(--ease) }
+  body.cinema .hud-parts { opacity: 0; transform: translateX(-20px); pointer-events: none }
+  body.cinema .hud-specs { opacity: 0; transform: translateX(20px); pointer-events: none }
+  body.cinema .hud-title .sub, body.cinema .hud-title .chips { opacity: 0 }
+  body.cinema .hud-title h1 { font-size: clamp(17px, 1.5vw, 22px) }
+  body.cinema .hud-title .back { opacity: 0 }
+  body.cinema .detail { opacity: 0; pointer-events: none }
+  body.cinema .hud-timeline { width: min(760px, calc(100vw - 48px)) }
+
+  /* ============ 折叠 / 响应式 ============ */
+  .collapse{position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:var(--r-sm);
+    color:var(--ink-3);display:none}
+  @media (max-width:1180px){
+    .hud-parts{width:250px;top:224px}
+    .hud-specs{width:286px}
+    .detail{width:286px}
   }
-  @media (max-width: 640px) {
-    .topbar { flex-wrap: wrap; }
-    .guide { grid-template-columns: minmax(0, 1fr); }
-    .stage { height: 54vh; }
-    .hint { display: none; }
-    .layout { padding: var(--s100); gap: var(--s100); }
+  /* 小屏：舞台上移为固定高度，侧栏收起，只留标注、时间轴与点击详情 */
+  @media (max-width:900px){
+    body{overflow:auto;height:auto}
+    #stage{position:relative;height:auto;min-height:100vh;display:flex;flex-direction:column}
+    #view{position:absolute;inset:0;height:66vh}
+    .hud-title{position:relative;padding:14px 14px 6px;max-width:none;order:0}
+    .hud-title h1{font-size:20px}
+    .hud-title .sub{font-size:11.5px}
+    .hud-title .chips{margin-top:8px}
+    .hud-parts{display:none}
+    .hud-specs{position:relative;inset:auto;width:auto;margin:12px;max-height:none;order:3}
+    .hud-tools{position:absolute;top:auto;bottom:auto;left:8px;right:8px;transform:none;
+      top:calc(66vh - 46px);overflow-x:auto;max-width:calc(100vw - 16px);justify-content:flex-start}
+    .hud-timeline{position:absolute;transform:none;left:8px;right:8px;width:auto;
+      top:calc(66vh - 104px)}
+    .detail{position:relative;inset:auto;width:auto;margin:12px;order:2;
+      opacity:1;transform:none;pointer-events:auto;display:none}
+    .detail.on{display:block}
+    body.cinema .hud-specs,body.cinema .detail{display:none}
+    body.cinema #stage{min-height:100vh}
+    #labels{z-index:2}
   }
-  @media (prefers-reduced-motion: reduce) {
-    * { transition-duration: 1ms !important; animation-duration: 1ms !important; }
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.01ms !important;transition-duration:.01ms !important}
   }
 </style>
 </head>
 <body>
-<div class="app">
 
-  <header class="topbar">
-    <a class="back" href="./index.html"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5l-5 5 5 5M6 10h9"/></svg>返回日报</a>
-    <h1>霍尔电推进器 · 3D 拆解</h1>
-    <span class="tag">WebGL · 代码生成</span>
-    <span class="spacer"></span>
-    <span class="badge-live"><span class="dot"></span>实时渲染</span>
-  </header>
+<div id="stage">
+  <canvas id="view" aria-label="霍尔电推进系统三维拆解视图"></canvas>
+  <div id="vignette"></div>
+  <svg id="leads" aria-hidden="true"></svg>
+  <div id="labels" aria-hidden="true"></div>
+  <div id="dims" aria-hidden="true"></div>
 
-  <main class="layout">
-
-    <!-- 左：部件清单 -->
-    <section class="col col-left" aria-label="部件清单">
-      <div class="panel">
-        <div class="panel-head"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h12M4 10h12M4 14h8"/></svg><h2>部件清单</h2><span class="mono" style="margin-left:auto;color:var(--ink-3);font-size:12px" id="partCount">—</span></div>
-        <div class="parts" id="partList" role="list"></div>
-        <div class="btn-row">
-          <button class="btn btn-primary" id="btnExplode" type="button"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3v6M10 11v6"/><path d="M4 6l3 3M4 14l3-3M16 6l-3 3M16 14l-3-3"/></svg>全部拆解</button>
-          <button class="btn" id="btnReset" type="button"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 10a5.5 5.5 0 1 1 1.9 4.2"/><path d="M4 6v4h4"/></svg>复位</button>
-        </div>
-        <p class="panel-note">点击清单或模型上的任一部件即可单独拆解，再次点击收起。</p>
-      </div>
-    </section>
-
-    <!-- 中：3D 舞台 -->
-    <section class="col col-stage" aria-label="三维视图">
-      <div class="stage is-loading" id="stage">
-        <canvas id="view" aria-label="霍尔电推进器三维拆解视图"></canvas>
-        <div class="labels" id="labels"></div>
-        <div class="hud">
-          <button class="btn" data-view="iso" type="button"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3l6 3.2v7.6L10 17l-6-3.2V6.2L10 3Z"/><path d="M4 6.2 10 9.5l6-3.3M10 9.5V17"/></svg>等轴</button>
-          <button class="btn" data-view="front" type="button">正视</button>
-          <button class="btn" data-view="side" type="button">侧视</button>
-          <button class="btn" data-view="top" type="button">俯视</button>
-          <button class="btn" data-view="back" type="button">背视</button>
-          <button class="btn" id="btnSpin" type="button" aria-pressed="true"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3v14M3 10h14"/><path d="M7.5 5.5 10 3l2.5 2.5M7.5 14.5 10 17l2.5-2.5M5.5 7.5 3 10l2.5 2.5M14.5 7.5 17 10l-2.5 2.5"/></svg>自动旋转</button>
-          <button class="btn" id="btnLabels" type="button" aria-pressed="true"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5V5h5.5l6 6-5 5-6-6Z"/><circle cx="7" cy="8" r="1"/></svg>标注</button>
-          <button class="btn" id="btnSection" type="button" aria-pressed="false"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M10 3v14"/><path d="M10 3a7 7 0 0 1 0 14"/></svg>剖面</button>
-        </div>
-        <div class="hint">
-          <span><span class="k">拖拽</span> 旋转</span>
-          <span><span class="k">滚轮</span> 缩放</span>
-          <span><span class="k">右键拖拽</span> 平移</span>
-          <span><span class="k">单击部件</span> 拆解 / 收起</span>
-          <span><span class="k">空白处单击</span> 取消选中</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- 右：详情与参数 -->
-    <section class="col col-right" aria-label="部件详情">
-      <div class="panel" id="infoPanel">
-        <div class="panel-head"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M10 9v4M10 6.8v.1"/></svg><h2>部件详情</h2></div>
-        <div id="infoBody"></div>
-      </div>
-      <div class="panel" id="totalPanel">
-        <div class="panel-head"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4" width="13" height="12" rx="2"/><path d="M3.5 8h13M8 8v8"/></svg><h2>整机参数</h2></div>
-        <div id="totalBody"></div>
-        <p class="panel-note">以上为 1.5 kW 级霍尔推力器量级的典型值，用于结构讲解，不代表任何具体型号的验收指标。</p>
-      </div>
-    </section>
-
-  </main>
-
-  <footer class="guide">
-    <div class="guide-item"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3v14M3 10h14"/><path d="M7.5 5.5 10 3l2.5 2.5M7.5 14.5 10 17l2.5-2.5M5.5 7.5 3 10l2.5 2.5M14.5 7.5 17 10l-2.5 2.5"/></svg>
-      <div><h3>旋转视角</h3><p>按住左键拖拽，绕模型旋转；触屏单指拖动同理。</p></div>
+  <!-- 标题 -->
+  <div class="hud-title">
+    <a class="back" href="./index.html">
+      <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5l-5 5 5 5M6 10h9"/></svg>
+      返回日报
+    </a>
+    <div class="kicker"><span class="bar"></span>Hall Electric Propulsion · PPCU</div>
+    <h1>霍尔电推进系统 <em>三维拆解</em></h1>
+    <p class="sub"><b>1:1 毫米级</b> · 机箱包络 325 × 257 × 150 mm · 42 V 母线 / 1100 W 负载 / 氪工质</p>
+    <div class="chips">
+      <span class="chip"><i></i>SMP-1K42-V00</span>
+      <span class="chip"><i></i>OITC-G260302311</span>
+      <span class="chip amber"><i></i>尺寸取自招标文件第八部分</span>
     </div>
-    <div class="guide-item"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="9" r="5.5"/><path d="M13 13l3.5 3.5M7 9h4M9 7v4"/></svg>
-      <div><h3>缩放平移</h3><p>滚轮或双指捏合缩放；右键拖拽平移视野中心。</p></div>
-    </div>
-    <div class="guide-item"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4v9l2.4-2.2 1.8 3.6 2-1-1.9-3.5 3.1-.5L7 4Z"/></svg>
-      <div><h3>点击拆解</h3><p>单击任一部件沿轴向拆出并高亮，同时弹出名称、参数与作用。</p></div>
-    </div>
-    <div class="guide-item"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 10a5.5 5.5 0 1 1 1.9 4.2"/><path d="M4 6v4h4"/></svg>
-      <div><h3>整体拆解</h3><p>「全部拆解」按装配顺序散开所有部件，「复位」一键还原。</p></div>
-    </div>
-    <div class="guide-note">
-      <p>模型由 Three.js 代码生成，无外部模型文件；共 13 个部件、<span id="triCount">—</span> 个三角面。</p>
-      <p style="margin-top:8px">「剖面」用裁剪平面切掉外壳上半，看内部磁路；标注会自动上下避让并拉引线。</p>
-      <p style="margin-top:8px">绘制在 GPU 上实时完成，低端设备会自动降低像素比。</p>
-    </div>
-  </footer>
+  </div>
 
+  <!-- 工具条 -->
+  <div class="hud-tools glass" role="toolbar" aria-label="视图与图层">
+    <div class="toolset">
+      <button class="tbtn" data-view="iso" type="button">全景</button>
+      <button class="tbtn" data-view="ppcu" type="button">PPCU</button>
+      <button class="tbtn" data-view="thr" type="button">推力器</button>
+      <button class="tbtn" data-view="top" type="button">俯视</button>
+      <button class="tbtn" data-view="front" type="button">正视</button>
+    </div>
+    <div class="toolset">
+      <button class="tbtn" id="tLabels" type="button" aria-pressed="true">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M4 10.5V5h5.5l6 6-5 5-6-6Z"/><circle cx="7" cy="8" r="1"/></svg>标注
+      </button>
+      <button class="tbtn" id="tDims" type="button" aria-pressed="true">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7v6M16 7v6M4 10h12"/><path d="M6 8l-2 2 2 2M14 8l2 2-2 2"/></svg>尺寸
+      </button>
+      <button class="tbtn" id="tWire" type="button" aria-pressed="false">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M10 3l6 3.2v7.6L10 17l-6-3.2V6.2L10 3Z"/><path d="M4 6.2 10 9.5l6-3.3M10 9.5V17"/></svg>线框
+      </button>
+      <button class="tbtn" id="tCut" type="button" aria-pressed="false">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="10" cy="10" r="7"/><path d="M10 3v14"/><path d="M10 3a7 7 0 0 1 0 14"/></svg>剖面
+      </button>
+      <button class="tbtn" id="tPlume" type="button" aria-pressed="true">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10h9M11 6.5 15 10l-4 3.5"/><path d="M4 6.5v7"/></svg>羽流
+      </button>
+      <button class="tbtn" id="tCinema" type="button" aria-pressed="false">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="14" height="10" rx="1.6"/><path d="M8 8l4 2-4 2V8Z"/></svg>影院
+      </button>
+      <button class="tbtn" id="tSpin" type="button" aria-pressed="true">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 10a5.5 5.5 0 1 1 1.9 4.2"/><path d="M4 6v4h4"/></svg>自转
+      </button>
+    </div>
+  </div>
+
+  <!-- 左：部件清单 -->
+  <section class="hud-parts glass" aria-label="部件清单">
+    <div class="panel-head">
+      <h2>装配层级</h2>
+      <span class="count mono" id="partCount">—</span>
+    </div>
+    <div class="list" id="partList"></div>
+  </section>
+
+  <!-- 右：参数面板 -->
+  <section class="hud-specs glass" aria-label="技术参数">
+    <div class="panel-head"><h2>技术参数</h2><span class="count mono">表 3-3 / 3-4 / 3-5</span></div>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" aria-selected="true" data-tab="sys">整机</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="mod">模块</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="src">出处</button>
+    </div>
+    <div class="panel-body" id="specBody"></div>
+  </section>
+
+  <!-- 选中详情 -->
+  <div class="detail glass" id="detail" role="dialog" aria-label="部件详情">
+    <button class="close" id="detailClose" type="button" aria-label="关闭">
+      <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 5l10 10M15 5 5 15"/></svg>
+    </button>
+    <div class="dhead"><span class="dno mono" id="dNo">01</span><h3 id="dName">—</h3></div>
+    <p class="drole" id="dRole">—</p>
+    <div class="specs" id="dSpecs"></div>
+  </div>
+
+  <!-- 时间轴 -->
+  <div class="hud-timeline glass">
+    <div class="tl-top">
+      <button class="play" id="btnPlay" type="button" aria-label="播放拆解演示">
+        <svg id="playIcon" width="12" height="12" viewBox="0 0 20 20" fill="currentColor"><path d="M6 4l10 6-10 6V4Z"/></svg>
+      </button>
+      <p class="tl-caption" id="caption">拖拽旋转 · 滚轮缩放 · 点击部件查看参数；下方滑杆控制拆解程度</p>
+      <span class="mono" style="font-size:10.5px;color:var(--ink-3)" id="expPct">85%</span>
+    </div>
+    <div class="tl-range">
+      <span class="ends">装配</span>
+      <input id="explode" type="range" min="0" max="100" value="85" step="1" aria-label="拆解程度">
+      <span class="ends">拆解</span>
+    </div>
+  </div>
+
+  <div id="loader"><div class="load-inner"><div class="lg">Building geometry</div><div class="bar"><i></i></div></div></div>
 </div>
+
 <script type="module">
 import * as THREE from './vendor/three.module.min.js';
-
 /* =====================================================================
-   霍尔电推进器 3D 拆解视图
-   - 全部几何体由代码生成（圆柱、环、管、盒），不加载任何外部模型文件
-   - 轴向为 +Z（羽流朝 +Z），整机直径 2.12 单位 ≈ 106 mm，1 单位 = 50 mm
+   霍尔电推进系统（PPCU + 推力器头部）三维拆解
+   ---------------------------------------------------------------------
+   比例尺：1 场景单位 = 1 mm（真实尺寸建模）
+   数据来源：招标编号 OITC-G260302311 投标文件
+     · 招标文件第八部分 2.2 / 2.3 / 2.4 / 2.5 / 2.6 的逐条应答（第三部分 3.1.3～3.1.6）
+     · 表 3-3 稳态负载功率分配、表 3-4 损耗预算、表 3-5 质量预算
+     · 2.10 货物技术说明文件（技术规格书）结构接口 / 电气接口表
+   机身坐标：X 为机箱长度方向（+X 朝推力器与对外接插件），Y 向上，Z 为深度
    ===================================================================== */
 
+/* ---------- 尺寸常量（全部来自招标文件） ---------- */
+var DIM = {
+  W: 325,          // 结构外形最大包络 X（含接插件与安装支耳）  2.2.4 / 2.6.1
+  D: 257,          // 包络 Z
+  H: 150,          // 包络 Y
+  BASE: 6,         // 安装底板厚度 = 安装支耳厚度 6±0.1 mm      2.6.2
+  LID: 6,          // 上盖厚度（按底板同厚度建模）
+  WALL: 3,         // 机箱侧壁厚（铝合金 7075-T73 整体机加）
+  BW: 300,         // 侧壁外廓 X（其余留给安装法兰与侧插接插件）
+  BD: 232          // 侧壁外廓 Z
+};
+
+var P = {
+  BX: DIM.BW, BZ: DIM.BD,
+  INX: DIM.BW - 2 * DIM.WALL,          // 内腔 294
+  INZ: DIM.BD - 2 * DIM.WALL,          // 内腔 226
+  Y0: DIM.BASE,                        // 底板顶面 y=6
+  YTOP: DIM.H - DIM.LID                // 侧壁顶面 y=144
+};
+
+/* 推力器头部（招标文件只给接口关系，外形为工程估算，界面已标注） */
+var T = {
+  x0: 330,        // 安装法兰后端面 X
+  y0: 100,        // 轴线高度
+  OD: 56.5,       // 屏蔽罩外半径 → 外径约 113
+  chanIn: 33, chanOut: 45   // 陶瓷通道 φ66/φ90，平均直径 φ78、通道宽 12、深 28
+};
+
+var MM = 1;
+
+/* ---------- 材质 ---------- */
+var ENVMAP = null;
+var M = {
+  alu:      new THREE.MeshStandardMaterial({ color: 0x9AA5B2, metalness: 0.85, roughness: 0.46 }),
+  aluDark:  new THREE.MeshStandardMaterial({ color: 0x5C6672, metalness: 0.88, roughness: 0.44 }),
+  aluWarm:  new THREE.MeshStandardMaterial({ color: 0xAEB8C2, metalness: 0.9, roughness: 0.36 }),
+  black:    new THREE.MeshStandardMaterial({ color: 0x1D242B, metalness: 0.55, roughness: 0.58 }),
+  blackSoft:new THREE.MeshStandardMaterial({ color: 0x11151B, metalness: 0.25, roughness: 0.8 }),
+  pcb:      new THREE.MeshStandardMaterial({ color: 0x14402F, metalness: 0.3, roughness: 0.55 }),
+  pcbDark:  new THREE.MeshStandardMaterial({ color: 0x0E3324, metalness: 0.26, roughness: 0.6 }),
+  ferrite:  new THREE.MeshStandardMaterial({ color: 0x23272E, metalness: 0.34, roughness: 0.72 }),
+  copper:   new THREE.MeshStandardMaterial({ color: 0xC08447, metalness: 1.0, roughness: 0.32 }),
+  copperDk: new THREE.MeshStandardMaterial({ color: 0x8E5F2F, metalness: 1.0, roughness: 0.42 }),
+  ceramic:  new THREE.MeshStandardMaterial({ color: 0xE9E6DB, metalness: 0.02, roughness: 0.86 }),
+  softMag:  new THREE.MeshStandardMaterial({ color: 0xA9B4BF, metalness: 0.98, roughness: 0.3 }),
+  steel:    new THREE.MeshStandardMaterial({ color: 0x8D96A0, metalness: 0.96, roughness: 0.34 }),
+  gold:     new THREE.MeshStandardMaterial({ color: 0xD9AE5E, metalness: 1.0, roughness: 0.26 }),
+  chipBody: new THREE.MeshStandardMaterial({ color: 0x0B0E13, metalness: 0.35, roughness: 0.55 }),
+  capacitor:new THREE.MeshStandardMaterial({ color: 0x1B2733, metalness: 0.55, roughness: 0.45 }),
+  hvRed:    new THREE.MeshStandardMaterial({ color: 0x8C3A2E, metalness: 0.4, roughness: 0.5 }),
+  shield:   new THREE.MeshStandardMaterial({ color: 0x8A96A3, metalness: 0.9, roughness: 0.38,
+              transparent: true, opacity: 0.34, side: THREE.DoubleSide }),
+  glowC:    new THREE.MeshBasicMaterial({ color: 0x38BDF8 }),
+  glowA:    new THREE.MeshBasicMaterial({ color: 0xF59E0B }),
+  glowW:    new THREE.MeshBasicMaterial({ color: 0xBFE9FF }),
+  wireDark: new THREE.MeshStandardMaterial({ color: 0x1A1F27, metalness: 0.3, roughness: 0.8 })
+};
+Object.keys(M).forEach(function (k) { if (M[k].isMeshStandardMaterial) M[k].envMapIntensity = 1.15; });
+
+/* ---------- 几何小工具 ---------- */
+function boxM(w, h, d, mat) { return new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat); }
+function cylM(rt, rb, h, mat, seg) {
+  return new THREE.Mesh(new THREE.CylinderGeometry(rt, rb, h, seg || 32), mat);
+}
+/* 圆环：内孔 + 外圆的挤出体，几何居中，轴向 = +Z */
+function ringM(rIn, rOut, h, mat, seg) {
+  var sh = new THREE.Shape();
+  sh.absarc(0, 0, rOut, 0, Math.PI * 2, false);
+  var hole = new THREE.Path();
+  hole.absarc(0, 0, rIn, 0, Math.PI * 2, true);
+  sh.holes.push(hole);
+  var g = new THREE.ExtrudeGeometry(sh, { depth: h, bevelEnabled: false, curveSegments: seg || 56 });
+  g.translate(0, 0, -h / 2);
+  return new THREE.Mesh(g, mat);
+}
+/* 轴向助手：+Z → +X / +Z → +Y；+Y → +X（圆柱与螺旋） */
+function ringX(m) { m.rotation.y = Math.PI / 2; return m; }
+function ringY(m) { m.rotation.x = -Math.PI / 2; return m; }
+function toX(m) { m.rotation.z = -Math.PI / 2; return m; }
+
+/* 螺旋线圈（沿 Y 生成，需自行转向） */
+function helixM(rMean, wire, len, turns, mat) {
+  var N = Math.max(60, Math.round(turns * 20));
+  var pts = [];
+  for (var i = 0; i <= N; i++) {
+    var t = i / N, a = t * turns * Math.PI * 2;
+    pts.push(new THREE.Vector3(rMean * Math.cos(a), t * len, rMean * Math.sin(a)));
+  }
+  var curve = new THREE.CatmullRomCurve3(pts);
+  return new THREE.Mesh(new THREE.TubeGeometry(curve, N, wire, 7, false), mat);
+}
+/* 叠层绕组（假装线包） */
+function windingM(w, h, d, layers, mat, gap) {
+  var g = new THREE.Group();
+  var t = h / layers;
+  for (var i = 0; i < layers; i++) {
+    var s = boxM(w, t * (gap || 0.6), d, mat);
+    s.position.y = -h / 2 + t * (i + 0.5);
+    g.add(s);
+  }
+  return g;
+}
+/* 螺丝头 */
+function screwM(r, x, y, z) {
+  var m = cylM(r, r, 1.6, M.aluDark, 10);
+  m.position.set(x, y, z);
+  return m;
+}
+
+/* =====================================================================
+   推力器头部（A 组）
+   ===================================================================== */
+function thrGroup() { var g = new THREE.Group(); g.position.set(0, T.y0, 0); return g; }
+
+function buildThrFlange() {
+  var g = thrGroup();
+  var f = ringX(ringM(26, 62, 8, M.alu)); f.position.x = 334;  // 330..338
+  g.add(f);
+  // 4 × M5 安装孔 + 螺栓
+  for (var i = 0; i < 4; i++) {
+    var a = Math.PI / 4 + i * Math.PI / 2;
+    var hx = 334, hy = 50 * Math.cos(a), hz = 50 * Math.sin(a);
+    var hole = toX(cylM(2.6, 2.6, 9, M.blackSoft, 12));
+    hole.position.set(hx, hy, hz); g.add(hole);
+    var bo = toX(cylM(4.2, 4.2, 3, M.steel, 6));
+    bo.position.set(338, hy, hz); g.add(bo);
+  }
+  return g;
+}
+
+function buildThrShield() {
+  var g = thrGroup();
+  var shell = ringX(ringM(54.5, 56.5, 34, M.steel)); shell.position.x = 355; g.add(shell);
+  var back = ringX(ringM(26, 56.5, 3, M.steel)); back.position.x = 339.5; g.add(back);
+  // 屏蔽罩上的加强筋 + 接地点
+  for (var i = 0; i < 6; i++) {
+    var a = i * Math.PI / 3;
+    var rib = boxM(34, 2.4, 3, M.aluDark);
+    rib.position.set(355, 55.5 * Math.cos(a), 55.5 * Math.sin(a));
+    rib.rotation.x = a; g.add(rib);
+  }
+  var gnd = boxM(4, 6, 4, M.gold); gnd.position.set(348, 0, 57.5); g.add(gnd);
+  return g;
+}
+
+function buildThrBack() {
+  var g = thrGroup();
+  var d = toX(cylM(54, 54, 8, M.softMag)); d.position.x = 345; g.add(d);   // 341..349
+  // 磁背板上的走线槽
+  for (var i = 0; i < 4; i++) {
+    var a = i * Math.PI / 2 + 0.4;
+    var s = boxM(9, 6, 4, M.blackSoft);
+    s.position.set(345, 30 * Math.cos(a), 30 * Math.sin(a)); g.add(s);
+  }
+  return g;
+}
+
+function buildThrPoleOuter() {
+  var g = thrGroup();
+  var p = ringX(ringM(45.5, 50, 19, M.softMag)); p.position.x = 358.5; g.add(p);  // 349..368
+  // 外磁极端面倒角装饰环
+  var e = ringX(ringM(45.5, 50, 1.6, M.aluWarm)); e.position.x = 368; g.add(e);
+  return g;
+}
+
+function buildThrPoleInner() {
+  var g = thrGroup();
+  var cup = ringX(ringM(27, 33, 35, M.softMag)); cup.position.x = 366.5; g.add(cup); // 349..384
+  var post = toX(cylM(9, 9, 35, M.softMag)); post.position.x = 366.5; g.add(post);
+  var face = ringX(ringM(9, 33, 8, M.softMag)); face.position.x = 388; g.add(face); // 384..392
+  var rimm = ringX(ringM(30, 33, 1.4, M.aluWarm)); rimm.position.x = 392.7; g.add(rimm);
+  return g;
+}
+
+function buildThrChannel() {
+  var g = thrGroup();
+  var ch = ringX(ringM(T.chanIn, T.chanOut, 28, M.ceramic)); ch.position.x = 374; g.add(ch); // 360..388
+  // 通道出口端面的分段线（BN-SiO2 陶瓷环拼接）
+  for (var i = 0; i < 8; i++) {
+    var a = i * Math.PI / 4;
+    var seg = boxM(2, 12, 1.2, M.blackSoft);
+    seg.position.set(387, 39 * Math.cos(a), 39 * Math.sin(a));
+    seg.rotation.x = a; g.add(seg);
+  }
+  return g;
+}
+
+function buildThrAnode() {
+  var g = thrGroup();
+  var a = ringX(ringM(T.chanIn, T.chanOut, 3, M.steel)); a.position.x = 361.5; g.add(a); // 360..363
+  // 24 × φ0.6 mm 气体分配孔（2.10 第 4 节 / 阳极分配器）
+  for (var i = 0; i < 24; i++) {
+    var ang = i * Math.PI * 2 / 24;
+    var h = toX(cylM(0.9, 0.9, 3.6, M.blackSoft, 8));
+    h.position.set(360.5, 39 * Math.cos(ang), 39 * Math.sin(ang)); g.add(h);
+  }
+  // 氪气进气管（从磁背板中心引入）
+  var pipe = toX(cylM(2.4, 2.4, 22, M.steel)); pipe.position.x = 348; g.add(pipe);
+  var hub = toX(cylM(5, 5, 5, M.steel)); hub.position.x = 380; g.add(hub);
+  for (var k = 0; k < 6; k++) {
+    var ang2 = k * Math.PI / 3;
+    var spoke = boxM(14, 2, 2.6, M.steel);
+    spoke.position.set(384, 22 * Math.cos(ang2), 22 * Math.sin(ang2));
+    spoke.rotation.x = ang2; g.add(spoke);
+  }
+  return g;
+}
+
+function buildThrCoilOuter() {
+  var g = thrGroup();
+  var c = toX(helixM(52.4, 1.45, 20, 26, M.copper)); c.position.x = 350; g.add(c);
+  var f = ringX(ringM(51, 54, 3, M.aluDark)); f.position.x = 351.5; g.add(f);   // 线包骨架
+  var f2 = ringX(ringM(51, 54, 3, M.aluDark)); f2.position.x = 368.5; g.add(f2);
+  var lead = boxM(2.4, 2.4, 16, M.copperDk); lead.position.set(352, 54, 22); g.add(lead);
+  return g;
+}
+
+function buildThrCoilInner() {
+  var g = thrGroup();
+  var c = toX(helixM(18, 1.4, 28, 30, M.copper)); c.position.x = 352; g.add(c);
+  var f = ringX(ringM(16.5, 19.5, 2.4, M.aluDark)); f.position.x = 353.2; g.add(f);
+  var f2 = ringX(ringM(16.5, 19.5, 2.4, M.aluDark)); f2.position.x = 378.2; g.add(f2);
+  var lead = boxM(12, 2, 2, M.copperDk); lead.position.set(348, 0, 18); g.add(lead);
+  return g;
+}
+
+function buildThrCathode() {
+  var g = thrGroup();
+  [-32, 32].forEach(function (dz) {
+    var body = toX(cylM(10, 10, 30, M.aluWarm)); body.position.set(414, -52, dz); g.add(body);
+    var nose = toX(cylM(4, 10, 8, M.aluWarm)); nose.position.set(433, -52, dz); g.add(nose);
+    var tip = toX(cylM(1.8, 3.2, 5, M.steel)); tip.position.set(438.5, -52, dz); g.add(tip);
+    // 加热丝（通电发热，恒流 0～5 A 可调）
+    var htr = ringX(ringM(6.5, 8.2, 10, M.hvRed)); htr.position.set(409, -52, dz); g.add(htr);
+    var hglow = ringX(ringM(8.2, 8.8, 8, M.glowW)); hglow.position.set(409, -52, dz);
+    hglow.userData.noPick = true; g.add(hglow);
+    // 阴极引线
+    var w1 = boxM(34, 1.8, 1.8, M.wireDark); w1.position.set(420, -44, dz + 6); g.add(w1);
+    var w2 = boxM(34, 1.8, 1.8, M.wireDark); w2.position.set(420, -44, dz - 6); g.add(w2);
+  });
+  // 阴极座与支撑臂
+  var seat = boxM(20, 10, 88, M.alu); seat.position.set(398, -52, 0); g.add(seat);
+  var arm = boxM(46, 7, 10, M.alu); arm.position.set(362, -46, 0); g.add(arm);
+  var arm2 = boxM(9, 46, 9, M.alu); arm2.position.set(340, -24, 0); g.add(arm2);
+  return g;
+}
+
+/* 羽流：加法混合的等离子体羽流（自定义着色器，径向 + 轴向衰减） */
+var plume = null;
+function buildPlume() {
+  var g = new THREE.Group();
+  var len = 300, seg = 56, ringN = 44;
+  var pos = [], uv = [], idx = [];
+  for (var i = 0; i <= ringN; i++) {
+    var t = i / ringN;
+    var r = 34 + 96 * Math.pow(t, 0.78);
+    var x = T.x0 + 68 + t * len;
+    for (var j = 0; j <= seg; j++) {
+      var a = j / seg * Math.PI * 2;
+      pos.push(x, T.y0 + r * Math.cos(a), r * Math.sin(a));
+      uv.push(t, j / seg);
+    }
+  }
+  for (var i2 = 0; i2 < ringN; i2++) {
+    for (var j2 = 0; j2 < seg; j2++) {
+      var a0 = i2 * (seg + 1) + j2, b0 = a0 + seg + 1;
+      idx.push(a0, b0, a0 + 1, b0, b0 + 1, a0 + 1);
+    }
+  }
+  var geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  geo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+  geo.setIndex(idx);
+
+  var mat = new THREE.ShaderMaterial({
+    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    side: THREE.DoubleSide,
+    uniforms: {
+      uExit: { value: T.x0 + 68 }, uLen: { value: len },
+      uTime: { value: 0 }, uOpacity: { value: 1 }
+    },
+    vertexShader: [
+      'varying vec3 vPos;',
+      'void main(){ vPos = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }'
+    ].join('\n'),
+    fragmentShader: [
+      'uniform float uExit; uniform float uLen; uniform float uTime; uniform float uOpacity;',
+      'varying vec3 vPos;',
+      'void main(){',
+      '  float t = clamp((vPos.x - uExit) / uLen, 0.0, 1.0);',
+      '  float rMax = 34.0 + 96.0 * pow(t, 0.78);',
+      '  float rho = length(vPos.yz) / max(rMax, 0.001);',
+      '  float axial = pow(1.0 - t, 1.7);',
+      '  float radial = pow(max(0.0, 1.0 - rho * rho), 1.5);',
+      '  float flick = 0.86 + 0.14 * sin(uTime * 6.0 + t * 26.0);',
+      '  float a = axial * radial * 0.42 * flick * uOpacity;',
+      '  vec3 cold = vec3(0.62, 0.86, 1.0);',
+      '  vec3 hot  = vec3(0.22, 0.58, 1.0);',
+      '  vec3 col = mix(cold, hot, smoothstep(0.0, 0.62, t));',
+      '  col += vec3(0.18, 0.22, 0.26) * pow(axial, 6.0);',
+      '  gl_FragColor = vec4(col, a);',
+      '}'
+    ].join('\n')
+  });
+  plume = new THREE.Mesh(geo, mat);
+  g.add(plume);
+  g.userData.noPick = true;
+  return g;
+}
+
+/* =====================================================================
+   PPCU 机箱（C 组）
+   ===================================================================== */
+function lidGroup() {
+  var g = new THREE.Group();
+  var lid = boxM(DIM.BW, DIM.LID, DIM.BD, M.black); lid.position.y = P.YTOP + DIM.LID / 2; g.add(lid);
+  // 上盖加强筋与螺钉
+  for (var i = 0; i < 4; i++) {
+    var rib = boxM(DIM.BW - 30, 1.6, 6, M.aluDark);
+    rib.position.set(0, P.YTOP + DIM.LID + 0.4, -84 + i * 56); g.add(rib);
+  }
+  var nx = [-135, -45, 45, 135], nz = [-104, 0, 104];
+  for (var a = 0; a < nx.length; a++) for (var b = 0; b < nz.length; b++) {
+    g.add(screwM(2.6, nx[a], P.YTOP + DIM.LID + 0.4, nz[b]));
+  }
+  // 铭牌（SMP-1K42-V00）
+  var cv = document.createElement('canvas'); cv.width = 512; cv.height = 192;
+  var c = cv.getContext('2d');
+  c.fillStyle = '#161B22'; c.fillRect(0, 0, 512, 192);
+  c.strokeStyle = 'rgba(160,180,200,.5)'; c.lineWidth = 4; c.strokeRect(6, 6, 500, 180);
+  c.fillStyle = '#DCE6F0'; c.font = '600 44px sans-serif';
+  c.fillText('PPCU', 28, 66);
+  c.font = '500 26px ui-monospace, monospace'; c.fillStyle = '#9AA7B8';
+  c.fillText('SMP-1K42-V00', 28, 108);
+  c.fillText('42 V / 1100 W', 28, 148);
+  var tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 4;
+  var plate = new THREE.Mesh(new THREE.PlaneGeometry(96, 36),
+    new THREE.MeshStandardMaterial({ map: tex, metalness: 0.5, roughness: 0.5 }));
+  plate.position.set(60, P.YTOP + DIM.LID + 0.5, 70);
+  plate.rotation.x = -Math.PI / 2; plate.rotation.z = Math.PI;
+  g.add(plate);
+  return g;
+}
+
+function bodyGroup() {
+  var g = new THREE.Group();
+  var yMid = (P.Y0 + P.YTOP) / 2, hw = P.YTOP - P.Y0;   // 138
+  var wallMat = M.black;
+  // X+ 壁（后面装接插件） / X- 壁
+  var xp = boxM(DIM.WALL, hw, DIM.BD, wallMat); xp.position.set(DIM.BW / 2 - DIM.WALL / 2, yMid, 0); g.add(xp);
+  var xm = boxM(DIM.WALL, hw, DIM.BD, wallMat); xm.position.set(-DIM.BW / 2 + DIM.WALL / 2, yMid, 0); g.add(xm);
+  // Z± 壁
+  var zp = boxM(DIM.BW - 2 * DIM.WALL, hw, DIM.WALL, wallMat); zp.position.set(0, yMid, DIM.BD / 2 - DIM.WALL / 2); g.add(zp);
+  var zm = boxM(DIM.BW - 2 * DIM.WALL, hw, DIM.WALL, wallMat); zm.position.set(0, yMid, -DIM.BD / 2 + DIM.WALL / 2); g.add(zm);
+  // 内部加强框（3 道）
+  for (var i = 0; i < 3; i++) {
+    var fr = boxM(DIM.WALL, 10, DIM.BD - 2 * DIM.WALL, M.aluDark);
+    fr.position.set(-90 + i * 90, P.Y0 + 6, 0); g.add(fr);
+  }
+  // 接地桩（机壳与接地桩搭接电阻 ≤10 mΩ）
+  var stud = cylM(3.4, 3.4, 12, M.gold, 12); stud.rotation.z = Math.PI / 2;
+  stud.position.set(-DIM.BW / 2 - 5, 60, -70); g.add(stud);
+  var gndMark = cylM(6, 6, 1.6, M.aluDark, 14); gndMark.rotation.z = Math.PI / 2;
+  gndMark.position.set(-DIM.BW / 2 - 1, 60, -70); g.add(gndMark);
+  return g;
+}
+
+function baseGroup() {
+  var g = new THREE.Group();
+  var b = boxM(DIM.W, DIM.BASE, DIM.D, M.alu); b.position.y = DIM.BASE / 2; g.add(b);
+  // 安装孔 4 × φ6.5（M6）+ 安装面
+  var hx = [-148, 148], hz = [-118, 118];
+  for (var i = 0; i < 2; i++) for (var j = 0; j < 2; j++) {
+    var hole = cylM(3.3, 3.3, DIM.BASE + 0.4, M.blackSoft, 14);
+    hole.position.set(hx[i], DIM.BASE / 2, hz[j]); g.add(hole);
+    // 支耳轮廓（6±0.1 mm 厚，四面倒角）
+    var lug = boxM(46, DIM.BASE + 0.2, 46, M.aluDark);
+    lug.position.set(hx[i] * 0.66, DIM.BASE / 2 + 0.1, hz[j] * 0.72); g.add(lug);
+  }
+  // 底板加强筋 + 导热凸台
+  for (var k = 0; k < 5; k++) {
+    var rib = boxM(DIM.W - 40, 2.4, 5, M.aluDark);
+    rib.position.set(0, DIM.BASE + 1.2, -96 + k * 48); g.add(rib);
+  }
+  var boss = boxM(200, 2, 150, M.aluDark); boss.position.set(0, DIM.BASE + 2, 0); g.add(boss);
+  return g;
+}
+
+/* 对外连接器（侧插布局） */
+function connGroup() {
+  var g = new THREE.Group();
+  var X = DIM.BW / 2 + 6;   // 侧插：从 150 伸出到 162 附近，含在 325 包络内
+
+  // J599 系列 —— 推力器供电（阳极 / 阴极 A·B 加热与点火 / 励磁）
+  function j599(z, r, y) {
+    var shell = cylM(r, r, 22, M.steel, 24); shell.rotation.z = Math.PI / 2;
+    shell.position.set(X + 4, y, z); g.add(shell);
+    var flange = cylM(r + 4, r + 4, 3, M.aluDark, 24); flange.rotation.z = Math.PI / 2;
+    flange.position.set(X - 7, y, z); g.add(flange);
+    var face = cylM(r - 3, r - 3, 3, M.blackSoft, 20);
+    face.rotation.z = Math.PI / 2; face.position.set(X + 15, y, z); g.add(face);
+    for (var i = 0; i < 7; i++) {
+      var a = i * Math.PI * 2 / 7;
+      var pin = cylM(1.1, 1.1, 4, M.gold, 8); pin.rotation.z = Math.PI / 2;
+      pin.position.set(X + 15, y + (r - 6) * Math.cos(a) * 0.8, z + (r - 6) * Math.sin(a) * 0.8);
+      g.add(pin);
+    }
+    var key = boxM(6, 4, 4, M.aluDark); key.position.set(X + 4, y + r - 2, z); g.add(key);
+  }
+  j599(-74, 14, 104);   // 阳极
+  j599(-34, 11, 100);   // 阴极 A/B + 励磁
+
+  // J6W-50D01K1NMB —— 一次母线供电（50 芯）
+  var j6 = boxM(24, 26, 52, M.steel); j6.position.set(X - 2, 96, 78); g.add(j6);
+  var j6f = boxM(2, 20, 44, M.blackSoft); j6f.position.set(X + 10, 96, 78); g.add(j6f);
+  for (var a2 = 0; a2 < 5; a2++) for (var b2 = 0; b2 < 10; b2++) {
+    var p2 = boxM(3.6, 1.6, 1.6, M.gold);
+    p2.position.set(X + 11, 88 + a2 * 4, 60 + b2 * 4); g.add(p2);
+  }
+  var lock1 = boxM(10, 6, 6, M.aluDark); lock1.position.set(X + 2, 110, 52); g.add(lock1);
+
+  // J30J-66ZKW —— 压力流量调节模块控制与通信
+  var j66 = boxM(20, 18, 46, M.steel); j66.position.set(X - 2, 100, 8); g.add(j66);
+  var j66f = boxM(2, 13, 38, M.blackSoft); j66f.position.set(X + 9, 100, 8); g.add(j66f);
+  for (var a3 = 0; a3 < 4; a3++) for (var b3 = 0; b3 < 11; b3++) {
+    var p3 = boxM(3, 1.3, 1.3, M.gold);
+    p3.position.set(X + 10, 94 + a3 * 3.2, -8 + b3 * 3.2); g.add(p3);
+  }
+
+  // CN-J30J-25ZKP —— RS-422 与 OC 低频信号
+  var j25 = boxM(18, 14, 28, M.steel); j25.position.set(X - 4, 118, 62); g.add(j25);
+  var j25f = boxM(2, 10, 22, M.blackSoft); j25f.position.set(X + 6, 118, 62); g.add(j25f);
+  for (var a4 = 0; a4 < 5; a4++) for (var b4 = 0; b4 < 5; b4++) {
+    var p4 = boxM(2.6, 1.2, 1.2, M.gold);
+    p4.position.set(X + 7, 114 + a4 * 2.4, 56 + b4 * 2.4); g.add(p4);
+  }
+  return g;
+}
+
+/* ---------- 板卡通用件 ---------- */
+function pcbSlab(w, d, y, mat) {
+  var m = boxM(w, 2, d, mat || M.pcb);
+  m.position.set(0, y + 1, 0);
+  return m;
+}
+function chip(w, h, d, x, y, z, mat) {
+  var m = boxM(w, h, d, mat || M.chipBody);
+  m.position.set(x, y + h / 2, z);
+  return m;
+}
+function capV(r, h, x, y, z, mat) {
+  var m = cylM(r, r, h, mat || M.capacitor, 14);
+  m.position.set(x, y + h / 2, z);
+  return m;
+}
+function capH(r, len, x, y, z, mat) {   // 卧式电容，沿 X
+  var m = cylM(r, r, len, mat || M.capacitor, 14);
+  m.rotation.z = Math.PI / 2; m.position.set(x, y, z);
+  return m;
+}
+function toroidInd(rIn, rOut, h, x, y, z, windMat) {
+  var g = new THREE.Group();
+  g.add(ringY(ringM(rIn, rOut, h, M.ferrite, 36)));
+  var rMid = (rIn + rOut) / 2, wire = (rOut - rIn) * 0.34;
+  var w = new THREE.Mesh(new THREE.TorusGeometry(rMid, wire, 8, 32), windMat || M.copper);
+  w.rotation.x = Math.PI / 2; g.add(w);
+  g.position.set(x, y, z);
+  return g;
+}
+function heatsink(w, h, d, x, y, z, fins) {
+  var g = new THREE.Group();
+  var base = boxM(w, h * 0.4, d, M.alu);
+  base.position.y = h * 0.2; g.add(base);
+  var n = fins || 7;
+  for (var i = 0; i < n; i++) {
+    var f = boxM(w, h * 0.6, 1.6, M.alu);
+    f.position.set(0, h * 0.6, -d / 2 + d * (i + 0.5) / n);
+    g.add(f);
+  }
+  g.position.set(x, y, z);
+  return g;
+}
+function transformer(cw, ch, cl, x, y, z, turns) {
+  var g = new THREE.Group();
+  // EE 磁芯：上下扼 + 中柱
+  var top = boxM(cw, 9, cl, M.ferrite); top.position.y = 9; g.add(top);
+  var bot = boxM(cw, 9, cl, M.ferrite); bot.position.y = 9 + ch - 9; g.add(bot);
+  var legC = boxM(cw * 0.3, ch - 18, cl * 0.6, M.ferrite); legC.position.y = ch / 2; g.add(legC);
+  var legA = boxM(cw * 0.16, ch - 18, cl, M.ferrite); legA.position.set(-cw * 0.4, ch / 2, 0); g.add(legA);
+  var legB = boxM(cw * 0.16, ch - 18, cl, M.ferrite); legB.position.set(cw * 0.4, ch / 2, 0); g.add(legB);
+  // 原/副边绕组
+  var wd = windingM(cw * 0.34, ch - 26, cl * 0.72, turns || 7, M.copper, 0.72);
+  wd.position.y = ch / 2; g.add(wd);
+  var wd2 = windingM(cw * 0.26, ch - 30, cl * 0.5, 5, M.copperDk, 0.6);
+  wd2.position.set(cw * 0.19, ch / 2, 0); wd2.rotation.y = Math.PI / 2; g.add(wd2);
+  g.position.set(x, y, z);
+  return g;
+}
+
+/* ---------- 各电源模块 ---------- */
+function buildEMI() {   // L1 左：输入保护与 EMI 滤波（8 W 损耗）
+  var g = new THREE.Group();
+  var y = 14;
+  g.add(pcbSlab(138, 208, y, M.pcb));
+  g.add(toroidInd(8, 15, 11, -40, y + 2, 62));
+  g.add(toroidInd(8, 15, 11, -40, y + 2, -62));
+  // X/Y 电容
+  [-18, 4, 26].forEach(function (dz) { g.add(chip(12, 7, 10, -6, y + 2, dz, M.capacitor)); });
+  [-70, -40, 30, 60].forEach(function (dz) { g.add(chip(7, 5, 6, -66, y + 2, dz, M.blackSoft)); });
+  // 熔断器 80 A / 1 s
+  g.add(capH(4, 26, -100, y + 8, -40, M.steel));
+  // 防反接 MOSFET + TVS
+  g.add(chip(12, 4, 14, -86, y + 2, -8, M.chipBody));
+  g.add(chip(10, 13, 10, -60, y + 2, -20, M.chipBody));
+  // 母线采样分压
+  g.add(chip(18, 3, 12, -104, y + 2, 20, M.chipBody));
+  // 输入电流铜排
+  var bus = boxM(28, 2.4, 12, M.copper); bus.position.set(-120, y + 4, -18); g.add(bus);
+  var bus2 = boxM(24, 2.4, 10, M.copper); bus2.position.set(-96, y + 4, 34); g.add(bus2);
+  // 与 J6W 连接的软线
+  for (var i = 0; i < 3; i++) {
+    var w = boxM(26, 2.6, 2.6, M.wireDark);
+    w.position.set(-128, y + 5, -58 + i * 12); g.add(w);
+  }
+  return g;
+}
+
+function buildMagnet() {  // L1 右：励磁电源（恒流 0～2.5 A，2～35 V，45 W）
+  var g = new THREE.Group();
+  var y = 14;
+  g.add(pcbSlab(132, 208, y, M.pcbDark));
+  g.add(toroidInd(7, 13, 10, 40, y + 2, -50));
+  g.add(heatsink(26, 14, 22, 12, y + 2, 30, 6));
+  g.add(chip(10, 5, 12, 12, y + 16, 30, M.chipBody));
+  [-30, -12, 6].forEach(function (dz, i) { g.add(capV(4, 12, 74, y + 2, dz, M.capacitor)); });
+  g.add(chip(14, 3, 10, 96, y + 2, 62, M.chipBody));
+  g.add(chip(10, 3, 8, 106, y + 2, -20, M.chipBody));   // 采样电阻
+  g.add(chip(8, 2.4, 26, 52, y + 2, 70, M.chipBody));   // 恒流环控制
+  var lead = boxM(40, 1.8, 1.8, M.copper); lead.position.set(56, y + 12, -34); g.add(lead);
+  return g;
+}
+
+function buildAnode() {   // L2：阳极电源 42 V → 200～420 V / 900 W（最大 1000 W，限流 3.6 A）
+  var g = new THREE.Group();
+  var y = 52;
+  g.add(pcbSlab(284, 214, y, M.pcb));
+  // 软开关全桥 + 散热器
+  g.add(heatsink(76, 22, 64, -10, y + 2, -26, 8));
+  for (var i = 0; i < 4; i++) {
+    g.add(chip(11, 5, 13, -40 + i * 20, y + 24, -26, M.chipBody));
+  }
+  // 主变压器
+  g.add(transformer(56, 40, 46, -96, y + 2, 6, 8));
+  // 谐振电感
+  g.add(toroidInd(9, 16, 12, -40, y + 2, 72));
+  // 输出整流 + 散热片
+  g.add(heatsink(52, 16, 28, 46, y + 2, -84, 5));
+  for (var j = 0; j < 4; j++) g.add(chip(9, 4, 10, 30 + j * 11, y + 18, -84, M.chipBody));
+  // 高压输出电容组（420 V）
+  for (var k = 0; k < 4; k++) g.add(capV(6.5, 26, 74 + k * 16, y + 2, -40, M.capacitor));
+  // 等离子体振荡滤波网络：串联电感 + 阻尼
+  g.add(toroidInd(8, 14, 12, 96, y + 2, 4, M.copperDk));
+  g.add(capH(5, 20, 128, y + 9, 30, M.capacitor));
+  g.add(chip(12, 4, 20, 118, y + 2, -34, M.aluDark));
+  // 高压母排与输出
+  var hv = boxM(60, 2.6, 8, M.copper); hv.position.set(52, y + 16, 74); g.add(hv);
+  var hv2 = boxM(40, 2.6, 6, M.copper); hv2.position.set(112, y + 6, -66); g.add(hv2);
+  // 打火检测（电流斜率 + 电压跌落）
+  g.add(chip(16, 3, 14, 8, y + 2, 96, M.chipBody));
+  return g;
+}
+
+function buildIgnite() {  // L3 左：阴极点火与触持电源（260～300 V / 5～40 V，1.3 A，主备切换）
+  var g = new THREE.Group();
+  var y = 88;
+  g.add(pcbSlab(138, 208, y, M.pcbDark));
+  g.add(transformer(44, 34, 38, -96, y + 2, 10, 6));
+  // 倍压整流柱
+  for (var i = 0; i < 5; i++) {
+    g.add(capV(4.6, 20, -56 + i * 13, y + 2, 60, M.capacitor));
+    g.add(chip(4, 8, 4, -56 + i * 13 + 6, y + 4, 42, M.chipBody));
+  }
+  // 主/备阴极切换
+  g.add(chip(24, 16, 18, -110, y + 2, -62, M.steel));
+  g.add(chip(24, 16, 18, -80, y + 2, -62, M.steel));
+  // 双模（恒压开启 / 恒流维持）控制与采样
+  g.add(chip(12, 3, 16, -124, y + 2, 30, M.chipBody));
+  g.add(capH(3.4, 14, -98, y + 6, -22, M.aluDark));
+  var hvOut = boxM(34, 1.8, 4, M.hvRed); hvOut.position.set(-70, y + 12, -40); g.add(hvOut);
+  return g;
+}
+
+function buildHeater() {  // L3 右：阴极加热电源（恒流 0～5 A，0～25 V，120 W）
+  var g = new THREE.Group();
+  var y = 88;
+  g.add(pcbSlab(132, 208, y, M.pcb));
+  g.add(toroidInd(7, 13, 10, 30, y + 2, 54));
+  g.add(heatsink(24, 12, 20, 20, y + 2, -40, 6));
+  g.add(chip(10, 4, 11, 20, y + 14, -40, M.chipBody));
+  [-20, -4].forEach(function (dz) { g.add(capV(4.4, 14, 66, y + 2, dz, M.capacitor)); });
+  g.add(chip(16, 3, 10, 96, y + 2, 40, M.chipBody));    // 电流采样与精度补偿
+  g.add(chip(9, 2.4, 22, 50, y + 2, 84, M.chipBody));
+  var out = boxM(30, 1.6, 1.6, M.copper); out.position.set(74, y + 10, 84); g.add(out);
+  return g;
+}
+
+function buildDICU() {   // L4 左：DICU 数字综合控制单元
+  var g = new THREE.Group();
+  var y = 116;
+  g.add(pcbSlab(160, 208, y, M.pcbDark));
+  // 主控 MCU AS32S601ZIT2
+  var mcu = chip(16, 3, 16, -40, y + 2, -30, M.chipBody);
+  g.add(mcu);
+  for (var i = 0; i < 4; i++) {   // QFP 引脚
+    var pinH = boxM(17, 1.2, 1, -40, y + 3.2, -30 - 7.5 + i * 5);
+    g.add(pinH);
+    var pinV = boxM(1, 1.2, 17, -40 - 7.5 + i * 5, y + 3.2, -30);
+    g.add(pinV);
+  }
+  // 抗辐照 AD 变换器 HPM005-AD16
+  g.add(chip(12, 3, 12, -40, y + 2, 20, M.chipBody));
+  g.add(chip(13, 2.4, 13, -12, y + 2, -74, M.chipBody));   // 配置存储器
+  g.add(chip(10, 2.2, 10, 6, y + 2, 44, M.chipBody));
+  // 晶振
+  var xtal = cylM(3, 3, 4, M.aluWarm, 14); xtal.position.set(-64, y + 4, -64); g.add(xtal);
+  // RS-422 隔离收发 ×2 + 隔离变压器
+  [[-96, 84], [-96, 54]].forEach(function (p) {
+    g.add(chip(10, 4, 12, p[0], y + 2, p[1], M.chipBody));
+    g.add(chip(12, 4, 14, p[0] + 14, y + 2, p[1], M.steel));
+    g.add(capV(3, 8, p[0] - 10, y + 2, p[1], M.capacitor));
+  });
+  // 2 路 OC 接口驱动
+  g.add(chip(9, 5, 10, -50, y + 2, 96, M.chipBody));
+  // 二次接地焊盘
+  var pad = cylM(3.4, 3.4, 0.6, M.gold, 14); pad.position.set(56, y + 2.4, -96); g.add(pad);
+  // 板间连接器（与阀门/采集板）
+  g.add(chip(14, 5, 30, 66, y + 2, 10, M.steel));
+  return g;
+}
+
+function buildValve() {  // L4 右：阀门驱动 + 采集（自锁阀 2 路 / 电磁阀 ≥9 路 / 压力计 ≥8 / 热敏 ≥4）
+  var g = new THREE.Group();
+  var y = 116;
+  g.add(pcbSlab(116, 208, y, M.pcb));
+  // 11 路阀驱动（高压开启 / 低压维持，50 kHz PWM）
+  for (var i = 0; i < 11; i++) {
+    var cx = 132 - (i % 2) * 30, cz = -84 + Math.floor(i / 2) * 32;
+    g.add(chip(9, 4, 12, cx, y + 2, cz, M.chipBody));
+    g.add(chip(4, 6, 4, cx - 7, y + 2, cz, M.steel));
+    var u = capV(3, 8, cx + 8, y + 2, cz + 10, M.capacitor);
+    g.add(u);
+  }
+  // 储能电容组
+  for (var k = 0; k < 4; k++) g.add(capV(5, 18, 84, y + 2, -40 + k * 26, M.capacitor));
+  // 压力计差分采集 ≥8 路 + 供电 LDO
+  for (var m = 0; m < 8; m++) {
+    g.add(chip(9, 3, 7, 76 + (m % 2) * 16, y + 2, 52 + Math.floor(m / 2) * 12, M.chipBody));
+  }
+  // 热敏电阻 4 路
+  for (var n = 0; n < 4; n++) g.add(chip(4, 2, 4, 108, y + 2, 20 + n * 10, M.aluWarm));
+  // 板间连接器
+  g.add(chip(14, 5, 30, 78, y + 2, -96, M.steel));
+  return g;
+}
+
+function buildShieldCan() {   // 高压屏蔽腔（阳极高压区局部屏蔽）
+  var g = new THREE.Group();
+  var x0 = 6, x1 = 148, z0 = -104, z1 = 104, y0 = 56, y1 = 86;
+  var mat = M.shield;
+  var top = boxM(x1 - x0, 1.5, z1 - z0, mat); top.position.set((x0 + x1) / 2, y1, (z0 + z1) / 2); g.add(top);
+  var sideA = boxM(1.5, y1 - y0, z1 - z0, mat); sideA.position.set(x0, (y0 + y1) / 2, (z0 + z1) / 2); g.add(sideA);
+  var sideB = boxM(1.5, y1 - y0, z1 - z0, mat); sideB.position.set(x1, (y0 + y1) / 2, (z0 + z1) / 2); g.add(sideB);
+  var sideC = boxM(x1 - x0, y1 - y0, 1.5, mat); sideC.position.set((x0 + x1) / 2, (y0 + y1) / 2, z0); g.add(sideC);
+  var sideD = boxM(x1 - x0, y1 - y0, 1.5, mat); sideD.position.set((x0 + x1) / 2, (y0 + y1) / 2, z1); g.add(sideD);
+  return g;
+}
+
+function buildCarrier() {   // 内部导热衬板（功率器件直接压接底板）
+  var g = new THREE.Group();
+  var plate = boxM(288, 5, 220, M.aluWarm); plate.position.y = 8.5; g.add(plate);
+  // 导热绝缘垫
+  var pad = boxM(270, 1.2, 200, M.hvac || M.aluDark); pad.position.y = 11.6; pad.material = M.aluDark; g.add(pad);
+  // 加强筋
+  for (var i = 0; i < 3; i++) {
+    var r = boxM(280, 3, 4, M.alu); r.position.set(0, 6.5, -70 + i * 70); g.add(r);
+  }
+  return g;
+}
+
+/* ---------- 线束：J599 推力器供电 + 低频信号 ---------- */
+function buildHarness() {
+  var g = new THREE.Group();
+  function tube(pts, r, mat) {
+    var curve = new THREE.CatmullRomCurve3(pts.map(function (p) { return new THREE.Vector3(p[0], p[1], p[2]); }));
+    return new THREE.Mesh(new THREE.TubeGeometry(curve, 60, r, 8, false), mat);
+  }
+  // 功率线束（阳极 + 阴极/励磁）
+  g.add(tube([[163, 104, -74], [200, 130, -74], [250, 140, -50], [300, 120, -10], [330, 100, -30]], 4.6, M.wireDark));
+  g.add(tube([[163, 100, -34], [205, 122, -34], [255, 136, -24], [300, 112, 6], [332, 100, -8]], 3.8, M.wireDark));
+  // 信号线束（RS-422 / OC 到星务，示意走向）
+  g.add(tube([[163, 118, 62], [205, 132, 84], [250, 96, 118], [300, 60, 120]], 2.6, M.wireDark));
+  // 卡箍
+  var clamp1 = boxM(10, 12, 26, M.aluDark); clamp1.position.set(250, 138, -52); g.add(clamp1);
+  var clamp2 = boxM(10, 12, 22, M.aluDark); clamp2.position.set(250, 100, 118); g.add(clamp2);
+  return g;
+}
+
+/* =====================================================================
+   部件表
+   ===================================================================== */
+var PARTS = [
+  /* ---- A 推力器头部（招标文件仅给出接口关系：阴极 A/B、阳极、励磁线圈） ---- */
+  { id: 'thr-flange', no: '01', grp: 'A', name: '安装法兰与阴极支架', en: 'Mounting flange', src: 'est',
+    role: '推力器头部与整星/推力架的结构接口，同时固定主、备阴极',
+    label: 'φ124 法兰',
+    spec: [['法兰外径', 'φ124 mm'], ['法兰厚度', '8 mm'], ['安装螺钉', '4 × M5'], ['备注', '外形为工程估算（招标文件未给推力器尺寸）']],
+    dir: [-100, 0, 0], dist: 1, build: buildThrFlange },
+
+  { id: 'thr-shield', no: '02', grp: 'A', name: '磁屏蔽罩', en: 'Magnetic shield', src: 'est',
+    role: '屏蔽内外磁路外泄磁场，减小对星上磁强计与磁力矩器的干扰',
+    label: '1 mm 屏蔽层',
+    spec: [['材料', '1J22 / 坡莫合金屏蔽层'], ['外径', 'φ113 mm'], ['作用', '磁洁净度与热辐射遮挡'], ['备注', '外形估算']],
+    dir: [0, 66, 10], dist: 1, build: buildThrShield },
+
+  { id: 'thr-back', no: '03', grp: 'A', name: '磁背板', en: 'Back plate', src: 'est',
+    role: '闭合内外磁路，决定通道出口的磁镜位形',
+    label: 'φ108 磁背板',
+    spec: [['材料', '1J22 软磁合金（Fe-Co-V）'], ['厚度', '8 mm'], ['磁饱和', 'Bs ≈ 2.4 T'], ['备注', '外形估算']],
+    dir: [-70, 0, 0], dist: 1, build: buildThrBack },
+
+  { id: 'thr-pole-o', no: '04', grp: 'A', name: '外磁极', en: 'Outer pole', src: 'est',
+    role: '在通道出口形成径向磁场的外侧极靴',
+    label: '端面 φ100',
+    spec: [['材料', '1J22 软磁合金'], ['内/外径', 'φ91 / φ100 mm'], ['轴向长度', '19 mm'], ['备注', '外形估算']],
+    dir: [56, 52, 0], dist: 1, build: buildThrPoleOuter },
+
+  { id: 'thr-pole-i', no: '05', grp: 'A', name: '内磁极（中心柱）', en: 'Inner pole', src: 'est',
+    role: '形成通道内侧磁极，中心柱内装内励磁线圈',
+    label: '端面 φ66',
+    spec: [['材料', '1J22 软磁合金'], ['端面直径', 'φ66 mm'], ['中心柱', 'φ18 mm'], ['备注', '外形估算']],
+    dir: [84, -58, 0], dist: 1, build: buildThrPoleInner },
+
+  { id: 'thr-channel', no: '06', grp: 'A', name: '陶瓷放电通道', en: 'Discharge channel', src: 'est',
+    role: '氪气电离与离子加速的绝缘通道，抗溅射、抑制壁面导电',
+    label: 'φ78 / 宽 12 / 深 28',
+    spec: [['材料', 'BN-SiO₂ 氮化硼陶瓷'], ['通道平均直径', 'φ78 mm'], ['通道宽度', '12 mm'], ['通道深度', '28 mm'], ['工质', '氪（Kr）'], ['备注', '外形估算']],
+    dir: [104, 0, 0], dist: 1, build: buildThrChannel },
+
+  { id: 'thr-anode', no: '07', grp: 'A', name: '阳极与气体分配器', en: 'Anode / gas distributor', src: 'est',
+    role: '均匀布气并施加阳极电位（320 V 额定），是放电的阳极与工质入口',
+    label: '24 × φ0.6 布气孔',
+    spec: [['材料', '不锈钢 / 石墨'], ['布气孔', '24 × φ0.6 mm'], ['阳极电压', '320 V 额定，200～420 V 可调'], ['额定功率', '900 W（最大 1000 W）'], ['限流值', '3.6 A'], ['备注', '外形估算']],
+    dir: [6, 0, -116], dist: 1, build: buildThrAnode },
+
+  { id: 'thr-coil-o', no: '08', grp: 'A', name: '外励磁线圈', en: 'Outer magnet coil', src: 'est',
+    role: '与外线圈电流配比整形磁场梯度，励磁电流 0～2.5 A 连续可调',
+    label: '励磁 1.5 A / 45 W',
+    spec: [['导线', '漆包铜线'], ['励磁电流', '0～2.5 A 连续可调（额定 1.5 A）'], ['励磁功率', '45 W（最大 60 W）'], ['备注', '外形估算']],
+    dir: [26, 108, 0], dist: 1, build: buildThrCoilOuter },
+
+  { id: 'thr-coil-i', no: '09', grp: 'A', name: '内励磁线圈', en: 'Inner magnet coil', src: 'est',
+    role: '与外线圈串联，共同设定通道内磁场强度与梯度',
+    label: '与外线圈串联',
+    spec: [['安装位置', '内磁极中心柱内'], ['接线', '与外线圈串联，同一励磁电源'], ['调节', '由励磁恒流源统一调节'], ['备注', '外形估算']],
+    dir: [150, -8, 0], dist: 1, build: buildThrCoilInner },
+
+  { id: 'thr-cathode', no: '10', grp: 'A', name: '阴极 A / 阴极 B（主备）', en: 'Cathode A / B', src: 'est',
+    role: '提供电子源：点火时恒压开启，触持时恒流维持；主备双阴极冗余',
+    label: '点火 260～300 V / 1.3 A',
+    spec: [['配置', '主阴极 A + 备份阴极 B'], ['点火电压', '260～300 V（软件可设置）'], ['触持电压', '5～40 V'], ['额定电流', '1.3 A（0.5～2.0 A 可调）'], ['加热电流', '0～5 A 连续可调'], ['切换', '一套电源经切换电路分别供电'], ['备注', '外形估算']],
+    dir: [10, -84, 26], dist: 1, build: buildThrCathode },
+
+  /* ---- B 线束 ---- */
+  { id: 'harness', no: '11', grp: 'B', name: 'J599 推力器供电线束', en: 'Harness (J599)', src: 'doc',
+    role: 'PPCU 到推力器的高压与功率回路，以及到星务的低频信号回路',
+    label: 'J599 系列连接器',
+    spec: [['推力器供电', 'J599 系列连接器'], ['低频信号', 'CN-J30J-25ZKP（RS-422 / OC）'], ['压调通信', 'J30J-66ZKW'], ['电缆长度', '与卫星总体协商确定'], ['备注', '走线为示意，长度未定']],
+    dir: [0, -40, 0], dist: 1, build: buildHarness },
+
+  /* ---- C PPCU 机箱 ---- */
+  { id: 'ppcu-lid', no: '12', grp: 'C', name: '机箱上盖', en: 'Lid', src: 'doc',
+    role: '承力、屏蔽与辐射散热面；外表面喷热控黑漆（不含安装底面、安装孔、接插件）',
+    label: '表面热控黑漆',
+    spec: [['材料', '铝合金 7075-T73 整体机加'], ['厚度', '6 mm'], ['表面', '热控黑漆（发射率满足热控要求）'], ['固定', '12 × M4 螺钉 + 加强筋'], ['整机高度', '含盖 150 mm']],
+    dir: [0, 152, 0], dist: 1, build: lidGroup },
+
+  { id: 'ppcu-body', no: '13', grp: 'C', name: '机箱壳体（侧插式）', en: 'Chassis', src: 'doc',
+    role: '一体化机箱，兼作导热与搭接基准；外壳无孤立金属结构，搭接电阻 ≤10 mΩ',
+    label: '壁厚 3 mm',
+    spec: [['材料', '铝合金 7075-T73，导电氧化'], ['侧壁厚度', '3 mm'], ['侧壁外廓', '300 × 232 mm'], ['内部加强框', '3 道'], ['接地桩', '机壳—接地桩搭接 ≤10 mΩ'], ['包络', '含接插件与支耳 ≤325 × 257 × 150 mm']],
+    dir: [0, 0, -210], dist: 1, build: bodyGroup },
+
+  { id: 'ppcu-base', no: '14', grp: 'C', name: '安装底板与支耳', en: 'Base plate', src: 'doc',
+    role: '安装面与主导热路径，安装底面热耗 ≤110 W，承担整机 110 W 传导散热',
+    label: '325 × 257 / 支耳 6 mm',
+    spec: [['外形', '325 × 257 mm（含安装支耳）'], ['底板/支耳厚度', '6 ± 0.1 mm'], ['安装面平面度', '0.1 mm / (100 × 100 mm)'], ['安装面粗糙度', '≤ 3.2 µm'], ['安装孔', '4 × φ6.5（M6）'], ['安装底面热耗', '≤ 110 W']],
+    dir: [0, -104, -40], dist: 1, build: baseGroup },
+
+  { id: 'ppcu-conn', no: '15', grp: 'C', name: '对外连接器组（侧插）', en: 'Connectors', src: 'doc',
+    role: '一次母线、星务测控、压调模块与推力器供电的对外电气接口',
+    label: '4 类连接器',
+    spec: [['供电', 'J6W-50D01K1NMB（50 芯）'], ['低频信号', 'CN-J30J-25ZKP（RS-422 + 2 × OC）'], ['压调/通信', 'J30J-66ZKW（适配 L 型锁紧件）'], ['推力器供电', 'J599 系列 ×2'], ['布局', '侧插布局，含于 325 × 257 × 150 包络']],
+    dir: [150, 0, 0], dist: 1, build: connGroup },
+
+  { id: 'ppcu-carrier', no: '16', grp: 'C', name: '导热衬板与绝缘垫', en: 'Thermal carrier', src: 'doc',
+    role: '把功率器件的热量经导热绝缘垫/导热脂直接压到底板，缩短传热路径',
+    label: '导热路径',
+    spec: [['结构', '铝合金衬板 288 × 220 × 5 mm'], ['界面', '导热绝缘垫 / 导热脂'], ['作用', '等温化 + 结构支撑'], ['热耗分配', '底面 ≤110 W，其余经表面辐射']],
+    dir: [0, -92, 10], dist: 1, build: buildCarrier },
+
+  { id: 'ppcu-emi', no: '17', grp: 'C', name: '输入保护与 EMI 滤波模块', en: 'Input protection & EMI', src: 'doc',
+    role: '熔断、可恢复过流、防反接、浪涌抑制、共模/差模滤波与母线采样',
+    label: '8 W 损耗 · 60 A/200 µs',
+    spec: [['熔断电流', '80 A（1 s）'], ['可恢复过流保护', '60 A（200 µs）'], ['浪涌斜率', '≤ 10⁶ A/s'], ['浪涌电流', '≤3 A 或 1.5 × 额定（取大），≤5 ms'], ['反射纹波', '≤ 300 mVp-p（0～20 MHz）'], ['损耗预算', '8 W（表 3-4）']],
+    dir: [0, -56, 56], dist: 1, build: buildEMI },
+
+  { id: 'ppcu-magnet', no: '18', grp: 'C', name: '励磁电源模块', en: 'Magnet PSU', src: 'doc',
+    role: '为内外励磁线圈提供 0～2.5 A 恒流，远程设置与开关机',
+    label: '45 W · 0～2.5 A',
+    spec: [['工作模式', '恒流源'], ['输出电压', '2～35 V'], ['额定电流', '1.5 A（0～2.5 A 连续可调）'], ['额定功率', '45 W（最大 60 W）'], ['电流精度', '±2% FS（20%～100% 负载）'], ['损耗预算', '4 W（表 3-4）']],
+    dir: [0, -56, 56], dist: 1, build: buildMagnet },
+
+  { id: 'ppcu-anode', no: '19', grp: 'C', name: '阳极电源模块', en: 'Anode PSU', src: 'doc',
+    role: '42 V 隔离升压到 200～420 V，软开关 + 同步整流，含打火保护与等离子体振荡滤波',
+    label: '900 W / 320 V / 3.6 A',
+    spec: [['输出电压', '200～420 V 连续可调（额定 320 V）'], ['额定 / 最大功率', '900 W / 1000 W'], ['输出电流', '0.5～3.2 A，限流 3.6 A'], ['电压精度', '±2% FS'], ['输出纹波', '≤ 5 V（峰峰值）'], ['打火保护', '限流环毫秒级接管，自动恢复'], ['损耗预算', '78 W（表 3-4）']],
+    dir: [0, -6, 56], dist: 1, build: buildAnode },
+
+  { id: 'ppcu-ignite', no: '20', grp: 'C', name: '阴极点火与触持电源模块', en: 'Igniter PSU', src: 'doc',
+    role: '点火恒压开启（260～300 V）、触持恒流维持（0.5～2.0 A），支持主备阴极切换',
+    label: '260～300 V / 1.3 A',
+    spec: [['工作模式', '恒压开启 → 恒流维持'], ['点火电压', '260～300 V（软件可设置）'], ['触持电压', '5～40 V'], ['额定电流', '1.3 A（0.5～2.0 A 可调）'], ['电流纹波', '≤ 100 mA'], ['主备切换', '遥控指令切换主/备阴极'], ['损耗预算', '6 W（表 3-4）']],
+    dir: [0, 44, 56], dist: 1, build: buildIgnite },
+
+  { id: 'ppcu-heater', no: '21', grp: 'C', name: '阴极加热电源模块', en: 'Heater PSU', src: 'doc',
+    role: '阴极加热恒流源，0～5 A 连续可调，输出 0～25 V，最大 120 W',
+    label: '0～5 A / 0～25 V',
+    spec: [['工作模式', '恒流源'], ['输出电压', '0～25 V'], ['输出电流', '0～5 A 连续可调'], ['最大功率', '120 W'], ['电流纹波', '≤ 100 mA'], ['保护', '输出短路 / 开路保护'], ['损耗预算', '8 W（表 3-4）']],
+    dir: [0, 44, 56], dist: 1, build: buildHeater },
+
+  { id: 'ppcu-dicu', no: '22', grp: 'C', name: 'DICU 数字综合控制单元', en: 'DICU', src: 'doc',
+    role: '主控 MCU + 抗辐照 ADC，完成时序控制、闭环调节、遥测组帧与 RS-422 / OC 通信',
+    label: 'RS-422 + 2 × OC',
+    spec: [['主控', 'MCU AS32S601ZIT2'], ['ADC', 'HPM005-AD16（抗辐照）'], ['通信', '1 路异步 RS-422（通信地与二次地隔离）'], ['硬线', '2 路 OC 接口'], ['遥测丢帧率', '≤ 1 / 10000 帧'], ['遥控', 'CRC + 帧序号 + 超时重传，原则上不丢失']],
+    dir: [0, 94, 56], dist: 1, build: buildDICU },
+
+  { id: 'ppcu-valve', no: '23', grp: 'C', name: '阀门驱动与采集板', en: 'Valve driver & DAQ', src: 'doc',
+    role: '自锁阀与电磁阀驱动、压力计与热敏采集，实现压调与流控',
+    label: '11 路阀 / 8 压力 / 4 温度',
+    spec: [['自锁阀', '2 路，开启 28 V/42 V，电阻约 21.8 Ω（三线制）'], ['电磁阀', '≥9 路，18 ± 2 Ω，高压开启 + 低压维持'], ['PWM', '默认 50 kHz，支持保持 / BANGBANG 模式'], ['压力计', '≥8 路，差模 0～200 mV，精度 1%'], ['热敏电阻', '≥4 路'], ['损耗预算', '30 W（表 3-4）']],
+    dir: [0, 94, 56], dist: 1, build: buildValve },
+
+  { id: 'ppcu-shield', no: '24', grp: 'C', name: '高压屏蔽腔', en: 'HV shield can', src: 'doc',
+    role: '功率级与信号级分区、高压与低压物理隔离，保证爬电距离与 EMC 自兼容',
+    label: '高压区局部屏蔽',
+    spec: [['材料', '铝合金屏蔽罩（导电氧化）'], ['覆盖范围', '阳极高压变换与输出区'], ['作用', '抑制等离子体振荡与打火干扰耦合'], ['工艺', '高压焊点防护为强制检验点']],
+    dir: [0, 20, 132], dist: 1, build: buildShieldCan }
+];
+
+/* ---------- 尺寸标注 ---------- */
+var DIMS = [
+  { a: [-162.5, -34, -128.5], b: [162.5, -34, -128.5], text: '325', src: 'doc' },
+  { a: [-186, -34, -128.5], b: [-186, -34, 128.5], text: '257', src: 'doc' },
+  { a: [-186, 0, -150], b: [-186, 150, -150], text: '150', src: 'doc' },
+  { a: [-120, -20, -128.5], b: [-120, 0, -128.5], text: '6 支耳', src: 'doc' },
+  { a: [392, T.y0 - 74, 0], b: [392, T.y0 + 74, 0], text: 'φ113', src: 'est' },
+  { a: [T.x0, T.y0 + 96, 0], b: [T.x0 + 58, T.y0 + 96, 0], text: '58 本体长', src: 'est' }
+];
+/* =====================================================================
+   渲染与交互
+   ===================================================================== */
 var stage = document.getElementById('stage');
 var canvas = document.getElementById('view');
+var labelLayer = document.getElementById('labels');
+var dimLayer = document.getElementById('dims');
+var leadSvg = document.getElementById('leads');
 
 var renderer;
 try {
   renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, powerPreference: 'high-performance' });
-} catch (err) {
-  stage.classList.remove('is-loading');
+} catch (e) {
+  document.getElementById('loader').remove();
   stage.insertAdjacentHTML('beforeend',
-    '<div style="position:absolute;inset:0;display:grid;place-items:center;padding:24px;text-align:center;color:#9AA7B8;font-size:14px">' +
-    '当前浏览器或设备未启用 WebGL，无法渲染三维视图。请更换支持 WebGL 2 的浏览器，或在设置里打开硬件加速。</div>');
-  throw err;
+    '<div class="fallback">当前浏览器未启用 WebGL，无法渲染三维视图。请更换支持 WebGL2 的浏览器，或在设置中打开硬件加速。</div>');
+  throw e;
 }
 renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-renderer.setClearColor(0x05070C, 1);
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.28;
-if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMappingExposure = 1.05;
+renderer.localClippingEnabled = true;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 var scene = new THREE.Scene();
-scene.fog = new THREE.Fog(0x05070C, 14, 30);
-var camera = new THREE.PerspectiveCamera(42, 1, 0.1, 200);
+scene.fog = new THREE.FogExp2(0x04060A, 0.00042);
 
-/* === 灯光：主光 + 冷补光 + 轮廓光 === */
-scene.add(new THREE.HemisphereLight(0x51667F, 0x0A0E14, 0.85));
-var key = new THREE.DirectionalLight(0xFFFFFF, 2.7);
-key.position.set(5.5, 6.5, 6.5);
-scene.add(key);
-var fill = new THREE.DirectionalLight(0x6DA8FF, 1.35);
-fill.position.set(-6.5, -2.5, -4);
-scene.add(fill);
-var rim = new THREE.DirectionalLight(0x9BD8FF, 1.5);
-rim.position.set(-1.5, 4.5, -7);
-scene.add(rim);
-var plumeLight = new THREE.PointLight(0x38BDF8, 0.8, 12, 2);
-plumeLight.position.set(0, 0, 3.2);
-scene.add(plumeLight);
+var camera = new THREE.PerspectiveCamera(38, 1, 1, 9000);
+camera.position.set(900, 620, 1000);
 
-/* === 背景：星点 + 地面网格（内容由代码生成，不是 CSS 渐变） === */
-(function backdrop() {
-  var n = 700, pos = new Float32Array(n * 3);
-  for (var i = 0; i < n; i++) {
-    var r = 15 + Math.random() * 12;
-    var t = Math.random() * Math.PI * 2;
-    var p = Math.acos(2 * Math.random() - 1);
-    pos[i * 3] = r * Math.sin(p) * Math.cos(t);
-    pos[i * 3 + 1] = r * Math.cos(p);
-    pos[i * 3 + 2] = r * Math.sin(p) * Math.sin(t);
-  }
-  var g = new THREE.BufferGeometry();
-  g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-  scene.add(new THREE.Points(g, new THREE.PointsMaterial({ color: 0x2E4257, size: 0.07, sizeAttenuation: true, transparent: true, opacity: 0.9 })));
-  var grid = new THREE.GridHelper(18, 36, 0x16212E, 0x0C141C);
-  grid.position.y = -2.6;
-  scene.add(grid);
+/* ---------- 环境贴图（金属反射用） ---------- */
+function buildEnv() {
+  var cv = document.createElement('canvas'); cv.width = 128; cv.height = 64;
+  var c = cv.getContext('2d');
+  var grd = c.createLinearGradient(0, 0, 0, 64);
+  grd.addColorStop(0.00, '#0B1A28');
+  grd.addColorStop(0.42, '#1D3F58');
+  grd.addColorStop(0.50, '#3C7E9E');
+  grd.addColorStop(0.60, '#16232F');
+  grd.addColorStop(1.00, '#05080C');
+  c.fillStyle = grd; c.fillRect(0, 0, 128, 64);
+  // 两块亮面，给金属边缘制造高光带
+  var g2 = c.createRadialGradient(30, 18, 2, 30, 18, 26);
+  g2.addColorStop(0, 'rgba(210,238,255,.95)'); g2.addColorStop(1, 'rgba(210,238,255,0)');
+  c.fillStyle = g2; c.fillRect(0, 0, 128, 64);
+  var g3 = c.createRadialGradient(100, 30, 2, 100, 30, 22);
+  g3.addColorStop(0, 'rgba(120,190,240,.6)'); g3.addColorStop(1, 'rgba(120,190,240,0)');
+  c.fillStyle = g3; c.fillRect(0, 0, 128, 64);
+  var tex = new THREE.CanvasTexture(cv);
+  tex.mapping = THREE.EquirectangularReflectionMapping;
+  tex.colorSpace = THREE.SRGBColorSpace;
+  var pmrem = new THREE.PMREMGenerator(renderer);
+  var env = pmrem.fromEquirectangular(tex).texture;
+  pmrem.dispose(); tex.dispose();
+  return env;
+}
+var envMap = buildEnv();
+Object.keys(M).forEach(function (k) { if (M[k].isMeshStandardMaterial) { M[k].envMap = envMap; M[k].envMapIntensity = 0.62; } });
+
+/* ---------- 灯光 ---------- */
+scene.add(new THREE.HemisphereLight(0x93B4CE, 0x06090E, 0.30));
+scene.add(new THREE.AmbientLight(0x1A2836, 0.45));
+var key = new THREE.DirectionalLight(0xFFF1DC, 4.2); key.position.set(520, 780, 660); scene.add(key);
+key.castShadow = true;
+key.shadow.mapSize.set(2048, 2048);
+key.shadow.camera.left = -760; key.shadow.camera.right = 760;
+key.shadow.camera.top = 760; key.shadow.camera.bottom = -760;
+key.shadow.camera.near = 1; key.shadow.camera.far = 3200;
+key.shadow.bias = -0.0006; key.shadow.normalBias = 1.4;
+var fill = new THREE.DirectionalLight(0x8FB8E8, 0.32); fill.position.set(-820, 460, -420); scene.add(fill);
+var rim = new THREE.DirectionalLight(0x7FE0FF, 2.2); rim.position.set(-420, 300, -860); scene.add(rim);
+var warm = new THREE.PointLight(0xFFB765, 42000, 1800, 2); warm.position.set(520, 120, 300); scene.add(warm);
+var inner = new THREE.PointLight(0xBFE2FF, 9000, 620, 2); inner.position.set(30, 170, 190); scene.add(inner);
+var inner2 = new THREE.PointLight(0x7FD0FF, 4200, 460, 2); inner2.position.set(-140, 70, 120); scene.add(inner2);
+var cool = new THREE.PointLight(0x4FA6E0, 30000, 1600, 2); cool.position.set(-360, 220, -380); scene.add(cool);
+
+/* ---------- 地面：网格 + 渐隐光盘 ---------- */
+(function () {
+  var cv = document.createElement('canvas'); cv.width = 256; cv.height = 256;
+  var c = cv.getContext('2d');
+  var g = c.createRadialGradient(128, 128, 8, 128, 128, 128);
+  g.addColorStop(0, 'rgba(58,120,180,.30)');
+  g.addColorStop(0.45, 'rgba(30,66,104,.14)');
+  g.addColorStop(1, 'rgba(4,8,14,0)');
+  c.fillStyle = g; c.fillRect(0, 0, 256, 256);
+  var tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace;
+  var disc = new THREE.Mesh(new THREE.PlaneGeometry(2600, 2600),
+    new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }));
+  disc.rotation.x = -Math.PI / 2; disc.position.y = -5; scene.add(disc);
 })();
+var shadowCatcher = new THREE.Mesh(new THREE.PlaneGeometry(2400, 2400), new THREE.ShadowMaterial({ opacity: 0.42 }));
+shadowCatcher.rotation.x = -Math.PI / 2; shadowCatcher.position.y = -4;
+shadowCatcher.receiveShadow = true; scene.add(shadowCatcher);
+var grid = new THREE.GridHelper(2800, 56, 0x1E3A55, 0x122436);
+grid.material.transparent = true; grid.material.opacity = 0.34; grid.position.y = -4.5;
+scene.add(grid);
 
-/* === 材质与几何小工具 === */
-function metal(color, roughness, metalness, opts) {
-  var m = new THREE.MeshStandardMaterial({ color: color, roughness: roughness, metalness: metalness, emissive: 0x000000, emissiveIntensity: 0 });
-  if (opts && opts.side) m.side = opts.side;
-  if (opts && opts.flat) m.flatShading = true;
-  return m;
-}
-function shellMaterial(color, roughness, metalness) {
-  return metal(color, roughness, metalness, { side: THREE.DoubleSide });
-}
-function tubeZ(radius, height, z, material, seg, open) {
-  var m = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, height, seg || 48, 1, !!open), material);
-  m.rotation.x = Math.PI / 2;
-  m.position.z = z;
-  return m;
-}
-function ringZ(radius, tube, z, material, seg, radial) {
-  var m = new THREE.Mesh(new THREE.TorusGeometry(radius, tube, radial || 14, seg || 64), material);
-  m.position.z = z;
-  return m;
-}
-
-/* === 部件清单 === */
-var PARTS = [
-  {
-    id: 'shell', name: '放电室外壳', en: 'Discharge chamber housing',
-    role: '承力与屏蔽', labelSpec: 'φ106 mm',
-    specs: [['材料', '不锈钢 1Cr18Ni9Ti + 磁屏蔽层'], ['外径', '106 mm'], ['长度', '75 mm'], ['壁厚', '2.5 mm']],
-    desc: '承接全部结构载荷与热载荷，把放电通道、磁路和线圈固定在同一轴线上，同时遮住等离子体对外部磁场的干扰。',
-    vec: [1.6, 0.2, 0]
-  },
-  {
-    id: 'outerCoil', name: '外线圈', en: 'Outer magnet coil',
-    role: '磁路激励', labelSpec: '480 匝 / 3.0 A',
-    specs: [['导线', '漆包铜线 φ0.8 mm'], ['匝数', '480'], ['工作电流', '3.0 A'], ['功耗', '约 26 W'], ['最高温度', '≤ 120 ℃']],
-    desc: '给外磁路提供激励，与内线圈一起在通道出口形成径向磁场；磁感应强度的径向分量峰值决定电子霍尔漂移的强度。',
-    vec: [2.6, 0.4, 0]
-  },
-  {
-    id: 'shield', name: '磁屏与磁路骨架', en: 'Magnetic screen and yoke',
-    role: '磁路约束', labelSpec: '1J22 软磁合金',
-    specs: [['材料', '1J22 软磁合金（Fe-Co-V）'], ['厚度', '1.5 mm'], ['饱和磁密', '2.4 T'], ['气隙', '通道出口处 4 mm']],
-    desc: '把线圈产生的磁通约束在磁路内并导向通道出口，减少漏磁；骨架同时充当内、外磁极之间的回流路径。',
-    vec: [2.0, -1.3, 0]
-  },
-  {
-    id: 'outerPole', name: '外磁极', en: 'Outer pole piece',
-    role: '磁场整形', labelSpec: '端面 φ132 mm',
-    specs: [['材料', '1J22 软磁合金'], ['端面直径', '132 mm'], ['与内磁极间隙', '14 mm'], ['出口磁感应强度', '≈ 200 Gs']],
-    desc: '与内磁极构成通道出口的环形磁隙，磁力线在这一圈穿出陶瓷壁形成径向分量，是霍尔漂移得以维持的几何前提。',
-    vec: [0.6, 1.4, 0.2]
-  },
-  {
-    id: 'channel', name: '放电通道与陶瓷内衬', en: 'Discharge channel with ceramic liner',
-    role: '电离与加速', labelSpec: '通道宽 14 mm',
-    specs: [['材料', 'BN-SiO₂ 氮化硼陶瓷'], ['平均直径', '96 mm'], ['通道宽度', '14 mm'], ['通道深度', '32 mm'], ['溅射率', '低（决定寿命）']],
-    desc: '电子在这里被径向磁场捕获、沿方位角漂移电离工质，离子被轴向电场加速喷出。陶瓷内衬的抗溅射能力基本决定整机寿命。',
-    vec: [0, 1.55, 0.5]
-  },
-  {
-    id: 'anode', name: '阳极与气体分配器', en: 'Anode and gas distributor',
-    role: '工质分配 / 电位', labelSpec: '24 × φ0.6 mm',
-    specs: [['材料', '不锈钢 316L（可选石墨）'], ['分配孔', '24 × φ0.6 mm'], ['阳极电位', '+300 V'], ['入口压力', '1.2 MPa（减压后）']],
-    desc: '沿通道周向均匀供气，同时作为放电阳极把电场建立到通道底部；布孔均匀性直接影响羽流对称性和通道壁的局部溅射。',
-    vec: [0, 0, 1.9]
-  },
-  {
-    id: 'innerPole', name: '内磁极与中心柱', en: 'Inner pole piece and center core',
-    role: '磁场整形', labelSpec: '端面 φ78 mm',
-    specs: [['材料', '1J22 软磁合金'], ['端面直径', '78 mm'], ['中心柱直径', '40 mm'], ['热负荷', '需导热至安装面']],
-    desc: '与外磁极共同围出环形磁隙。中心柱内部同时是内线圈的安装空间，热量经中心柱与安装面传到整机底板。',
-    vec: [0, -1.5, 0.2]
-  },
-  {
-    id: 'innerCoil', name: '内线圈', en: 'Inner magnet coil',
-    role: '磁路激励', labelSpec: '320 匝 / 2.5 A',
-    specs: [['导线', '漆包铜线 φ0.8 mm'], ['匝数', '320'], ['工作电流', '2.5 A'], ['功耗', '约 18 W']],
-    desc: '与线圈外圈共同调磁：改变内外线圈电流配比，可以在不换硬件的前提下微调磁场梯度与通道内的电场分布。',
-    vec: [0, -2.2, -0.4]
-  },
-  {
-    id: 'cathode', name: '空心阴极组件', en: 'Hollow cathode assembly',
-    role: '电子源 / 中和', labelSpec: 'LaB₆ · 25 W',
-    specs: [['发射体', 'LaB₆ 六硼化镧'], ['加热功率', '25 W'], ['阴极流量', '0.26 mg/s'], ['触持极电位', '约 +20 V'], ['寿命', '≥ 8000 h']],
-    desc: '给放电通道注入原初电子，同时向羽流提供等量电子实现中和，否则航天器会持续带负电。阴极往往先于推力器本体失效。',
-    vec: [2.2, -0.9, 1.2]
-  },
-  {
-    id: 'feed', name: '供气管路', en: 'Propellant feed lines',
-    role: '工质输送', labelSpec: 'φ3 mm 不锈钢管',
-    specs: [['管路', '不锈钢管 φ3 mm × 0.5 mm'], ['工质', '氙气（Xe）'], ['阳极流量', '2.6 mg/s'], ['阴极流量', '0.26 mg/s']],
-    desc: '把氙气从贮箱经减压阀分成两路：主流量进阳极分配器，小流量进阴极。两路流量比决定放电稳定性和羽流发散角。',
-    vec: [-2.0, 1.5, 0.5]
-  },
-  {
-    id: 'flange', name: '安装法兰', en: 'Mounting interface flange',
-    role: '机械接口', labelSpec: '4 × M5',
-    specs: [['材料', '铝合金 6061-T6'], ['安装面直径', 'φ150 mm'], ['紧固件', '4 × M5'], ['安装面平面度', '≤ 0.05 mm']],
-    desc: '与航天器底板对接，同时把推力、热流和电磁干扰隔离到整机结构上；安装面平整度直接影响力矢量偏心。',
-    vec: [0, 0, -2.9]
-  },
-  {
-    id: 'ppu', name: '电源接口与线束', en: 'PPU connector and harness',
-    role: '电气接口', labelSpec: '300 V / 12 V / 6 V',
-    specs: [['放电回路', '300 V 高压航插'], ['线圈回路', '12 V 双路'], ['加热回路', '6 V'], ['测点', '阳极温度、线圈温度']],
-    desc: '把电源处理单元的高压放电、线圈励磁与阴极加热三路分开走线，避免高压回路对磁路和测量信号产生耦合干扰。',
-    vec: [1.2, -0.8, -3.8]
-  },
-  {
-    id: 'plume', name: '等离子体羽流', en: 'Ion plume',
-    role: '产物（非实体件）', labelSpec: '≈ 45° 发散角',
-    specs: [['离子能量', '约 250 ~ 300 eV'], ['电子温度', '约 10 eV'], ['羽流发散角', '半角 ≈ 45°'], ['束流密度', '通道出口处最高'], ['颜色说明', '为示意叠加层，非真实发光']],
-    desc: '电离后的氙离子在轴向电场中被加速喷出，形成推力。羽流发散角越小、束流越集中，有效利用的比冲越高。',
-    vec: [0, 0, 1.4]
-  }
-];
-
-/* === 生成各部件的几何体 === */
+/* ---------- 组装全部部件 ---------- */
 var root = new THREE.Group();
 scene.add(root);
-var pickables = [];
+var partObjs = {};
+var pickList = [];
 
-function addPart(id, group) {
-  var part = null;
-  for (var i = 0; i < PARTS.length; i++) if (PARTS[i].id === id) part = PARTS[i];
-  part.group = group;
-  part.base = new THREE.Vector3(0, 0, 0);
-  part.open = 0;
-  part.target = 0;
-  part.selected = false;
-  part.hover = false;
-  part.glow = 0;
-  part.materials = [];
-  part.labelOffset = new THREE.Vector3(0, 0, 0);
-  group.traverse(function (o) {
-    if (!o.isMesh) return;
-    o.userData.partId = id;
-    // 羽流是加法混合的示意层，不参与拾取，避免挡住正面的部件
-    if (id !== 'plume') pickables.push(o);
-    if (o.material) {
-      o.material = o.material.clone();
-      o.material.transparent = o.material.transparent || false;
-      part.materials.push(o.material);
+PARTS.forEach(function (def) {
+  var g = def.build();
+  g.traverse(function (o) {
+    if (o.isMesh) {
+      o.userData.partId = def.id;
+      o.castShadow = true;
+      o.receiveShadow = true;
+      if (!o.userData.noPick) pickList.push(o);
+      if (o.material && o.material.isMeshStandardMaterial) o.userData.baseEmissive = o.material.emissive.clone();
     }
   });
-  root.add(group);
-  return part;
-}
+  root.add(g);
+  var box = new THREE.Box3().setFromObject(g);
+  var center = box.getCenter(new THREE.Vector3());
+  var size = box.getSize(new THREE.Vector3());
+  var obj = { def: def, group: g, base: g.position.clone(), center: center, size: size };
+  def.group = g;
+  partObjs[def.id] = obj;
+});
 
-/* 1 外壳 */
-addPart('shell', (function () {
-  var g = new THREE.Group();
-  var m = shellMaterial(0x3B4956, 0.42, 0.9);
-  g.add(tubeZ(1.06, 1.5, 0, m, 64, true));
-  g.add(ringZ(1.07, 0.075, 0.75, metal(0x4A5866, 0.35, 0.95), 64));
-  g.add(tubeZ(1.10, 0.10, 0.78, metal(0x4A5866, 0.35, 0.95), 64, true));
-  g.add(ringZ(1.06, 0.065, -0.75, metal(0x4A5866, 0.35, 0.95), 64));
-  g.add(ringZ(1.065, 0.04, -0.35, metal(0x45525F, 0.4, 0.9), 64));
-  g.add(ringZ(1.065, 0.04, 0.25, metal(0x45525F, 0.4, 0.9), 64));
-  return g;
-})()).labelOffset.set(1.55, 0.95, 0);
+var plumeObj = buildPlume();
+plumeObj.traverse(function (o) { if (o.isMesh) o.userData.noPick = true; });
+root.add(plumeObj);
 
-/* 2 外线圈 */
-addPart('outerCoil', (function () {
-  var g = new THREE.Group();
-  var copper = metal(0xC87A3C, 0.3, 0.88);
-  for (var i = 0; i < 6; i++) g.add(ringZ(1.16, 0.062, -0.5 + i * 0.2, copper, 56, 10));
-  g.add(tubeZ(1.235, 1.06, 0, metal(0x1B2530, 0.6, 0.7), 48, true));
-  return g;
-})()).labelOffset.set(2.0, 0.35, 0);
-
-/* 3 磁屏与骨架 */
-addPart('shield', (function () {
-  var g = new THREE.Group();
-  var m = shellMaterial(0x424E5C, 0.5, 0.9);
-  g.add(tubeZ(0.96, 1.25, -0.02, m, 64, true));
-  g.add(ringZ(0.96, 0.05, -0.66, metal(0x54616F, 0.45, 0.9), 56));
-  g.add(tubeZ(0.5, 0.06, -0.62, metal(0x54616F, 0.45, 0.9), 40, true));
-  return g;
-})()).labelOffset.set(-1.5, -1.0, 0);
-
-/* 4 外磁极 */
-addPart('outerPole', (function () {
-  var g = new THREE.Group();
-  var m = metal(0x5A6878, 0.34, 0.95);
-  g.add(ringZ(0.90, 0.11, 0.66, m, 64));
-  g.add(tubeZ(0.885, 0.24, 0.60, metal(0x5A6878, 0.34, 0.95), 64, true));
-  return g;
-})()).labelOffset.set(0.95, 1.45, 0.35);
-
-/* 5 放电通道与陶瓷内衬 */
-addPart('channel', (function () {
-  var g = new THREE.Group();
-  var ceramic = shellMaterial(0xE6E0D3, 0.8, 0.05);
-  g.add(tubeZ(0.80, 1.15, 0.08, ceramic, 64, true));
-  g.add(tubeZ(0.46, 1.15, 0.08, ceramic, 64, true));
-  var lipM = metal(0xD8D2C4, 0.75, 0.05);
-  g.add(ringZ(0.80, 0.028, 0.655, lipM, 64));
-  g.add(ringZ(0.46, 0.028, 0.655, lipM, 64));
-  return g;
-})()).labelOffset.set(0, 1.7, 0.55);
-
-/* 6 阳极与气体分配器 */
-addPart('anode', (function () {
-  var g = new THREE.Group();
-  var m = metal(0x8A9299, 0.38, 0.9);
-  g.add(ringZ(0.63, 0.085, 0.18, m, 64));
-  g.add(tubeZ(0.71, 0.12, 0.14, metal(0x757D85, 0.4, 0.85), 56, true));
-  var holeGeo = new THREE.SphereGeometry(0.036, 10, 8);
-  var holeMat = metal(0x5A6169, 0.5, 0.8);
-  for (var i = 0; i < 24; i++) {
-    var a = (i / 24) * Math.PI * 2;
-    var s = new THREE.Mesh(holeGeo, holeMat);
-    s.position.set(Math.cos(a) * 0.63, Math.sin(a) * 0.63, 0.28);
-    g.add(s);
-  }
-  g.add(tubeZ(0.05, 0.5, 0.4, metal(0x9AA0A6, 0.35, 0.9), 16));
-  return g;
-})()).labelOffset.set(0, -0.75, 1.05);
-
-/* 7 内磁极与中心柱 */
-addPart('innerPole', (function () {
-  var g = new THREE.Group();
-  var m = metal(0x5A6878, 0.34, 0.95);
-  g.add(tubeZ(0.42, 1.0, 0.18, m, 56));
-  g.add(ringZ(0.40, 0.055, 0.70, metal(0x64717F, 0.32, 0.95), 56));
-  g.add(tubeZ(0.12, 0.6, -0.45, metal(0x4A5765, 0.4, 0.9), 24));
-  return g;
-})()).labelOffset.set(0, -1.5, 0.55);
-
-/* 8 内线圈 */
-addPart('innerCoil', (function () {
-  var g = new THREE.Group();
-  var copper = metal(0xC87A3C, 0.3, 0.88);
-  for (var i = 0; i < 7; i++) g.add(ringZ(0.30, 0.052, -0.42 + i * 0.14, copper, 48, 10));
-  return g;
-})()).labelOffset.set(0, -1.0, -1.1);
-
-/* 9 空心阴极组件 */
-addPart('cathode', (function () {
-  var g = new THREE.Group();
-  var body = metal(0x7A828C, 0.34, 0.92);
-  g.add(tubeZ(0.075, 0.62, 0, body, 24));
-  g.add(ringZ(0.095, 0.024, 0.33, metal(0xC9A227, 0.45, 0.9), 24, 8));
-  var heater = metal(0xE0B060, 0.4, 0.8);
-  for (var i = 0; i < 4; i++) g.add(ringZ(0.10, 0.014, -0.08 + i * 0.05, heater, 24, 8));
-  var insert = tubeZ(0.052, 0.07, 0.30, metal(0x2B2118, 0.6, 0.3), 20);
-  g.add(insert);
-  var bracket = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.06, 0.1), metal(0x3A4553, 0.5, 0.85));
-  bracket.position.set(-0.3, 0, -0.25);
-  g.add(bracket);
-  g.position.set(1.45, -0.66, 0.60);
-  g.rotation.set(0.18, -0.55, 0.12);
-  g.userData.keepPosition = true;
-  return g;
-})()).labelOffset.set(0.75, -0.55, 0.35);
-
-/* 10 供气管路 */
-addPart('feed', (function () {
-  var g = new THREE.Group();
-  var m = metal(0x9AA7B8, 0.3, 0.95);
-  function pipe(points) {
-    var curve = new THREE.CatmullRomCurve3(points.map(function (p) { return new THREE.Vector3(p[0], p[1], p[2]); }));
-    return new THREE.Mesh(new THREE.TubeGeometry(curve, 64, 0.032, 8, false), m);
-  }
-  g.add(pipe([[-0.55, 0.6, -0.92], [-0.5, 0.95, -0.4], [-0.2, 0.9, 0.05], [-0.05, 0.55, 0.2], [-0.05, 0.2, 0.28]]));
-  g.add(pipe([[0.55, 0.7, -0.92], [0.95, 0.75, -0.3], [1.3, 0.2, 0.1], [1.45, -0.4, 0.35]]));
-  g.add(pipe([[-0.35, -0.5, -0.92], [-0.6, -0.3, -0.2], [-0.1, -0.55, 0.18]]));
-  return g;
-})()).labelOffset.set(-1.3, 1.35, -0.2);
-
-/* 11 安装法兰 */
-addPart('flange', (function () {
-  var g = new THREE.Group();
-  g.add(tubeZ(1.32, 0.09, -0.88, metal(0x36424F, 0.5, 0.85), 64));
-  g.add(tubeZ(0.52, 0.16, -0.95, metal(0x414C5A, 0.45, 0.9), 48));
-  var boltGeo = new THREE.CylinderGeometry(0.055, 0.055, 0.14, 14);
-  var boltMat = metal(0xA8B2BF, 0.3, 0.95);
-  for (var i = 0; i < 4; i++) {
-    var a = Math.PI / 4 + i * Math.PI / 2;
-    var b = new THREE.Mesh(boltGeo, boltMat);
-    b.rotation.x = Math.PI / 2;
-    b.position.set(Math.cos(a) * 1.18, Math.sin(a) * 1.18, -0.82);
-    g.add(b);
-  }
-  return g;
-})()).labelOffset.set(-1.35, -0.95, -0.55);
-
-/* 12 电源接口与线束 */
-addPart('ppu', (function () {
-  var g = new THREE.Group();
-  var body = metal(0x2B3644, 0.55, 0.75);
-  var pinMat = metal(0xC0A060, 0.35, 0.9);
-  [-0.45, 0.45].forEach(function (x, k) {
-    var box = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.22, 0.2), body);
-    box.position.set(x, k === 0 ? 0.1 : -0.15, -1.02);
-    g.add(box);
-    for (var i = 0; i < 6; i++) {
-      var p = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.1, 8), pinMat);
-      p.rotation.x = Math.PI / 2;
-      p.position.set(x - 0.12 + (i % 3) * 0.12, (k === 0 ? 0.1 : -0.15) + (i < 3 ? 0.05 : -0.05), -1.14);
-      g.add(p);
-    }
+/* ---------- 尺寸标注线段 ---------- */
+var dimLines = new THREE.Group();
+scene.add(dimLines);
+DIMS.forEach(function (d) {
+  var a = new THREE.Vector3(d.a[0], d.a[1], d.a[2]);
+  var b = new THREE.Vector3(d.b[0], d.b[1], d.b[2]);
+  var dir = new THREE.Vector3().subVectors(b, a).normalize();
+  // 端部刻度（垂直于测量方向的小段）
+  var perp = new THREE.Vector3(0, 1, 0);
+  if (Math.abs(dir.y) > 0.8) perp.set(1, 0, 0);
+  var tick = 7;
+  var pts = [a, b];
+  var a1 = a.clone().addScaledVector(perp, tick), a2 = a.clone().addScaledVector(perp, -tick);
+  var b1 = b.clone().addScaledVector(perp, tick), b2 = b.clone().addScaledVector(perp, -tick);
+  var geo = new THREE.BufferGeometry().setFromPoints([a, b, a1, a2, b1, b2]);
+  var mat = new THREE.LineBasicMaterial({
+    color: d.src === 'doc' ? 0x7FDCFF : 0xF3B856, transparent: true, opacity: 0.9, depthTest: false
   });
-  return g;
-})()).labelOffset.set(1.35, -0.85, -1.35);
+  var line = new THREE.LineSegments(geo, mat);
+  line.renderOrder = 4;
+  dimLines.add(line);
+  var el = document.createElement('div');
+  el.className = 'dimg' + (d.src === 'doc' ? '' : ' est');
+  el.textContent = d.text + (d.src === 'doc' ? ' mm' : ' mm · 估算');
+  dimLayer.appendChild(el);
+  d.el = el;
+  d.mid = a.clone().add(b).multiplyScalar(0.5);
+});
 
-/* 13 等离子体羽流（示意叠加层） */
-addPart('plume', (function () {
-  var g = new THREE.Group();
-  var outer = new THREE.Mesh(
-    new THREE.CylinderGeometry(1.45, 0.45, 3.4, 48, 1, true),
-    new THREE.MeshBasicMaterial({ color: 0x38BDF8, transparent: true, opacity: 0.04, side: THREE.DoubleSide, blending: THREE.AdditiveBlending, depthWrite: false })
-  );
-  outer.rotation.x = Math.PI / 2;
-  outer.position.z = 2.45;
-  g.add(outer);
-  var inner = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.72, 0.24, 2.6, 40, 1, true),
-    new THREE.MeshBasicMaterial({ color: 0x9BE7FF, transparent: true, opacity: 0.075, side: THREE.DoubleSide, blending: THREE.AdditiveBlending, depthWrite: false })
-  );
-  inner.rotation.x = Math.PI / 2;
-  inner.position.z = 2.05;
-  g.add(inner);
-  return g;
-})()).labelOffset.set(0, 1.15, 2.4);
-
-/* === 选中时的发光光晕（canvas 生成的径向贴图，随部件大小缩放） === */
-var glowTex = (function () {
-  var c = document.createElement('canvas');
-  c.width = c.height = 128;
-  var ctx = c.getContext('2d');
-  var grad = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
-  grad.addColorStop(0, 'rgba(120, 220, 255, 0.95)');
-  grad.addColorStop(0.35, 'rgba(56, 189, 248, 0.35)');
-  grad.addColorStop(1, 'rgba(56, 189, 248, 0)');
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, 128, 128);
-  var tex = new THREE.CanvasTexture(c);
-  if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
-  return tex;
-})();
-
-PARTS.forEach(function (p) {
-  var box = new THREE.Box3().setFromObject(p.group);
-  var sphere = box.getBoundingSphere(new THREE.Sphere());
-  p.center = sphere.center.clone();
-  var sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0x38BDF8, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending }));
-  sp.scale.setScalar(Math.max(1.2, Math.min(sphere.radius * 2.2, 3.4)));
-  sp.position.copy(p.center);
-  if (p.id === 'cathode') { sp.position.set(1.45, -0.66, 0.60); sp.scale.setScalar(1.5); }
-  if (p.id === 'plume') { sp.position.set(0, 0, 1.6); sp.scale.setScalar(2.2); }
-  p.group.add(sp);
-  p.sprite = sp;
-  p.homePosition = p.group.position.clone();
+/* ---------- 标注胶囊 ---------- */
+var labels = [];
+PARTS.forEach(function (def) {
+  var el = document.createElement('div');
+  el.className = 'lbl' + (def.src === 'doc' ? '' : ' est');
+  el.innerHTML = '<span class="dot"></span><span class="nm"></span><span class="vl"></span>';
+  el.querySelector('.nm').textContent = def.name;
+  el.querySelector('.vl').textContent = def.label || '';
+  labelLayer.appendChild(el);
+  labels.push({ id: def.id, el: el, def: def });
 });
 
 /* =====================================================================
-   相机：自写轨道控制（旋转 / 缩放 / 平移 / 视角预设）
+   相机控制（自写轨道控制器）
    ===================================================================== */
-var cam = { yaw: 0.72, pitch: 0.30, dist: 7.9, target: new THREE.Vector3(0, 0, 0.15) };
-var want = { yaw: cam.yaw, pitch: cam.pitch, dist: cam.dist, target: cam.target.clone() };
-var spin = true;
-var showLabels = true;
-var dragging = false;
-var pointers = new Map();
-var pinchStart = 0;
-var pinchDist = 0;
-
-var VIEWS = {
-  iso: { yaw: 0.72, pitch: 0.30, dist: 7.9 },
-  front: { yaw: 0.02, pitch: 0.05, dist: 7.6 },
-  side: { yaw: Math.PI / 2, pitch: 0.04, dist: 8.4 },
-  top: { yaw: 0.6, pitch: 1.24, dist: 8.4 },
-  back: { yaw: Math.PI, pitch: 0.16, dist: 8.6 }
+var cam = {
+  theta: 0.72, phi: 0.36, dist: 1250,
+  target: new THREE.Vector3(150, 105, 0),
+  tTheta: 0.72, tPhi: 0.36, tDist: 1250,
+  tTarget: new THREE.Vector3(150, 105, 0),
+  spin: true, userZoom: false
 };
+var VIEWS = {
+  iso:   { theta: 0.72,  phi: 0.36, zoom: 1.00 },
+  ppcu:  { theta: 0.52,  phi: 0.34, zoom: 0.62, target: [10, 74, 0] },
+  thr:   { theta: 0.34,  phi: 0.24, zoom: 0.32, target: [392, 96, 0] },
+  top:   { theta: 0.001, phi: 1.24, zoom: 0.90 },
+  front: { theta: 1.54,  phi: 0.12, zoom: 0.56, target: [0, 84, 0] },
+  a:     { theta: 0.95,  phi: 0.30, zoom: 1.02 },
+  b:     { theta: 0.30,  phi: 0.34, zoom: 1.02 }
+};
+var fitBase = 1200, fitCenter = new THREE.Vector3(150, 100, 0), viewZoom = 1, viewTarget = null;
 
-function applyView(name) {
-  var v = VIEWS[name];
-  if (!v) return;
-  spin = false;
-  document.getElementById('btnSpin').setAttribute('aria-pressed', 'false');
-  want.yaw = v.yaw;
-  want.pitch = v.pitch;
-  want.dist = currentSpread() > 0.5 ? v.dist + 3.4 : v.dist;
-  want.target.set(0, 0, currentSpread() > 0.5 ? 0.2 : 0.15);
+function modelBounds() {
+  var box = new THREE.Box3();
+  PARTS.forEach(function (def) {
+    var b = new THREE.Box3().setFromObject(partObjs[def.id].group);
+    if (!b.isEmpty()) box.union(b);
+  });
+  return box;
 }
-
-function currentSpread() {
-  var sum = 0;
-  PARTS.forEach(function (p) { sum += p.open; });
-  return sum / PARTS.length;
+/* 只在 e=0 与 e=1 两个状态各测一次包围盒，之后按拆解量线性插值，避免每帧重算 */
+var fitTable = null;
+function measureState(t) {
+  updateExplode(t);
+  var b = modelBounds();
+  return { min: b.min.clone(), max: b.max.clone() };
 }
+function buildFitTable() {
+  if (fitTable) return;
+  fitTable = { a: measureState(0), b: measureState(1) };
+  updateExplode(explode);
+}
+var fitMargin = 1.12;
+/* 按当前视角把包围盒投影到屏幕，算出让宽高都装下的最小距离 */
+function fitDistance(bb, theta, phi) {
+  var fov = camera.fov * Math.PI / 180;
+  var tanV = Math.tan(fov / 2) * fitMargin;
+  var tanH = tanV * camera.aspect;
+  var dir = new THREE.Vector3(Math.cos(phi) * Math.sin(theta), Math.sin(phi), Math.cos(phi) * Math.cos(theta)).normalize();
+  var right = new THREE.Vector3().crossVectors(new THREE.Vector3(0, 1, 0), dir).normalize();
+  var up = new THREE.Vector3().crossVectors(dir, right).normalize();
+  var c = bb.min.clone().add(bb.max).multiplyScalar(0.5);
+  var need = 0;
+  for (var i = 0; i < 8; i++) {
+    var p = new THREE.Vector3(
+      i & 1 ? bb.max.x : bb.min.x,
+      i & 2 ? bb.max.y : bb.min.y,
+      i & 4 ? bb.max.z : bb.min.z
+    ).sub(c);
+    var xp = Math.abs(p.dot(right)), yp = Math.abs(p.dot(up)), zp = p.dot(dir);
+    need = Math.max(need, zp + xp / tanH, zp + yp / tanV);
+  }
+  return { center: c, dist: Math.max(160, need) };
+}
+function refit(applyNow, margin) {
+  buildFitTable();
+  if (margin) fitMargin = margin;
+  var t = explode;
+  var bb = new THREE.Box3(
+    fitTable.a.min.clone().lerp(fitTable.b.min, t),
+    fitTable.a.max.clone().lerp(fitTable.b.max, t)
+  );
+  var f = fitDistance(bb, cam.tTheta, cam.tPhi);
+  fitCenter.copy(f.center);
+  fitBase = f.dist;
+  // 非影院模式：画面右侧被参数面板占去一块，把模型整体左移一点
+  if (!cinema) {
+    var th = cam.tTheta;
+    var rightV = new THREE.Vector3(Math.cos(th), 0, -Math.sin(th)).normalize();
+    fitCenter.addScaledVector(rightV, fitBase * 0.055);
+  }
+  if (window.__dbg) {
+    window.__dbg = false;
+    console.log('BBOX0', JSON.stringify(fitTable.a), 'BBOX1', JSON.stringify(fitTable.b),
+      'fitBase', Math.round(fitBase), 'aspect', camera.aspect.toFixed(3), 'fitMargin', fitMargin);
+  }
+  if (applyNow) {
+    if (!viewTarget) cam.tTarget.copy(fitCenter);
+    cam.tDist = fitBase * viewZoom;
+    if (cam.userZoom) cam.tDist = cam.dist;
+  }
+}
+function applyView(v, instant) {
+  cam.tTheta = v.theta; cam.tPhi = v.phi;
+  viewZoom = v.zoom !== undefined ? v.zoom : 1;
+  viewTarget = v.target ? new THREE.Vector3(v.target[0], v.target[1], v.target[2]) : null;
+  cam.userZoom = false;
+  refit(true);
+  cam.tTarget.copy(viewTarget || fitCenter);
+  if (instant) {
+    cam.theta = v.theta; cam.phi = v.phi; cam.dist = cam.tDist;
+    cam.target.copy(cam.tTarget);
+  }
+}
+function focusOn(id, zoom) {
+  var o = partObjs[id]; if (!o) return;
+  var off = o.def.offNow || new THREE.Vector3();
+  var c = o.center.clone().add(off);
+  var r = Math.max(o.size.x, o.size.y, o.size.z);
+  viewTarget = c.clone();
+  viewZoom = Math.max(0.09, Math.min(1.0, (r * (zoom || 2.1)) / fitBase));
+  cam.tTarget.copy(c);
+  cam.tDist = Math.max(150, r * (zoom || 2.1));
+  cam.tPhi = Math.min(0.62, Math.max(0.30, cam.tPhi));
+}
+applyView(VIEWS.iso, true);
 
-/* === 指针交互 === */
-function onPointerDown(e) {
+/* 指针交互 */
+var ptr = { down: false, x: 0, y: 0, btn: 0, moved: 0, pinch: 0 };
+canvas.addEventListener('pointerdown', function (e) {
   canvas.setPointerCapture(e.pointerId);
-  pointers.set(e.pointerId, { x: e.clientX, y: e.clientY, button: e.button, moved: 0 });
-  if (pointers.size === 2) {
-    var it = Array.from(pointers.values());
-    pinchStart = Math.hypot(it[0].x - it[1].x, it[0].y - it[1].y);
-    pinchDist = want.dist;
+  ptr.down = true; ptr.x = e.clientX; ptr.y = e.clientY; ptr.btn = e.button; ptr.moved = 0;
+  cam.spin = false; document.getElementById('tSpin').setAttribute('aria-pressed', 'false');
+  stopDemo(true);
+});
+canvas.addEventListener('pointermove', function (e) {
+  if (!ptr.down) return;
+  var dx = e.clientX - ptr.x, dy = e.clientY - ptr.y;
+  ptr.x = e.clientX; ptr.y = e.clientY;
+  ptr.moved += Math.abs(dx) + Math.abs(dy);
+  if (ptr.btn === 2 || e.shiftKey) {
+    // 平移
+    var right = new THREE.Vector3().setFromMatrixColumn(camera.matrix, 0);
+    var up = new THREE.Vector3().setFromMatrixColumn(camera.matrix, 1);
+    var k = cam.dist * 0.0016;
+    cam.tTarget.addScaledVector(right, -dx * k).addScaledVector(up, dy * k);
+  } else {
+    cam.tTheta -= dx * 0.0055;
+    cam.tPhi = Math.max(-0.35, Math.min(1.34, cam.tPhi + dy * 0.0045));
   }
-  dragging = true;
-  canvas.style.cursor = 'grabbing';
+});
+function endPtr(e) {
+  if (!ptr.down) return;
+  ptr.down = false;
+  if (ptr.moved < 5) pick(e.clientX, e.clientY);
 }
-
-function onPointerMove(e) {
-  var p = pointers.get(e.pointerId);
-  if (!p) {
-    hoverPick(e);
-    return;
-  }
-  var dx = e.clientX - p.x;
-  var dy = e.clientY - p.y;
-  p.moved += Math.abs(dx) + Math.abs(dy);
-  p.x = e.clientX;
-  p.y = e.clientY;
-
-  if (pointers.size === 2) {
-    var it = Array.from(pointers.values());
-    var d = Math.hypot(it[0].x - it[1].x, it[0].y - it[1].y);
-    if (pinchStart > 0) want.dist = clamp(pinchDist * (pinchStart / Math.max(d, 1)), 3.2, 20);
-    return;
-  }
-  if (p.button === 2 || p.button === 1) {
-    pan(dx, dy);
-    return;
-  }
-  spin = false;
-  document.getElementById('btnSpin').setAttribute('aria-pressed', 'false');
-  want.yaw -= dx * 0.0062;
-  want.pitch = clamp(want.pitch + dy * 0.0052, -1.32, 1.32);
-}
-
-function onPointerUp(e) {
-  var p = pointers.get(e.pointerId);
-  pointers.delete(e.pointerId);
-  if (pointers.size < 2) pinchStart = 0;
-  if (pointers.size === 0) dragging = false;
-  canvas.style.cursor = 'grab';
-  if (p && p.moved < 7 && p.button === 0) {
-    var id = pick(e);
-    if (id) togglePart(id); else clearSelection();
-  }
-}
-
-function pan(dx, dy) {
-  var right = new THREE.Vector3();
-  var up = new THREE.Vector3();
-  camera.matrixWorld.extractBasis(right, up, new THREE.Vector3());
-  var k = want.dist * 0.0016;
-  want.target.addScaledVector(right, -dx * k).addScaledVector(up, dy * k);
-}
-
-function onWheel(e) {
-  e.preventDefault();
-  want.dist = clamp(want.dist * (1 + e.deltaY * 0.0011), 3.2, 20);
-}
-
-canvas.addEventListener('pointerdown', onPointerDown);
-canvas.addEventListener('pointermove', onPointerMove);
-canvas.addEventListener('pointerup', onPointerUp);
-canvas.addEventListener('pointercancel', onPointerUp);
-canvas.addEventListener('wheel', onWheel, { passive: false });
+canvas.addEventListener('pointerup', endPtr);
+canvas.addEventListener('pointercancel', function () { ptr.down = false; });
 canvas.addEventListener('contextmenu', function (e) { e.preventDefault(); });
-canvas.style.cursor = 'grab';
+canvas.addEventListener('wheel', function (e) {
+  e.preventDefault();
+  cam.tDist = Math.max(200, Math.min(3600, cam.tDist * Math.exp(e.deltaY * 0.0011)));
+  cam.userZoom = true;
+  stopDemo(true);
+}, { passive: false });
+// 触屏双指缩放
+var touchDist = 0;
+canvas.addEventListener('touchmove', function (e) {
+  if (e.touches.length === 2) {
+    var d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+    if (touchDist) cam.tDist = Math.max(200, Math.min(3600, cam.tDist * (touchDist / d)));
+    touchDist = d; e.preventDefault();
+  }
+}, { passive: false });
+canvas.addEventListener('touchend', function () { touchDist = 0; });
 
-/* === 拾取 === */
+/* =====================================================================
+   拆解 / 标注 / 尺寸 / 线框 / 剖面
+   ===================================================================== */
+var explode = 0.85, explodeTarget = 0.85;
+var selected = null;
+var showLabels = true, showDims = true, wireOn = false, cutOn = false, plumeOn = true;
+var cinema = false;
+
+function updateExplode(t) {
+  PARTS.forEach(function (def) {
+    var o = partObjs[def.id];
+    var k = t * def.dist * 0.78;
+    var off = new THREE.Vector3(def.dir[0], def.dir[1], def.dir[2]).multiplyScalar(k);
+    def.offNow = off;
+    o.group.position.copy(o.base).add(off);
+  });
+  // 羽流强度随拆解收起
+
+  dimLines.visible = showDims && t < 0.3;
+  DIMS.forEach(function (d) { d.el.classList.toggle('on', showDims && t < 0.3); });
+}
+
+/* 拾取 */
 var raycaster = new THREE.Raycaster();
 var ndc = new THREE.Vector2();
-var hoverId = null;
-
-function pickFrom(clientX, clientY) {
-  var rect = canvas.getBoundingClientRect();
-  ndc.set(((clientX - rect.left) / rect.width) * 2 - 1, -((clientY - rect.top) / rect.height) * 2 + 1);
+function pick(cx, cy) {
+  var r = canvas.getBoundingClientRect();
+  ndc.x = ((cx - r.left) / r.width) * 2 - 1;
+  ndc.y = -((cy - r.top) / r.height) * 2 + 1;
   raycaster.setFromCamera(ndc, camera);
-  var hits = raycaster.intersectObjects(pickables, false);
-  for (var i = 0; i < hits.length; i++) {
-    if (hits[i].object.visible && hits[i].object.userData.partId) return hits[i].object.userData.partId;
-  }
-  return null;
+  var hits = raycaster.intersectObjects(pickList, false);
+  if (hits.length) selectPart(hits[0].object.userData.partId, true);
+  else selectPart(null);
 }
-function pick(e) { return pickFrom(e.clientX, e.clientY); }
-function hoverPick(e) {
-  if (dragging) return;
-  var id = pickFrom(e.clientX, e.clientY);
-  if (id === hoverId) return;
-  hoverId = id;
-  canvas.style.cursor = id ? 'pointer' : 'grab';
-  PARTS.forEach(function (p) { p.hover = (p.id === id); });
-}
-
-/* === 选中 / 拆解 === */
-var selectedId = null;
-
-function partById(id) {
-  for (var i = 0; i < PARTS.length; i++) if (PARTS[i].id === id) return PARTS[i];
-  return null;
-}
-
-function selectPart(id) {
-  selectedId = id;
-  PARTS.forEach(function (p) { p.selected = (p.id === id); });
-  var sp = partById(id);
-  if (sp) {
-    // 部件拆出后把镜头略微拉开并跟随一点，保证它留在取景框内
-    want.dist = Math.max(want.dist, 8.9);
-    want.target.set(sp.vec[0] * 0.22, sp.vec[1] * 0.22, 0.15 + sp.vec[2] * 0.22);
-  }
-  renderInfo(id);
-  document.querySelectorAll('.part').forEach(function (el) {
-    el.setAttribute('aria-current', el.dataset.id === id ? 'true' : 'false');
-  });
-}
-
-function clearSelection() {
-  if (!selectedId) return;
-  selectedId = null;
-  want.target.set(0, 0, 0.15);
-  PARTS.forEach(function (p) { p.selected = false; });
-  renderInfo(null);
-  document.querySelectorAll('.part').forEach(function (el) { el.setAttribute('aria-current', 'false'); });
-}
-
-function togglePart(id) {
-  var p = partById(id);
-  if (!p) return;
-  p.target = p.target > 0.5 ? 0 : 1;
-  if (p.target > 0.5) selectPart(id); else if (selectedId === id) clearSelection();
-  syncExplodeButton();
-}
-
-function explodeAll() {
-  var anyClosed = PARTS.some(function (p) { return p.target < 0.5; });
-  PARTS.forEach(function (p) { p.target = anyClosed ? 1 : 0; });
-  if (anyClosed) {
-    want.dist = Math.max(want.dist, 11.2);
-    document.getElementById('btnSpin').setAttribute('aria-pressed', 'false');
-    spin = false;
-  }
-  syncExplodeButton();
-}
-
-function resetAll() {
-  PARTS.forEach(function (p) { p.target = 0; });
-  clearSelection();
-  want.yaw = VIEWS.iso.yaw;
-  want.pitch = VIEWS.iso.pitch;
-  want.dist = VIEWS.iso.dist;
-  want.target.set(0, 0, 0.15);
-  syncExplodeButton();
-}
-
-var ICON_SPLIT = '<svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3v6M10 11v6"/><path d="M4 6l3 3M4 14l3-3M16 6l-3 3M16 14l-3-3"/></svg>';
-function syncExplodeButton() {
-  var allOpen = PARTS.every(function (p) { return p.target > 0.5; });
-  var btn = document.getElementById('btnExplode');
-  btn.innerHTML = ICON_SPLIT + (allOpen ? '收起全部' : '全部拆解');
-}
-
-/* === 面板渲染 === */
-var listEl = document.getElementById('partList');
-function renderList() {
-  listEl.innerHTML = PARTS.map(function (p, i) {
-    var n = (i + 1 < 10 ? '0' : '') + (i + 1);
-    return '<button class="part" type="button" role="listitem" data-id="' + p.id + '" aria-current="false">' +
-      '<span class="idx">' + n + '</span>' +
-      '<span class="nm">' + p.name + '<span class="en">' + p.en + '</span></span>' +
-      '<span class="flag"></span></button>';
-  }).join('');
-  listEl.querySelectorAll('.part').forEach(function (el) {
-    el.addEventListener('click', function () { togglePart(el.dataset.id); });
-    el.addEventListener('mouseenter', function () {
-      var p = partById(el.dataset.id);
-      PARTS.forEach(function (q) { q.hover = (q === p); });
-    });
-    el.addEventListener('mouseleave', function () {
-      PARTS.forEach(function (q) { q.hover = false; });
+function selectPart(id, fly) {
+  selected = id;
+  PARTS.forEach(function (def) {
+    var on = def.id === id;
+    var o = partObjs[def.id];
+    o.group.traverse(function (m) {
+      if (!m.isMesh || !m.material || !m.material.isMeshStandardMaterial) return;
+      if (on) {
+        if (!m.userData.emiSet) {
+          m.userData.emiSet = true;
+          m.userData.emiOld = m.material.emissive.getHex();
+          m.userData.emiInt = m.material.emissiveIntensity;
+        }
+        m.material.emissive.setHex(0x0C4F73);
+        m.material.emissiveIntensity = 0.55;
+      } else if (m.userData.emiSet) {
+        m.userData.emiSet = false;
+        m.material.emissive.setHex(m.userData.emiOld);
+        m.material.emissiveIntensity = m.userData.emiInt;
+      }
     });
   });
-  document.getElementById('partCount').textContent = PARTS.length + ' 项';
+  var rows = document.querySelectorAll('.part');
+  for (var i = 0; i < rows.length; i++) rows[i].setAttribute('aria-current', rows[i].dataset.id === id ? 'true' : 'false');
+  if (id) {
+    renderDetail(id);
+    if (fly) focusOn(id, 3.2);
+  } else {
+    document.getElementById('detail').classList.remove('on');
+  }
 }
 
-function specRows(list) {
-  return '<dl class="specs">' + list.map(function (kv) {
-    return '<div class="spec"><dt>' + kv[0] + '</dt><dd>' + kv[1] + '</dd></div>';
-  }).join('') + '</dl>';
+/* 标注与尺寸的屏幕投影 */
+function project(v) {
+  var p = v.clone().project(camera);
+  var r = canvas.getBoundingClientRect();
+  return {
+    x: (p.x * 0.5 + 0.5) * r.width,
+    y: (-p.y * 0.5 + 0.5) * r.height,
+    z: p.z,
+    vis: p.z > -1 && p.z < 1
+  };
 }
+var svgNS = 'http://www.w3.org/2000/svg';
+function layoutLabels() {
+  var r = canvas.getBoundingClientRect();
+  var W = r.width, H = r.height;
+  leadSvg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+  // 清空引线
+  while (leadSvg.firstChild) leadSvg.removeChild(leadSvg.firstChild);
 
-function renderInfo(id) {
-  var box = document.getElementById('infoBody');
-  if (!id) {
-    box.innerHTML = '<p class="detail-empty">点击模型上的任一部件或左侧清单，查看结构、作用与典型参数。</p>' +
-      '<p class="detail-empty" style="margin-top:12px;color:var(--ink-3)">当前共 ' + PARTS.length + ' 个部件。全部几何体由代码生成，没有外部模型文件。</p>';
+  if (!showLabels) {
+    labels.forEach(function (l) { l.el.classList.remove('on'); });
     return;
   }
-  var p = partById(id);
-  box.innerHTML =
-    '<h2 class="detail-title">' + p.name + '</h2>' +
-    '<p class="detail-en mono">' + p.en + '</p>' +
-    '<span class="detail-role">' + p.role + '</span>' +
-    '<p class="detail-desc">' + p.desc + '</p>' +
-    specRows(p.specs) +
-    '<div class="btn-row"><button class="btn" type="button" id="btnCollapse">收起该部件</button></div>';
-  var b = document.getElementById('btnCollapse');
-  if (b) b.addEventListener('click', function () {
-    var q = partById(id);
-    q.target = 0;
-    clearSelection();
-    syncExplodeButton();
+  var items = [];
+  labels.forEach(function (l) {
+    var o = partObjs[l.id];
+    var anchor = o.center.clone().add(o.def.offNow || new THREE.Vector3());
+    var s = project(anchor);
+    if (!s.vis) { l.el.classList.remove('on'); return; }
+    if (s.x < 30 || s.x > W - 30 || s.y < 30 || s.y > H - 30) { l.el.classList.remove('on'); return; }
+    // 装配状态下箱内板卡不可见，先不挂标注
+    if (explode < 0.3 && l.def.grp === 'C' && ['ppcu-emi','ppcu-magnet','ppcu-anode','ppcu-ignite','ppcu-heater','ppcu-dicu','ppcu-valve','ppcu-carrier','ppcu-shield'].indexOf(l.id) >= 0) {
+      l.el.classList.remove('on'); return;
+    }
+    var d = camera.position.distanceTo(anchor);
+    items.push({ l: l, sx: s.x, sy: s.y, d: d });
   });
-}
+  // 招标文件来源的部件优先，其次按景深，最多 16 个
+  items.sort(function (a, b) {
+    var ra = (a.l.def.src === 'doc' ? 0 : 1), rb = (b.l.def.src === 'doc' ? 0 : 1);
+    if (ra !== rb) return ra - rb;
+    return a.d - b.d;
+  });
+  items = items.slice(0, 16);
+  var xs = items.map(function (it) { return it.sx; }).sort(function (a, b) { return a - b; });
+  var divider = xs.length ? xs[Math.floor(xs.length / 2)] : W * 0.5;
+  items.forEach(function (it) { it.side = it.sx < divider ? -1 : 1; });
+  var cols = { '-1': [], '1': [] };
+  items.forEach(function (it) { cols[it.side].push(it); });
 
-var TOTAL = [
-  ['额定推力', '82 mN'],
-  ['比冲', '1650 s'],
-  ['输入功率', '1.5 kW'],
-  ['放电电压', '300 V'],
-  ['阳极流量', '2.6 mg/s'],
-  ['总效率', '约 55%'],
-  ['设计寿命', '8000 h'],
-  ['整机质量', '约 3.2 kg'],
-  ['外形尺寸', 'φ150 mm × 96 mm']
-];
-
-function renderTotal() {
-  document.getElementById('totalBody').innerHTML = specRows(TOTAL);
-}
-
-/* === 标注：投影到屏幕 + 垂直避让 + 引线 === */
-var labelsEl = document.getElementById('labels');
-
-PARTS.forEach(function (p) {
-  var el = document.createElement('div');
-  el.className = 'lbl';
-  el.innerHTML = '<span class="dot"></span><span class="nm">' + p.name + '</span><span class="sp">' + p.labelSpec + '</span>';
-  labelsEl.appendChild(el);
-  p.labelEl = el;
-  var dot = document.createElement('div');
-  dot.className = 'lead-dot';
-  labelsEl.insertBefore(dot, labelsEl.firstChild);
-  p.dot = dot;
-  var line = document.createElement('div');
-  line.className = 'lead';
-  labelsEl.insertBefore(line, labelsEl.firstChild);
-  p.leader = line;
-});
-
-var projV = new THREE.Vector3();
-var live = [];
-
-function updateLabels() {
-  var rect = canvas.getBoundingClientRect();
-
-  live.length = 0;
-  PARTS.forEach(function (p) {
-    var on = showLabels && p.group.visible && (p.open > 0.05 || p.selected || p.hover);
-    if (!on) {
-      p.labelEl.classList.remove('is-on');
-      p.leader.style.display = 'none';
-      p.dot.style.display = 'none';
-      return;
-    }
-    projV.copy(p.group.position).add(p.labelOffset);
-    projV.project(camera);
-    if (projV.z > 1 || Math.abs(projV.x) > 1.3 || Math.abs(projV.y) > 1.3) {
-      p.labelEl.classList.remove('is-on');
-      p.leader.style.display = 'none';
-      p.dot.style.display = 'none';
-      return;
-    }
-    live.push({
-      p: p,
-      ax: (projV.x * 0.5 + 0.5) * rect.width,
-      ay: (-projV.y * 0.5 + 0.5) * rect.height
+  ['-1', '1'].forEach(function (sideKey) {
+    var col = cols[sideKey];
+    col.sort(function (a, b) { return a.sy - b.sy; });
+    var yMin = 150, yMax = H - 160, lastY = yMin - 100;
+    col.forEach(function (it) {
+      var el = it.l.el;
+      el.classList.add('on');
+      var w = el.offsetWidth || 140, h = el.offsetHeight || 22;
+      var y = Math.max(yMin, Math.min(yMax, it.sy));
+      if (y - lastY < 27) y = lastY + 27;
+      if (y > yMax) y = yMax;
+      lastY = y;
+      // 左列贴齐左边板右缘，右列贴齐右边板左缘
+      var padL = cinema ? 40 : 316, padR = cinema ? 40 : 342;
+      var xLeft, edgeX;
+      if (sideKey === '-1') {
+        xLeft = Math.max(padL, Math.min(W * 0.5 - w - 40, it.sx - 54 - w));
+        edgeX = xLeft + w;
+      } else {
+        var xRight = Math.min(W - padR, Math.max(W * 0.5 + 40, it.sx + 54 + w));
+        xLeft = xRight - w;
+        edgeX = xLeft;
+      }
+      el.style.transform = 'translate(' + xLeft + 'px,' + (y - h / 2) + 'px)';
+      var path = document.createElementNS(svgNS, 'path');
+      var midX = it.sx + (edgeX - it.sx) * 0.5;
+      path.setAttribute('d', 'M' + it.sx + ',' + it.sy + ' L' + midX + ',' + y + ' L' + edgeX + ',' + y);
+      path.setAttribute('fill', 'none');
+      path.setAttribute('stroke', it.l.def.src === 'doc' ? 'rgba(86,180,232,.55)' : 'rgba(226,170,70,.55)');
+      path.setAttribute('stroke-width', '1');
+      leadSvg.appendChild(path);
+      var dot = document.createElementNS(svgNS, 'circle');
+      dot.setAttribute('cx', it.sx); dot.setAttribute('cy', it.sy); dot.setAttribute('r', '1.8');
+      dot.setAttribute('fill', it.l.def.src === 'doc' ? '#38BDF8' : '#F59E0B');
+      leadSvg.appendChild(dot);
     });
-    p.dot.style.display = 'none';
-    p.labelEl.classList.add('is-on');
-    p.labelEl.classList.toggle('is-active', p.selected);
   });
-
-  // 锚点从上到下依次处理，每个标签向下让位到不与已放置标签重叠的位置；
-  // 顶到画布底部就换到右侧重新排，避免把标签推出视野。
-  live.sort(function (m, n) { return m.ay - n.ay; });
-  var placed = [];
-  live.forEach(function (item) {
-    var el = item.p.labelEl;
-    var w = el.offsetWidth || 140;
-    var hh = el.offsetHeight || 22;
-    var padX = w / 2 + 8;
-    var padY = hh / 2 + 8;
-    var x = clamp(item.ax, padX, rect.width - padX);
-    var bottomPad = Math.max(padY, 56);
-    var y = clamp(item.ay, padY, rect.height - bottomPad);
-    var guard = 0;
-    for (;;) {
-      var hit = null;
-      for (var i = 0; i < placed.length; i++) {
-        var q = placed[i];
-        if (Math.abs(q.x - x) < (q.w + w) / 2 + 6 && Math.abs(q.y - y) < (q.h + hh) / 2 + 4) { hit = q; break; }
-      }
-      if (!hit) break;
-      y = hit.y + (hit.h + hh) / 2 + 5;
-      if (y > rect.height - bottomPad) {
-        y = clamp(item.ay, padY, rect.height - bottomPad);
-        x = x + w + 12;
-        if (x > rect.width - padX) x = clamp(item.ax - w - 12, padX, rect.width - padX);
-      }
-      if (++guard > 40) break;
-    }
-    item.x = x; item.y = y; item.w = w; item.h = hh;
-    placed.push({ x: x, y: y, w: w, h: hh });
-    el.style.left = x.toFixed(1) + 'px';
-    el.style.top = y.toFixed(1) + 'px';
-  });
-
-  // 引线：标签被推开时，从部件锚点拉一条细线，止于标签边框（不再穿到标签底下）
-  live.forEach(function (item) {
-    var el = item.p.leader;
-    var dot = item.p.dot;
-    var dx = item.x - item.ax;
-    var dy = item.y - item.ay;
-    var len = Math.sqrt(dx * dx + dy * dy);
-    if (len < 12) { el.style.display = 'none'; dot.style.display = 'none'; return; }
-    var ang = Math.atan2(dy, dx);
-    var cx = Math.abs(Math.cos(ang));
-    var cy = Math.abs(Math.sin(ang));
-    var hw = (item.w || 120) / 2 + 4;
-    var hh = (item.h || 22) / 2 + 4;
-    // 方向射线与标签矩形的交点距离：取两轴约束里更小的那个
-    var t = Math.min(cx > 0.0001 ? hw / cx : 1e9, cy > 0.0001 ? hh / cy : 1e9);
-    var visLen = Math.max(len - t, 0);
-    if (visLen < 4) { el.style.display = 'none'; }
-    else {
-      el.style.display = 'block';
-      el.style.width = visLen.toFixed(1) + 'px';
-      el.style.left = item.ax.toFixed(1) + 'px';
-      el.style.top = item.ay.toFixed(1) + 'px';
-      el.style.transform = 'rotate(' + ang.toFixed(4) + 'rad)';
-    }
-    el.classList.toggle('is-active', !!item.p.selected);
-    dot.style.display = 'block';
-    dot.style.left = item.ax.toFixed(1) + 'px';
-    dot.style.top = item.ay.toFixed(1) + 'px';
-    dot.classList.toggle('is-active', !!item.p.selected);
+}
+function layoutDims() {
+  var W = canvas.getBoundingClientRect().width;
+  DIMS.forEach(function (d) {
+    if (!(showDims && explode < 0.3)) return;
+    var s = project(d.mid);
+    var el = d.el;
+    if (!s.vis) { el.classList.remove('on'); return; }
+    el.classList.add('on');
+    var w = el.offsetWidth || 80, h = el.offsetHeight || 18;
+    var pl = cinema ? 40 : 320, pr = cinema ? 40 : 348;
+    var x = Math.max(pl + w / 2, Math.min(W - pr - w / 2, s.x));
+    el.style.transform = 'translate(' + (x - w / 2) + 'px,' + (s.y - h / 2) + 'px)';
   });
 }
 
-/* === 布局与自适应 === */
+/* 线框 / 剖面 */
+function setWire(on) {
+  wireOn = on;
+  Object.keys(M).forEach(function (k) {
+    var m = M[k];
+    if (m.isMeshStandardMaterial || m.isMeshBasicMaterial) m.wireframe = on;
+  });
+}
+var cutPlane = new THREE.Plane(new THREE.Vector3(0, -1, 0), 96);
+function setCut(on) {
+  cutOn = on;
+  Object.keys(M).forEach(function (k) {
+    var m = M[k];
+    if (m.isMeshStandardMaterial) { m.clippingPlanes = on ? [cutPlane] : null; m.needsUpdate = true; }
+  });
+}
+function setPlume(on) {
+  plumeOn = on;
+  if (plumeObj) plumeObj.visible = on;
+}
+
+/* =====================================================================
+   演示时间轴
+   ===================================================================== */
+var DEMO = [
+  { dur: 5.0, explode: 0.0, view: VIEWS.iso,
+    cap: '<b>霍尔电推进系统</b>：PPCU 驱动一台 1.1 kW 级氪霍尔推力器，两者外形按真实尺寸建模' },
+  { dur: 4.6, explode: 1.0, view: { theta: 0.9, phi: 0.34, zoom: 1.0, target: [170, 150, 0] },
+    cap: '<b>拆解</b>：24 个部件沿装配方向散开，机箱上盖与侧壁移出，内部板卡垂直叠装逐层可见' },
+  { dur: 4.6, explode: 1.0, focus: 'thr-channel', view: null,
+    cap: '<b>推力器头部</b>：陶瓷通道平均直径 φ78、通道宽 12、深 28 mm，阳极 320 V / 900 W，限流 3.6 A' },
+  { dur: 4.4, explode: 1.0, focus: 'ppcu-anode', view: null,
+    cap: '<b>阳极电源</b>：42 V 母线隔离升压 200～420 V 连续可调，额定 900 W / 最大 1000 W，软开关 + 同步整流' },
+  { dur: 4.4, explode: 1.0, focus: 'ppcu-dicu', view: null,
+    cap: '<b>DICU</b>：主控 MCU + 抗辐照 ADC，1 路异步 RS-422（地与二次地隔离）＋ 2 路 OC，遥测丢帧率 ≤ 1/10000' },
+  { dur: 4.4, explode: 1.0, focus: 'ppcu-valve', view: null,
+    cap: '<b>压调与流控</b>：自锁阀 2 路 + 电磁阀 ≥9 路（50 kHz PWM）＋ 压力计 ≥8 路（1% 精度）＋ 热敏 ≥4 路' },
+  { dur: 4.6, explode: 1.0, view: { theta: 0.42, phi: 0.22, zoom: 0.62, target: [-10, 90, 0] },
+    cap: '<b>结构包络</b>：325 × 257 × 150 mm（含接插件与安装支耳），总质量 ≤ 8 kg，支耳厚度 6 ± 0.1 mm' },
+  { dur: 4.6, explode: 0.0, view: VIEWS.iso,
+    cap: '<b>整机指标</b>：效率 ≥ 88%，损耗 ≤ 150 W（底面 ≤110 W），−20～+55 ℃，在轨 5 年' }
+];
+var demo = { on: false, idx: 0, t: 0 };
+var playBtn = document.getElementById('btnPlay');
+var playIcon = document.getElementById('playIcon');
+var captionEl = document.getElementById('caption');
+var explEl = document.getElementById('explode');
+var pctEl = document.getElementById('expPct');
+
+function setCaption(html) { captionEl.innerHTML = html; }
+function runDemoStep(i, instant) {
+  var s = DEMO[i];
+  if (s.view) applyView(s.view, instant);
+  if (typeof s.explode === 'number') explodeTarget = s.explode;
+  if (s.focus) setTimeout(function () { if (demo.on || instant) focusOn(s.focus, 3.4); }, instant ? 0 : 260);
+  setCaption(s.cap);
+}
+function startDemo() {
+  demo.on = true; demo.idx = 0; demo.t = 0;
+  if (typeof setCinema === 'function') setCinema(true);
+  playIcon.innerHTML = '<rect x="5" y="4" width="3.4" height="12" rx="1"/><rect x="11.6" y="4" width="3.4" height="12" rx="1"/>';
+  playBtn.setAttribute('aria-label', '暂停演示');
+  runDemoStep(0, false);
+}
+function stopDemo(manual) {
+  if (!demo.on) return;
+  demo.on = false;
+  playIcon.innerHTML = '<path d="M6 4l10 6-10 6V4Z"/>';
+  playBtn.setAttribute('aria-label', '播放拆解演示');
+  if (manual) setCaption('手动模式：拖拽旋转 · 滚轮缩放 · 点击部件查看参数');
+}
+playBtn.addEventListener('click', function () { demo.on ? stopDemo(false) : startDemo(); });
+
+explEl.addEventListener('input', function () {
+  explodeTarget = parseFloat(explEl.value) / 100;
+  cam.userZoom = false;
+  stopDemo(true);
+  refitLater = true;
+});
+var refitLater = false;
+
+/* =====================================================================
+   主循环
+   ===================================================================== */
+var lastT = performance.now(), frames = 0, slow = 0, pr = Math.min(window.devicePixelRatio || 1, 2);
 function resize() {
-  var w = stage.clientWidth;
-  var h = stage.clientHeight;
-  if (!w || !h) return;
+  var r = stage.getBoundingClientRect();
+  var w = Math.max(1, r.width), h = Math.max(1, r.height);
   renderer.setSize(w, h, false);
   camera.aspect = w / h;
   camera.updateProjectionMatrix();
 }
-if ('ResizeObserver' in window) new ResizeObserver(resize).observe(stage);
 window.addEventListener('resize', resize);
 
-/* === 工具 === */
-function clamp(v, a, b) { return Math.min(b, Math.max(a, v)); }
-function easeInOut(t) { t = clamp(t, 0, 1); return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+function frame(now) {
+  var dt = Math.min(0.05, (now - lastT) / 1000); lastT = now;
 
-/* === 主循环 === */
-var tmpVec = new THREE.Vector3();
-var lastTime = performance.now();
-var triReported = false;
-var slowFrames = 0;
-var loweredDpr = false;
+  // 演示推进
+  if (demo.on) {
+    demo.t += dt;
+    var cur = DEMO[demo.idx];
+    if (demo.t > cur.dur) {
+      demo.idx = (demo.idx + 1) % DEMO.length;
+      demo.t = 0;
+      runDemoStep(demo.idx, false);
+    }
+  }
 
-function frame() {
-  var now = performance.now();
-  var dt = Math.min((now - lastTime) / 1000, 0.05);
-  lastTime = now;
-  var k = 1 - Math.exp(-dt * 9);
+  // 自动旋转
+  if (cam.spin) cam.tTheta += dt * 0.16;
 
-  if (spin) want.yaw += dt * 0.16;
+  // 相机方向变化时重算取景
+  if (Math.abs(cam.tTheta - cam.theta) + Math.abs(cam.tPhi - cam.phi) > 0.002) refit(false);
 
-  cam.yaw += (want.yaw - cam.yaw) * k;
-  cam.pitch += (want.pitch - cam.pitch) * k;
-  cam.dist += (want.dist - cam.dist) * k;
-  cam.target.lerp(want.target, k);
-
-  var cp = Math.cos(cam.pitch);
+  // 相机阻尼
+  var k = 1 - Math.pow(0.0016, dt);
+  cam.theta += (cam.tTheta - cam.theta) * k;
+  cam.phi += (cam.tPhi - cam.phi) * k;
+  cam.dist += (cam.tDist - cam.dist) * k;
+  cam.target.lerp(cam.tTarget, k);
   camera.position.set(
-    cam.target.x + cam.dist * cp * Math.sin(cam.yaw),
-    cam.target.y + cam.dist * Math.sin(cam.pitch),
-    cam.target.z + cam.dist * cp * Math.cos(cam.yaw)
+    cam.target.x + cam.dist * Math.cos(cam.phi) * Math.sin(cam.theta),
+    cam.target.y + cam.dist * Math.sin(cam.phi),
+    cam.target.z + cam.dist * Math.cos(cam.phi) * Math.cos(cam.theta)
   );
   camera.lookAt(cam.target);
 
-  PARTS.forEach(function (p) {
-    p.open += (p.target - p.open) * k;
-    var e = easeInOut(p.open);
-    tmpVec.set(p.vec[0], p.vec[1], p.vec[2]).multiplyScalar(e);
-    p.group.position.copy(p.homePosition).add(tmpVec);
+  // 拆解插值
+  var prevExplode = explode;
+  explode += (explodeTarget - explode) * (1 - Math.pow(0.004, dt));
+  if (Math.abs(explodeTarget - explode) > 0.0004) updateExplode(explode);
+  if (Math.abs(prevExplode - explode) > 0.0005) refit(false);
+  if (!cam.userZoom && Math.abs(cam.tDist - fitBase * viewZoom) > 0.5) {
+    if (!viewTarget) cam.tTarget.lerp(fitCenter, 0.12);
+    cam.tDist += (fitBase * viewZoom - cam.tDist) * 0.1;
+  }
+  explEl.value = String(Math.round(explode * 100));
+  explEl.style.setProperty('--pct', (explode * 100).toFixed(1) + '%');
+  pctEl.textContent = Math.round(explode * 100) + '%';
 
-    if (p.id === 'plume') p.group.visible = (p.open > 0.03 || p.selected || p.hover);
+  // 羽流：时间驱动闪烁，拆解时减弱
+  if (plume && plume.material.uniforms) {
+    plume.material.uniforms.uTime.value = now * 0.001;
+    plume.material.uniforms.uOpacity.value = (1 - 0.55 * explode) * (plumeOn ? 1 : 0);
+  }
 
-    var glowTarget = p.selected ? 1 : (p.hover ? 0.45 : 0);
-    p.glow += (glowTarget - p.glow) * k;
-    if (p.sprite) p.sprite.material.opacity = 0.85 * p.glow;
-    for (var i = 0; i < p.materials.length; i++) {
-      var m = p.materials[i];
-      if (!m.emissive) continue;
-      m.emissive.setHex(p.selected ? 0x38BDF8 : 0x7FD4F5);
-      m.emissiveIntensity = 0.38 * p.glow;
-    }
-  });
-
-  plumeLight.intensity = 0.55 + Math.sin(performance.now() * 0.0012) * 0.18;
-
-  updateLabels();
   renderer.render(scene, camera);
+  layoutLabels();
+  layoutDims();
 
-  if (!triReported && renderer.info.render.triangles > 0) {
-    triReported = true;
-    var tc = document.getElementById('triCount');
-    if (tc) tc.textContent = renderer.info.render.triangles.toLocaleString('zh-CN');
-  }
-
-  if (dt > 0.028) slowFrames++; else slowFrames = Math.max(0, slowFrames - 1);
-  if (!loweredDpr && slowFrames > 90) {
-    loweredDpr = true;
-    renderer.setPixelRatio(1);
-    resize();
-  }
+  // 性能自适应
+  frames++;
+  if (dt > 0.045) slow++; else slow = Math.max(0, slow - 0.5);
+  if (slow > 90 && pr > 1) { pr = 1; renderer.setPixelRatio(1); slow = 0; }
 
   requestAnimationFrame(frame);
 }
 
-/* === 启动 === */
-function boot() {
-  renderList();
-  renderTotal();
-  renderInfo(null);
-  syncExplodeButton();
-  resize();
-  stage.classList.remove('is-loading');
-  frame();
-}
-
-document.getElementById('btnExplode').addEventListener('click', explodeAll);
-document.getElementById('btnReset').addEventListener('click', resetAll);
-
-document.getElementById('btnSpin').addEventListener('click', function (e) {
-  spin = !spin;
-  e.currentTarget.setAttribute('aria-pressed', spin ? 'true' : 'false');
+/* 初始化 */
+resize();
+setWire(false); setCut(false); setPlume(true);
+(function initFromURL() {
+  var q = new URLSearchParams(location.search);
+  if (q.has('e')) { explode = Math.min(1, Math.max(0, parseFloat(q.get('e')) / 100)); explodeTarget = explode; }
+  var instantFit = true;
+  var v = q.get('v');
+  if (v && VIEWS[v]) applyView(VIEWS[v], true);
+  if (q.get('spin') === '0') { cam.spin = false; document.getElementById('tSpin').setAttribute('aria-pressed', 'false'); }
+  if (q.has('cut')) { setCut(true); document.getElementById('tCut').setAttribute('aria-pressed', 'true'); }
+  if (q.has('wire')) { setWire(true); document.getElementById('tWire').setAttribute('aria-pressed', 'true'); }
+  if (q.get('labels') === '0') { showLabels = false; document.getElementById('tLabels').setAttribute('aria-pressed', 'false'); }
+  if (q.get('dims') === '0') { showDims = false; document.getElementById('tDims').setAttribute('aria-pressed', 'false'); }
+  if (q.get('plume') === '0') { setPlume(false); document.getElementById('tPlume').setAttribute('aria-pressed', 'false'); }
+  if (q.get('demo') === '1') { setTimeout(startDemo, 320); return; }
+  if (q.has('t')) cam.tTheta = cam.theta = parseFloat(q.get('t'));
+  if (q.has('p')) cam.tPhi = cam.phi = parseFloat(q.get('p'));
+  if (q.has('tx')) { cam.tTarget.x = cam.target.x = parseFloat(q.get('tx')); viewTarget = cam.tTarget.clone(); }
+  if (q.has('ty')) { cam.tTarget.y = cam.target.y = parseFloat(q.get('ty')); viewTarget = cam.tTarget.clone(); }
+  if (q.has('d')) { cam.tDist = cam.dist = parseFloat(q.get('d')); cam.userZoom = true; }
+  if (q.get('debug') === '1') window.__dbg = true;
+  if (q.get('fit') !== '0') { refit(true, 1.12); if (!viewTarget) cam.tTarget.copy(fitCenter); }
+  if (instantFit) { cam.dist = cam.tDist; cam.target.copy(cam.tTarget); }
+})();
+updateExplode(explode);
+refit(true, cinema ? 0.94 : 0.9);
+cam.dist = cam.tDist; cam.target.copy(cam.tTarget);
+requestAnimationFrame(function (t) {
+  lastT = t;
+  frame(t);
+  var ld = document.getElementById('loader');
+  ld.classList.add('off');
+  setTimeout(function () { if (ld.parentNode) ld.remove(); }, 700);
 });
+/* =====================================================================
+   面板与交互绑定
+   ===================================================================== */
+var GROUPS = { A: 'A · 推力器头部', B: 'B · 线束与接口', C: 'C · PPCU 机箱与模块' };
 
-/* === 剖面模式：用裁剪平面切掉外壳上半，露出内部磁路 === */
-var sectionOn = false;
-var cutPlane = new THREE.Plane(new THREE.Vector3(0, -1, 0), 0.015);
-var CUT_PARTS = ['shell', 'outerCoil', 'shield', 'flange'];
-
-function setSection(on) {
-  sectionOn = on;
-  renderer.localClippingEnabled = on;
-  PARTS.forEach(function (p) {
-    var cut = on && CUT_PARTS.indexOf(p.id) >= 0;
-    for (var i = 0; i < p.materials.length; i++) {
-      var m = p.materials[i];
-      m.clippingPlanes = cut ? [cutPlane] : null;
-      m.clipShadows = false;
-      m.needsUpdate = true;
-    }
+function buildPartList() {
+  var host = document.getElementById('partList');
+  var html = '';
+  ['A', 'B', 'C'].forEach(function (g) {
+    html += '<div class="grouplabel">' + GROUPS[g] + '</div>';
+    PARTS.filter(function (p) { return p.grp === g; }).forEach(function (p) {
+      html += '<button class="part" type="button" role="listitem" data-id="' + p.id + '">' +
+        '<span class="no mono">' + p.no + '</span>' +
+        '<span class="txt"><span class="nm">' + p.name + '</span>' +
+        '<span class="mt">' + (p.label || '') + '</span></span>' +
+        '<span class="src' + (p.src === 'doc' ? '' : ' est') + '">' + (p.src === 'doc' ? '文件' : '估算') + '</span>' +
+        '</button>';
+    });
   });
-  var btn = document.getElementById('btnSection');
-  btn.setAttribute('aria-pressed', on ? 'true' : 'false');
-  if (on) {
-    spin = false;
-    var sb = document.getElementById('btnSpin');
-    if (sb) sb.setAttribute('aria-pressed', 'false');
-    want.pitch = Math.max(want.pitch, 0.42);
-    want.dist = Math.max(want.dist, 7.4);
-  }
+  host.innerHTML = html;
+  document.getElementById('partCount').textContent = PARTS.length + ' 件';
+  host.addEventListener('click', function (e) {
+    var b = e.target.closest('.part');
+    if (!b) return;
+    if (explodeTarget < 0.5) explodeTarget = 0.85;
+    selectPart(b.dataset.id, true);
+  });
+}
+function renderDetail(id) {
+  var def = null;
+  for (var i = 0; i < PARTS.length; i++) if (PARTS[i].id === id) def = PARTS[i];
+  if (!def) return;
+  document.getElementById('dNo').textContent = def.no + (def.src === 'doc' ? ' · 招标文件' : ' · 工程估算');
+  document.getElementById('dName').textContent = def.name;
+  document.getElementById('dRole').textContent = def.role;
+  var rows = def.spec.map(function (s) {
+    return '<div class="spec-row"><span>' + s[0] + '</span><b>' + s[1] + '</b></div>';
+  }).join('');
+  document.getElementById('dSpecs').innerHTML = rows;
+  document.getElementById('detail').classList.add('on');
+  document.body.classList.add('has-detail');
 }
 
-document.getElementById('btnSection').addEventListener('click', function () {
-  setSection(!sectionOn);
+/* ---------- 参数面板 ---------- */
+var SPEC = {
+  sys: function () {
+    return '<div class="sec-title">整机（第八部分 2.2 / 2.3）</div>' +
+      '<dl class="kv">' +
+      kv('产品代号', 'SMP-1K42-V00', '第三部分 3.1.1') +
+      kv('推进工质', '氪 Kr', '2.3') +
+      kv('一次母线', '42 V（36～46.2）', '2.2.1', true) +
+      kv('负载额定功率', '1100 W', '2.2.3', true) +
+      kv('转换总效率', '≥ 88%', '2.3', true) +
+      kv('结构包络', '325×257×150', '2.2.4', true) +
+      kv('总质量', '≤ 8 kg（预算 7.8）', '表 3-5', true) +
+      kv('安装支耳厚度', '6 ± 0.1 mm', '2.6.2') +
+      kv('安装面平面度', '0.1/(100×100)', '2.6.3') +
+      kv('安装面粗糙度', '≤ 3.2 µm', '2.6.4') +
+      kv('安装底面热耗', '≤ 110 W', '2.3') +
+      kv('整体最大热耗', '≤ 150 W', '2.3') +
+      kv('工作温度', '−20 ～ +55 ℃', '2.3') +
+      kv('单次连续工作', '≥ 24 h', '2.3') +
+      kv('开关机次数', '≥ 9000 次', '2.3') +
+      kv('在轨寿命', '5 年', '2.3') +
+      '</dl>' +
+      '<p class="note" style="margin-top:12px">单位：mm。机箱、安装支耳与侧插接插件全部包含在 325 × 257 × 150 的包络内，与三维模型 1:1 对应。</p>';
+  },
+  mod: function () {
+    function bar(name, v, max, unit, amber) {
+      var w = Math.max(2, Math.round(v / max * 100));
+      return '<div class="bar-row"><span>' + name + '</span><span class="track">' +
+        '<i class="fill' + (amber ? ' amber' : '') + '" style="width:' + w + '%"></i></span>' +
+        '<span class="val">' + v + unit + '</span></div>';
+    }
+    return '<div class="sec-title">负载功率分配 · 表 3-3</div>' +
+      bar('阳极电源', 900, 900, ' W') + bar('阴极加热', 80, 900, ' W') +
+      bar('点火触持', 50, 900, ' W') + bar('励磁', 45, 900, ' W') +
+      bar('阀门压调', 25, 900, ' W') +
+      '<p class="note" style="margin-top:4px">合计 1100 W，与负载额定工作功率一致；点火瞬间点火电源短时可达约 390 W。</p>' +
+      '<div class="sec-title">损耗预算 · 表 3-4（合计 150 W）</div>' +
+      bar('阳极变换', 78, 78, ' W', true) + bar('DICU+阀驱', 30, 78, ' W', true) +
+      bar('线路接插', 16, 78, ' W', true) + bar('输入EMI', 8, 78, ' W', true) +
+      bar('阴极加热', 8, 78, ' W', true) + bar('点火触持', 6, 78, ' W', true) +
+      bar('励磁', 4, 78, ' W', true) +
+      '<div class="sec-title">质量预算 · 表 3-5（合计 7.8 kg）</div>' +
+      bar('PPU+底板', 3.6, 3.6, ' kg') + bar('DICU 板', 2.2, 3.6, ' kg') +
+      bar('磁性件', 1.1, 3.6, ' kg') + bar('连接器', 0.6, 3.6, ' kg') +
+      bar('紧固件', 0.3, 3.6, ' kg');
+  },
+  src: function () {
+    return '<div class="sec-title">数据出处</div>' +
+      srcRow('325 × 257 × 150 mm 包络', '招标文件 2.2.4 / 2.6.1，应答表 2.4、6.1；技术说明第 6 节') +
+      srcRow('总质量 ≤ 8 kg', '招标文件 2.2.4；表 3-5 质量预算 7.8 kg') +
+      srcRow('支耳 6 ± 0.1 mm、平面度、粗糙度', '招标文件 2.6.2 / 2.6.3 / 2.6.4') +
+      srcRow('阳极电源 200～420 V / 900 W / 3.6 A', '表 1（2.4.2 阳极电源技术指标）') +
+      srcRow('点火 260～300 V、触持 5～40 V、1.3 A', '表 2（阴极点火与触持电源）') +
+      srcRow('加热 0～5 A / 0～25 V / 120 W', '表 3（阴极加热电源）') +
+      srcRow('励磁 0～2.5 A / 2～35 V / 45 W', '表 4（励磁电源）') +
+      srcRow('自锁阀 2 路 / 电磁阀 ≥9 路 / 压力计 ≥8 路 / 热敏 ≥4 路', '表 5（2.5.1 压调与流控）') +
+      srcRow('连接器 J6W-50 / J30J-25 / J30J-66 / J599', '招标文件 2.6.17') +
+      srcRow('效率 ≥ 88%、损耗与热耗', '招标文件 2.3；表 3-4 损耗预算') +
+      srcRow('内部板卡与模块划分', '第三部分 3.1.6 表 3-7 功能模块组成') +
+      '<div class="sec-title">关于推力器头部</div>' +
+      '<p class="note">招标文件第八部分图 1 只给出推力器头部的组成与接口关系（<b>阴极 A、阴极 B、阳极、励磁线圈</b>），未给外形尺寸；本页推力器头部按 1.1 kW 级氪霍尔推力器<b>工程估算</b>建模，界面中以琥珀色「估算」标签与标注区分。PPCU 相关尺寸与参数全部取自投标文件，逐条可查。</p>' +
+      '<p class="note" style="margin-top:8px">几何全部由 Three.js 代码生成，无外部模型文件；场景 1 单位 = 1 mm。</p>';
+  }
+};
+function kv(k, v, note, hl) {
+  return '<dt>' + k + '<span>' + (note || '') + '</span></dt><dd' + (hl ? ' class="hl"' : '') + '>' + v + '</dd>';
+}
+function srcRow(k, v) {
+  return '<div style="margin-bottom:9px"><div style="font-size:11.5px;color:var(--ink)">' + k + '</div>' +
+    '<div style="font-size:10.5px;color:var(--ink-3);font-family:var(--mono);line-height:1.5">' + v + '</div></div>';
+}
+function renderSpec(tab) {
+  document.getElementById('specBody').innerHTML = SPEC[tab]();
+}
+document.querySelectorAll('.tab').forEach(function (t) {
+  t.addEventListener('click', function () {
+    document.querySelectorAll('.tab').forEach(function (x) { x.setAttribute('aria-selected', 'false'); });
+    t.setAttribute('aria-selected', 'true');
+    renderSpec(t.dataset.tab);
+  });
 });
 
-document.getElementById('btnLabels').addEventListener('click', function (e) {
-  showLabels = !showLabels;
-  e.currentTarget.setAttribute('aria-pressed', showLabels ? 'true' : 'false');
-});
-
+/* ---------- 按钮 ---------- */
 document.querySelectorAll('[data-view]').forEach(function (b) {
-  b.addEventListener('click', function () { applyView(b.dataset.view); });
+  b.addEventListener('click', function () {
+    stopDemo(true);
+    var v = VIEWS[b.dataset.view];
+    applyView(v, false);
+    if (b.dataset.view === 'ppcu' && explodeTarget < 0.5) explodeTarget = 0.85;
+    if (b.dataset.view === 'thr') explodeTarget = Math.max(explodeTarget, 0.5);
+  });
 });
+function toggleBtn(id, get, set) {
+  var el = document.getElementById(id);
+  el.addEventListener('click', function () {
+    var next = !get();
+    set(next);
+    el.setAttribute('aria-pressed', next ? 'true' : 'false');
+  });
+}
+toggleBtn('tLabels', function () { return showLabels; }, function (v) { showLabels = v; });
+toggleBtn('tDims', function () { return showDims; }, function (v) { showDims = v; if (!v) DIMS.forEach(function (d) { d.el.classList.remove('on'); }); });
+toggleBtn('tWire', function () { return wireOn; }, setWire);
+toggleBtn('tCut', function () { return cutOn; }, setCut);
+toggleBtn('tPlume', function () { return plumeOn; }, setPlume);
+toggleBtn('tSpin', function () { return cam.spin; }, function (v) { cam.spin = v; });
+document.getElementById('tSpin').setAttribute('aria-pressed', 'true');
 
+
+/* 影院模式 */
+function setCinema(on) {
+  cinema = on;
+  document.body.classList.toggle('cinema', on);
+  var b = document.getElementById('tCinema');
+  if (b) b.setAttribute('aria-pressed', on ? 'true' : 'false');
+}
+document.getElementById('tCinema').addEventListener('click', function () { setCinema(!cinema); });
+
+/* 键盘 */
 window.addEventListener('keydown', function (e) {
-  if (e.key === 'Escape') clearSelection();
-  if (e.key === 'r' || e.key === 'R') resetAll();
-  if (e.key === 'c' || e.key === 'C') setSection(!sectionOn);
+  var tag = (e.target.tagName || '').toLowerCase();
+  if (tag === 'input' || tag === 'textarea') return;
+  var k = e.key.toLowerCase();
+  if (k === 'escape') selectPart(null);
+  else if (k === 'r') { selectPart(null); applyView(VIEWS.iso, false); explodeTarget = 0.6; }
+  else if (k === 'c') document.getElementById('tCut').click();
+  else if (k === 'l') document.getElementById('tLabels').click();
+  else if (k === 'd') document.getElementById('tDims').click();
+  else if (k === 'w') document.getElementById('tWire').click();
+  else if (k === 'f') setCinema(!cinema);
+  else if (k === ' ') { e.preventDefault(); document.getElementById('btnPlay').click(); }
 });
 
-boot();
+/* 启动 */
+buildPartList();
+renderSpec('sys');
+setCaption(DEMO[0].cap);
+
 </script>
 </body>
 </html>
