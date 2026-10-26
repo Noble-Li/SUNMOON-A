@@ -11,7 +11,7 @@
 ```
 ├── index.html                        # 主页面（Hero / 标语区 / 今日详情 / 每日知识卡 / 本周汇总 / 历史归档 / 跟踪项目表 / 关于）
 ├── hall-thruster.html                # 霍尔推力器 3D 拆解页（Three.js，几何体全部代码生成）
-├── assets/
+├── vendor/
 │   ├── three.module.min.js           # Three.js r186 ESM 构建（本地自带，不依赖 CDN）
 │   └── three.core.min.js             # 同上，core 分片
 ├── data/
