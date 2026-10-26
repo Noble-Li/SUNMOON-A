@@ -123,6 +123,13 @@
   .lbl .dot { width: 5px; height: 5px; border-radius: var(--r-full); background: var(--accent); }
   .lbl .sp { color: var(--ink-3); }
   .lbl.is-active { border-color: var(--accent); color: var(--accent); }
+  .lead { position: absolute; height: 1px; width: 0; display: none; background: rgba(56, 189, 248, 0.75);
+    transform-origin: 0 50%; pointer-events: none; }
+  .lead.is-active { background: rgba(56, 189, 248, 1); }
+  .lead-dot { position: absolute; width: 6px; height: 6px; margin: -3px 0 0 -3px; display: none;
+    border: 1px solid rgba(56, 189, 248, 0.75); border-radius: 50%; background: rgba(5, 7, 12, 0.9);
+    pointer-events: none; }
+  .lead-dot.is-active { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.18); }
   .lbl.is-active .sp { color: var(--accent); opacity: 0.8; }
 
   .hud {
@@ -267,6 +274,7 @@
           <button class="btn" data-view="back" type="button">背视</button>
           <button class="btn" id="btnSpin" type="button" aria-pressed="true"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3v14M3 10h14"/><path d="M7.5 5.5 10 3l2.5 2.5M7.5 14.5 10 17l2.5-2.5M5.5 7.5 3 10l2.5 2.5M14.5 7.5 17 10l-2.5 2.5"/></svg>自动旋转</button>
           <button class="btn" id="btnLabels" type="button" aria-pressed="true"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5V5h5.5l6 6-5 5-6-6Z"/><circle cx="7" cy="8" r="1"/></svg>标注</button>
+          <button class="btn" id="btnSection" type="button" aria-pressed="false"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M10 3v14"/><path d="M10 3a7 7 0 0 1 0 14"/></svg>剖面</button>
         </div>
         <div class="hint">
           <span><span class="k">拖拽</span> 旋转</span>
@@ -308,6 +316,7 @@
     </div>
     <div class="guide-note">
       <p>模型由 Three.js 代码生成，无外部模型文件；共 13 个部件、<span id="triCount">—</span> 个三角面。</p>
+      <p style="margin-top:8px">「剖面」用裁剪平面切掉外壳上半，看内部磁路；标注会自动上下避让并拉引线。</p>
       <p style="margin-top:8px">绘制在 GPU 上实时完成，低端设备会自动降低像素比。</p>
     </div>
   </footer>
@@ -1009,38 +1018,122 @@ function renderTotal() {
   document.getElementById('totalBody').innerHTML = specRows(TOTAL);
 }
 
-/* === 标注（把三维坐标投影到屏幕，用 HTML 显示部件名与关键参数） === */
+/* === 标注：投影到屏幕 + 垂直避让 + 引线 === */
 var labelsEl = document.getElementById('labels');
+
 PARTS.forEach(function (p) {
   var el = document.createElement('div');
   el.className = 'lbl';
   el.innerHTML = '<span class="dot"></span><span class="nm">' + p.name + '</span><span class="sp">' + p.labelSpec + '</span>';
   labelsEl.appendChild(el);
   p.labelEl = el;
+  var dot = document.createElement('div');
+  dot.className = 'lead-dot';
+  labelsEl.insertBefore(dot, labelsEl.firstChild);
+  p.dot = dot;
+  var line = document.createElement('div');
+  line.className = 'lead';
+  labelsEl.insertBefore(line, labelsEl.firstChild);
+  p.leader = line;
 });
 
 var projV = new THREE.Vector3();
+var live = [];
 
 function updateLabels() {
   var rect = canvas.getBoundingClientRect();
+
+  live.length = 0;
   PARTS.forEach(function (p) {
     var on = showLabels && p.group.visible && (p.open > 0.05 || p.selected || p.hover);
     if (!on) {
-      if (p.labelEl.classList.contains('is-on')) p.labelEl.classList.remove('is-on');
+      p.labelEl.classList.remove('is-on');
+      p.leader.style.display = 'none';
+      p.dot.style.display = 'none';
       return;
     }
     projV.copy(p.group.position).add(p.labelOffset);
     projV.project(camera);
     if (projV.z > 1 || Math.abs(projV.x) > 1.3 || Math.abs(projV.y) > 1.3) {
       p.labelEl.classList.remove('is-on');
+      p.leader.style.display = 'none';
+      p.dot.style.display = 'none';
       return;
     }
-    var x = clamp((projV.x * 0.5 + 0.5) * rect.width, 74, rect.width - 74);
-    var y = clamp((-projV.y * 0.5 + 0.5) * rect.height, 22, rect.height - 22);
-    p.labelEl.style.left = x.toFixed(1) + 'px';
-    p.labelEl.style.top = y.toFixed(1) + 'px';
+    live.push({
+      p: p,
+      ax: (projV.x * 0.5 + 0.5) * rect.width,
+      ay: (-projV.y * 0.5 + 0.5) * rect.height
+    });
+    p.dot.style.display = 'none';
     p.labelEl.classList.add('is-on');
     p.labelEl.classList.toggle('is-active', p.selected);
+  });
+
+  // 锚点从上到下依次处理，每个标签向下让位到不与已放置标签重叠的位置；
+  // 顶到画布底部就换到右侧重新排，避免把标签推出视野。
+  live.sort(function (m, n) { return m.ay - n.ay; });
+  var placed = [];
+  live.forEach(function (item) {
+    var el = item.p.labelEl;
+    var w = el.offsetWidth || 140;
+    var hh = el.offsetHeight || 22;
+    var padX = w / 2 + 8;
+    var padY = hh / 2 + 8;
+    var x = clamp(item.ax, padX, rect.width - padX);
+    var bottomPad = Math.max(padY, 56);
+    var y = clamp(item.ay, padY, rect.height - bottomPad);
+    var guard = 0;
+    for (;;) {
+      var hit = null;
+      for (var i = 0; i < placed.length; i++) {
+        var q = placed[i];
+        if (Math.abs(q.x - x) < (q.w + w) / 2 + 6 && Math.abs(q.y - y) < (q.h + hh) / 2 + 4) { hit = q; break; }
+      }
+      if (!hit) break;
+      y = hit.y + (hit.h + hh) / 2 + 5;
+      if (y > rect.height - bottomPad) {
+        y = clamp(item.ay, padY, rect.height - bottomPad);
+        x = x + w + 12;
+        if (x > rect.width - padX) x = clamp(item.ax - w - 12, padX, rect.width - padX);
+      }
+      if (++guard > 40) break;
+    }
+    item.x = x; item.y = y; item.w = w; item.h = hh;
+    placed.push({ x: x, y: y, w: w, h: hh });
+    el.style.left = x.toFixed(1) + 'px';
+    el.style.top = y.toFixed(1) + 'px';
+  });
+
+  // 引线：标签被推开时，从部件锚点拉一条细线，止于标签边框（不再穿到标签底下）
+  live.forEach(function (item) {
+    var el = item.p.leader;
+    var dot = item.p.dot;
+    var dx = item.x - item.ax;
+    var dy = item.y - item.ay;
+    var len = Math.sqrt(dx * dx + dy * dy);
+    if (len < 12) { el.style.display = 'none'; dot.style.display = 'none'; return; }
+    var ang = Math.atan2(dy, dx);
+    var cx = Math.abs(Math.cos(ang));
+    var cy = Math.abs(Math.sin(ang));
+    var hw = (item.w || 120) / 2 + 4;
+    var hh = (item.h || 22) / 2 + 4;
+    // 方向射线与标签矩形的交点距离：取两轴约束里更小的那个
+    var t = Math.min(cx > 0.0001 ? hw / cx : 1e9, cy > 0.0001 ? hh / cy : 1e9);
+    var visLen = Math.max(len - t, 0);
+    if (visLen < 4) { el.style.display = 'none'; }
+    else {
+      el.style.display = 'block';
+      el.style.width = visLen.toFixed(1) + 'px';
+      el.style.left = item.ax.toFixed(1) + 'px';
+      el.style.top = item.ay.toFixed(1) + 'px';
+      el.style.transform = 'rotate(' + ang.toFixed(4) + 'rad)';
+    }
+    el.classList.toggle('is-active', !!item.p.selected);
+    dot.style.display = 'block';
+    dot.style.left = item.ax.toFixed(1) + 'px';
+    dot.style.top = item.ay.toFixed(1) + 'px';
+    dot.classList.toggle('is-active', !!item.p.selected);
   });
 }
 
@@ -1147,6 +1240,38 @@ document.getElementById('btnSpin').addEventListener('click', function (e) {
   e.currentTarget.setAttribute('aria-pressed', spin ? 'true' : 'false');
 });
 
+/* === 剖面模式：用裁剪平面切掉外壳上半，露出内部磁路 === */
+var sectionOn = false;
+var cutPlane = new THREE.Plane(new THREE.Vector3(0, -1, 0), 0.015);
+var CUT_PARTS = ['shell', 'outerCoil', 'shield', 'flange'];
+
+function setSection(on) {
+  sectionOn = on;
+  renderer.localClippingEnabled = on;
+  PARTS.forEach(function (p) {
+    var cut = on && CUT_PARTS.indexOf(p.id) >= 0;
+    for (var i = 0; i < p.materials.length; i++) {
+      var m = p.materials[i];
+      m.clippingPlanes = cut ? [cutPlane] : null;
+      m.clipShadows = false;
+      m.needsUpdate = true;
+    }
+  });
+  var btn = document.getElementById('btnSection');
+  btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+  if (on) {
+    spin = false;
+    var sb = document.getElementById('btnSpin');
+    if (sb) sb.setAttribute('aria-pressed', 'false');
+    want.pitch = Math.max(want.pitch, 0.42);
+    want.dist = Math.max(want.dist, 7.4);
+  }
+}
+
+document.getElementById('btnSection').addEventListener('click', function () {
+  setSection(!sectionOn);
+});
+
 document.getElementById('btnLabels').addEventListener('click', function (e) {
   showLabels = !showLabels;
   e.currentTarget.setAttribute('aria-pressed', showLabels ? 'true' : 'false');
@@ -1159,6 +1284,7 @@ document.querySelectorAll('[data-view]').forEach(function (b) {
 window.addEventListener('keydown', function (e) {
   if (e.key === 'Escape') clearSelection();
   if (e.key === 'r' || e.key === 'R') resetAll();
+  if (e.key === 'c' || e.key === 'C') setSection(!sectionOn);
 });
 
 boot();
