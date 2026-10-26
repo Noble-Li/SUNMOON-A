@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>霍尔电推进系统（PPCU + 推力器头部）· 3D 拆解</title>
-<meta name="description" content="用 Three.js 代码生成的霍尔电推进系统三维拆解视图：机箱包络 325×257×150 mm、24 个部件点击拆解、自由旋转缩放、参数来自投标文件。">
+<meta name="description" content="霍尔电推进系统三维拆解：机箱包络 325×257×150 mm、点击部件拆解、自由旋转缩放，参数来自投标文件。">
 <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAIaklEQVR4nG1WC3CVxRX+zv7/f+/NzU0MhpAAgTyABDQWLAgBkdgZeYiKKKU61ZniY3SU6VirpVNqdZw6lvHR2o4COhamPpk6ClOrpVXqk1BRAgooRhiBSNKQ5D6Sm9x7/3/3nM7evJC6c+Z/7J79zu7Zc76zJCL4dhOBMXBdzv+pY0mcbEX6RH+mI+lqP1ChSEVJrKpwUh2mlkLBqhmjlAIR/r/RWQaMgePY9/EuZ/t2dL2xf1LL67XtH07kozEkQwgCeH0oOYUpRysWnph1Renlc1Zei/pKDbjDc89e72jTWkT49Gl953pZNv7D57A8ARLAioKEhsXN9wBJ4EUsWzL2/Zt+LifatAjnEb7VcBb6y9v0zLnysLs+O4gLaCtKgwwwIpqcgNwRhT+pe2Y1BJuf0SLmLBtDLtIariv33ad3vuu+oG+c3v0Sr6w3UU+9fgrnhujzXnRlaVUlPIKrpD1Db3UC4NqYNJU7vqaC1DfFP/rxx082XCAbn3KNUSO+sgYGfXf/ev+dQ6Fd9feGXng89/aVXl2YRNCRk6gjt36i/vFfnLwCYQWHpLUPi96ljOF19erhBnTkdGWxd/ubKLjhquSTk8L+xqdDo+cxuKNXX8k1NHJ2X7MB/E1zuPtqfUOVuXy8+dtC7r/G/KLeumVxhTm8lFuXmSNLzdSY7dlykTlxBR9frjfNDkojGpDP3p+/mJ/emBv2uYBZkkkztSZ78ITI9Vf5IN67xHyxVIccBnSRZw4tNW9cYgAudnn/Yv3WIj69Qi+psAbe/4F+exH3rDA3TmYgAPHKZd+kpLYq29ZmmMUYUUR44g9m0dJQQ2WH/9q/HRLp96nEwyuNvGICZYzcdUBaEjbEoy5cwr6kAFQXw4QCxBx8moKnrBAcJcEb702MnLpuTfih32oiMENpLW/+ne9aR7LvS+X3k0D+1YkiT80qURu/j3eaMDlKvzlkA1oLQgqtfejOYXqRNJZSIsDxfnswLDaeXMcJMrLn0J0/w+4PJJ0W14U6cEA8FxfUQNoSdjuk8LsvzFPHhACHqDqq/jhTHmyw8UCwBjqyaE3jvGJZWi6HU5QK4CqbLHkNRWTak5UlGFfGH31ke1VLCyonEwlMNGZZIubggfPpsVZZ2cxbjku3j96ArqvksWFkDDxF6UBaEqgrUovL8Z+EXfgIQ9i8EFNQKIJpdc6BA3kDySSKiq0HZVodvJBopttrsXaKakmoXx+Ua/fwkTSd46nyiGUdi0U42EsFChGFz5IUUkM2FEEb8TyaPoMIRcVOqtdqK8+DNkqEqbZK5s1DhrG/V91abS4ps2Bfp3GkDyGShI8BnU9cxsdxCQTxAIdSYsQuLhB7DIDMnk11tQBrJtdmOtTUqdLRwUTsEPCrdXafnVmMCakX5/ITs/D7merGybyzE51ZeahBFHBvnY2fbh/H0jKvFD+pwukcbqmRReXCgl+uU4oAaWvj2po8Gzc2UlcXEnFHCdPyK2XZKtn/Ne84jeYedWs13VzN73Xhnk+p0KVrJ1KPT5eUoSKCw72yL6FmFNH3SnBygGaPRWVOFq9QK69Rwr6vjh3DxRfnD0dEVq3yN2/Oc6FvONUbLGuyjOZ5ZuYYM6PYphhgXDLnhrg8wuPCxlN8jmcKXRNxzPgCnhjjQgRN8zmR1IFh5u3bdVOTL8LG5Nm0uVmfd35gDAc+W0ZN9uofrh7EZYAdhx019H2mkLKSJ9fgyqtNPCkiQc4izJ0b7NhhiUJrGeKiNWuCu+8ORCSXzdsQ0Vu36umWgkYRlbKWzjBm2aJumv7zsybPzLmsfW/YoFessFDGDHOR1pLJmFmz/GeesQN+jlnbQR7oN9u26dWrTXW18dxRXNc1VVV61Srz0kvcn7aahv382l97TU+r83t6jDHCtiPvokFT7e1mxgz/sceC/AYkyOq8grAIZzLmq69M826za5d9trZyJjMyGmSHSsyWLXrKFP/IET2COVrRBv97esxll/nXX+93dAyOs85pnbPbGYQbbCxiRAaHBkcSCXPbbcGCBf7Jk3bimUVttGQO2+RHHgnmzcs98EBw/PiZsBZzWEYtnjrFGzbo+fP9++8f2vp3l8yRCwvE0l1nJ2/axLubMa4MF11EF15I1dUYU6KUYxk4mZK2k7J/v+zdy+0dNGc27rhDVVUpW0QZSn3HtYUBlX/aJByuqBIEsnu3aW6mo0clnUbgi8C1GeJKYUzV1prGRnfhQolGXYDtLGVpIw9iACdPfnT2vWj07sVwv33J8TXYiFIU8kYVAdJaHPc7L10jRT/zKfe9xUGbO+Ymk9zmjLkBuotzR0GeCbqocDmnd7oFdch+4FU8yqm/BgOH3XEP+l2bYOJuZKJXusb07zG9/wQ53tjbTfpDzrQ4595i4lu98vXWYTq+FW6ZU3wVuA/iK2cMOcXklKhwHcefdvhrLzLRidT7pzexTvndW5QqkP6dynxZMOFeHtijU6/r7s1e2VqncIHf+agK15vE85I9SN4EUhEFiDf2p9y3S8efp3ANUQQqDFUAFSGn0B27VsefJSdGKurELtWJreSOp3CNZFrcoiWgsBO71KR2UGgSuWUqOgecFO51y9bp+PMg17IpQKb3zVDlU07hAhN/TkCie0R3A0p0t1t0GVGUBz62TFG4iJOvqnANOEehWjOw195h+z9QsSbxv4EYzn4OCkOMis5Wocmcfm/oDIL4X3hgH7nj3JLVwmnds4XcMm/cXTr+MoUmqdAUzn4Gp4QzB+GWkWQlaPcq7gs6N4CiAIfK1+nUDjvKGbf0Zh74RCTnFC02ye1e2dqhKBLOAYZUNP+dJQrZdBCdjwO7UxFNIJAD4Xyy5ANZ95BbOhRPptdOJ1ckyGvaWQD+B7kR6j3GWAR8AAAAAElFTkSuQmCC">
 <link rel="canonical" href="https://noble-li.github.io/SUNMOON-A/hall-thruster.html">
 <meta name="theme-color" content="#05070C">
 <meta property="og:type" content="website">
 <meta property="og:title" content="霍尔电推进系统 · 3D 拆解">
-<meta property="og:description" content="代码生成的三维模型：点击部件拆解、旋转缩放、部件清单与参数；机箱包络 325×257×150 mm，数据来自招标文件。">
+<meta property="og:description" content="点击部件拆解、旋转缩放、部件清单与参数；机箱包络 325×257×150 mm，数据来自招标文件。">
 <meta property="og:url" content="https://noble-li.github.io/SUNMOON-A/hall-thruster.html">
 <style>
   /* === 令牌：与日报页同一套尺度，这里只换成深色科技底 === */
@@ -160,7 +160,7 @@
   }
   .btn:hover { color: var(--ink); border-color: var(--ink-3); }
   .btn:active { transform: scale(0.98); }
-  .btn[aria-pressed="true"] { color: var(--accent); border-color: var(--accent); background: var(--accent-tint); }
+  .btn[aria-pressed="true"] { color: #7FD8FF; border-color: rgba(56,189,248,.62); background: #10344A; }
   .btn-primary { background: var(--accent); border-color: var(--accent); color: #04121C; }
   .btn-primary:hover { background: #6FD0FA; border-color: #6FD0FA; color: #04121C; }
   .btn-row { display: flex; flex-wrap: wrap; gap: var(--s50); margin-top: var(--s100); }
@@ -250,7 +250,6 @@
   <header class="topbar">
     <a class="back" href="./index.html"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5l-5 5 5 5M6 10h9"/></svg>返回日报</a>
     <h1>霍尔电推进系统 · 3D 拆解</h1>
-    <span class="tag">WebGL · 代码生成</span>
     <span class="spacer"></span>
     <span class="badge-live"><span class="dot"></span>实时渲染</span>
   </header>
@@ -324,9 +323,7 @@
       <div><h3>整体拆解</h3><p>「全部拆解」按装配顺序散开所有部件，「复位」一键还原。</p></div>
     </div>
     <div class="guide-note">
-      <p>模型由 Three.js 代码生成，无外部模型文件；共 <span id="partTotal">—</span> 个部件、<span id="triCount">—</span> 个三角面。</p>
       <p style="margin-top:8px">机箱按 325 × 257 × 150 mm、支耳 6 mm 建模（1 单位 = 50 mm）；推力器头部外形为工程估算。</p>
-      <p style="margin-top:8px">背景星场、银河带与星云同样由代码生成，随镜头缓慢自转。</p>
     </div>
   </footer>
 
@@ -1555,8 +1552,7 @@ function specRows(list) {
 function renderInfo(id) {
   var box = document.getElementById('infoBody');
   if (!id) {
-    box.innerHTML = '<p class="detail-empty">点击模型上的任一部件或左侧清单，查看结构、作用与典型参数。</p>' +
-      '<p class="detail-empty" style="margin-top:12px;color:var(--ink-3)">当前共 ' + PARTS.length + ' 个部件。全部几何体由代码生成，没有外部模型文件。</p>';
+    box.innerHTML = '<p class="detail-empty">点击模型上的任一部件或左侧清单，查看结构、作用与典型参数。</p>';
     return;
   }
   var p = partById(id);
@@ -1831,12 +1827,6 @@ function frame() {
   updateLabels();
   renderer.render(scene, camera);
 
-  if (!triReported && renderer.info.render.triangles > 0) {
-    triReported = true;
-    var tc = document.getElementById('triCount');
-    if (tc) tc.textContent = renderer.info.render.triangles.toLocaleString('zh-CN');
-  }
-
   if (dt > 0.028) slowFrames++; else slowFrames = Math.max(0, slowFrames - 1);
   if (!loweredDpr && slowFrames > 90) {
     loweredDpr = true;
@@ -1850,7 +1840,7 @@ function frame() {
 /* === 启动 === */
 function boot() {
   renderList();
-  var pt = document.getElementById('partTotal');
+  var pt = null;
   if (pt) pt.textContent = PARTS.length;
   renderTotal();
   renderInfo(null);
