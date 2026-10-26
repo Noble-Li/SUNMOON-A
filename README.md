@@ -9,7 +9,7 @@
 ## 目录结构
 
 ```
-├── index.html                        # 主页面（今日详情 / 每日知识卡 / 本周汇总 / 历史归档 / 跟踪项目表）
+├── index.html                        # 主页面（Hero / 标语区 / 今日详情 / 每日知识卡 / 本周汇总 / 历史归档 / 跟踪项目表 / 关于）
 ├── data/
 │   ├── reports.json                  # 日报唯一数据源，每日追加
 │   ├── knowledge_cards.json          # 每日知识卡词库（72 张 / 8 类，手写维护）
@@ -34,6 +34,9 @@
 | 本周汇总 | 最近 7 个自然日一览，标注每天有 / 无新增 |
 | 历史归档 | 2025-06 起，按月分组、可展开；灰色「回填」徽标区分事件式回填与逐日跟踪 |
 | 跟踪项目表 | P01~P28 完整状态，含每个项目的下一关键节点 |
+| 关于 | 更新频率、数据来源、回填与逐日跟踪的区别、引用说明（同时输出 FAQPage 结构化数据） |
+
+顶部悬浮导航（今日详情 / 每日知识卡 / 本周汇总 / 历史归档 / 跟踪项目 / 关于）按滚动位置高亮当前板块；Hero 之下的标语区逐字点亮。
 
 ## 数据格式
 
@@ -179,3 +182,18 @@ python scripts/daily_card.py --write              # 生成当天记录
 | `.github/workflows/daily-watch.yml` | 每天 17:00 | 日报哨兵：检测日报是否断更（≥2 天告警）、抓取公开渠道新线索，有动静就开 Issue 提醒（会发邮件）。手动验证：Actions → 日报哨兵 → Run workflow → 勾选 `force_alert` |
 | `.github/workflows/daily-card.yml` | 每天 08:00 | 每日知识卡：写 `data/daily_cards.json` 并提交。手动补跑：Actions → 每日知识卡 → Run workflow（可填日期） |
 
+
+## 界面约定（改样式前请先看）
+
+页面是一份静态 HTML + CSS 变量，不依赖任何框架、字体 CDN 或图标库，`data/*.json` 是唯一数据源。
+
+- **字体**：单一中文字族（PingFang SC / HarmonyOS Sans SC / MiSans / Noto Sans SC / 微软雅黑），不引外部字体；编号与日期用系统等宽字体；不用斜体、不用 900 字重。
+- **字号**：只用 `12 / 14 / 16 / 18 / 20 / 24 / 30 / 36 / 48`（Tailwind 默认标尺），行高跟随该档；新增数值请就近向下取档，不要写任意 px。
+- **间距**：只用 `2 / 4 / 8 / 12 / 16 / 24 / 32 / 40 / 48 / 64 / 80 / 96`（`--s25`…`--s900`）。
+- **圆角**：卡片 12、按钮与徽标 8、标签 4；嵌套块按「内圆角 = 外圆角 − 间隙」计算，算出来 ≤ 2 就保持直角（所以卡片内的条目是直角）。
+- **颜色**：只用 `:root` 里的令牌。背景一律平整；唯一允许的渐变是 Hero 标题的文字渐变，且不允许单边描边（条目改用四周描边）。
+- **图标**：内联 SVG（20×20、1.5 描边），不用 emoji、不用图标字体。
+- **动效**：统一曲线 `cubic-bezier(0.22, 1, 0.36, 1)`；只动 `transform` / `opacity`；滚动进入用 IntersectionObserver 只播一次；标语区用一个 `requestAnimationFrame` 节流的滚动监听逐字点亮；`prefers-reduced-motion` 下全部降级为纯透明度或无动效。
+- **状态**：链接与按钮有 hover / active（`scale(0.98)`）与 `:focus-visible` 描边；加载时显示与版式同形的骨架；数据加载失败在卡片内写明原因，不弹窗。
+
+改完 `index.html` 后，离线单文件版要一起重建：把 `data/` 三个 JSON 以 `<script id="offline-data">`、`offline-cards`、`offline-cardlog`（`type="application/json"`）内联到主 `<script>` 之前即可。
