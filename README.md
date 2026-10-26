@@ -9,10 +9,18 @@
 ## 目录结构
 
 ```
-├── index.html                        # 主页面（今日详情 / 本周汇总 / 历史归档 / 跟踪项目表）
+├── index.html                        # 主页面（今日详情 / 每日知识卡 / 本周汇总 / 历史归档 / 跟踪项目表）
 ├── data/
-│   └── reports.json                  # 唯一数据源，每日追加
-├── 霍尔电推进日报_离线单文件版.html   # 数据内联版，双击即可查看、可单独转发
+│   ├── reports.json                  # 日报唯一数据源，每日追加
+│   ├── knowledge_cards.json          # 每日知识卡词库（72 张 / 8 类，手写维护）
+│   └── daily_cards.json              # 知识卡每日记录（云端 Action 自动写入，含连续更新天数）
+├── scripts/
+│   ├── watchman.py                   # 云端哨兵：断更检测 + 线索抓取
+│   └── daily_card.py                 # 每日知识卡生成器：按日期确定性轮换
+├── .github/workflows/
+│   ├── daily-watch.yml               # 日报哨兵（每天 17:00）
+│   └── daily-card.yml                # 每日知识卡（每天 08:00）
+├── 霍尔电推进日报_离线单文件版.html   # 三个 JSON 全部内联，双击即可查看、可单独转发
 ├── .nojekyll                         # 关闭 GitHub Pages 的 Jekyll 处理
 └── README.md
 ```
@@ -22,9 +30,10 @@
 | 板块 | 内容 |
 |---|---|
 | 今日详情 | 当天新增项目（编号、采购人、中标人、金额、日期、原文链接）+ 近期关键时间节点 + 检索受限说明 |
+| 每日知识卡 | 按日期自动轮换的电推进 / 招投标知识卡，含「对采购投标的意义」；断更日也有新内容 |
 | 本周汇总 | 最近 7 个自然日一览，标注每天有 / 无新增 |
 | 历史归档 | 2025-06 起，按月分组、可展开；灰色「回填」徽标区分事件式回填与逐日跟踪 |
-| 跟踪项目表 | P01~P18 完整状态，含每个项目的下一关键节点 |
+| 跟踪项目表 | P01~P28 完整状态，含每个项目的下一关键节点 |
 
 ## 数据格式
 
@@ -98,6 +107,49 @@
 
 > **编号口径提示**：本表与《汇编 v5》docx 的 P 编号存在差异（跟踪期重排）。本表以 `data/reports.json` 的 `site.tracked_projects` 为准；汇编独有项目补编为 P18。
 
+## 每日知识卡（自动更新）
+
+日报依赖「本机 AI 跑一轮检索」，机器不开机就会断更（页面上那些「补更说明」就是这么来的）。
+知识卡是**不依赖任何人工或联网检索**的第二路更新：只要日期变了，页面就有新内容。
+
+**轮换算法**（`scripts/daily_card.py` 与 `index.html` 内 JS **必须完全一致**）：
+
+1. 读 `data/knowledge_cards.json`；
+2. 按 `categories` 顺序对卡片「轮转发牌」，得到 72 张的播放顺序（相邻两天一定来自不同类别）；
+3. `index = (今天 - rotation.epoch) 的天数 mod 72`，期号 = 天数 + 1；
+4. 「今天」一律按**北京时间**计算，海外访问不会跳期。
+
+**双保险**：
+
+| 通道 | 作用 | 失效后果 |
+|---|---|---|
+| `.github/workflows/daily-card.yml`（每天 08:00 北京时间） | 跑脚本 → 写 `data/daily_cards.json` → 提交推送，记录期号与连续更新天数 | 页面仍按日期自行推算，只是底部状态显示「云端最近一次记录 …」 |
+| `index.html` 内 JS | 用同一套算法在浏览器里算出当天的卡 | 不会失效（纯本地计算） |
+
+因此**云端 Action 挂了页面也不会停在旧内容**——这是刻意设计，不是兜底妥协。
+
+词库字段（`data/knowledge_cards.json` → `cards[]`）：
+
+| 字段 | 说明 |
+|---|---|
+| `id` | `K01`…`K72`，唯一 |
+| `category` | 必须出现在顶层 `categories` 里 |
+| `title` / `en` | 中文名 + 英文名 |
+| `one_liner` | 一句话定义，卡片副标题 |
+| `detail` | 正文，80~150 字 |
+| `watch` | 「对采购 / 投标的意义」，卡片里的绿色框 |
+| `tags` | 关键词数组 |
+
+加卡流程：往 `cards[]` 里追加即可（自动进入轮换），随后：
+
+```bash
+python scripts/daily_card.py --check              # 校验字段/重复 id/分类漂移
+python scripts/daily_card.py --date 2026-11-01    # 预览某天出哪张（不写文件）
+python scripts/daily_card.py --write              # 生成当天记录
+```
+
+改词库后建议同步跑一次 `deploy_report.py`，让离线单文件版也带上新数据。
+
 ## 检索说明
 
 数据来源为中国政府采购网、各采购人官网、招标信息平台等公开渠道。中招联合招标采购平台、军队采购网等内容位于登录墙后，公开检索无法覆盖全量。
@@ -116,10 +168,14 @@
 
 | 脚本 | 作用 |
 |---|---|
-| `deploy_report.py "说明"` | 校验数据 → 生成离线单文件版 → 比对远端 → 提交并发布（git 不通时自动转 API） |
+| `deploy_report.py "说明"` | 校验数据 → 生成离线单文件版（三个 JSON 内联）→ 比对远端 → 提交并发布（本机无 git 时直接走 API） |
 | `sync_from_remote.py [--commit]` | 把远端 main 的最新内容拉回本地（走 codeload 源码包，绕开 git 协议） |
 | `push_via_api.py <目录> "说明" <文件...>` | 直接用 GitHub API 单次 commit 提交指定文件 |
 
-`.github/workflows/daily-watch.yml` 为云端哨兵：每天 17:00 检测日报是否断更（≥2 天告警）
-并抓取公开渠道新线索，有动静就开 Issue 提醒（会发邮件）。手动验证通知：
-Actions → 日报哨兵 → Run workflow → 勾选 `force_alert`。
+云端自动化共两条，互不依赖：
+
+| Workflow | 时间（北京时间） | 职责 |
+|---|---|---|
+| `.github/workflows/daily-watch.yml` | 每天 17:00 | 日报哨兵：检测日报是否断更（≥2 天告警）、抓取公开渠道新线索，有动静就开 Issue 提醒（会发邮件）。手动验证：Actions → 日报哨兵 → Run workflow → 勾选 `force_alert` |
+| `.github/workflows/daily-card.yml` | 每天 08:00 | 每日知识卡：写 `data/daily_cards.json` 并提交。手动补跑：Actions → 每日知识卡 → Run workflow（可填日期） |
+

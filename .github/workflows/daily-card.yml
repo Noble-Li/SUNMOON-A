@@ -1,0 +1,80 @@
+name: 每日知识卡
+
+on:
+  schedule:
+    # 每天 08:00 北京时间（= 00:00 UTC）。GitHub cron 可能延迟 5~30 分钟，属正常。
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+    inputs:
+      date:
+        description: '补跑指定日期（YYYY-MM-DD，留空=北京时间今天）'
+        required: false
+        default: ''
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-card
+  cancel-in-progress: false
+
+jobs:
+  card:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 准备 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 词库自检
+        # 词库有字段缺失/重复 id 时直接失败，避免把坏数据推上页面
+        run: python scripts/daily_card.py --check
+
+      - name: 生成今日知识卡
+        id: card
+        run: |
+          if [ -n "${{ inputs.date }}" ]; then
+            python scripts/daily_card.py --write --date "${{ inputs.date }}"
+          else
+            python scripts/daily_card.py --write
+          fi
+
+      - name: 提交并推送
+        # 与「日报哨兵」17:00 那次提交可能撞车，这里做三次 rebase 重试
+        run: |
+          git config user.name "sunmoon-card"
+          git config user.email "card@users.noreply.github.com"
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "今日记录已存在，无需提交"
+            exit 0
+          fi
+          git add data/daily_cards.json
+          git commit -m "知识卡 $(TZ=Asia/Shanghai date +%F)"
+          for i in 1 2 3; do
+            if git pull --rebase --autostash --quiet origin main && git push --quiet; then
+              echo "已提交并推送"
+              exit 0
+            fi
+            echo "第 ${i} 次推送失败，5 秒后重试…"
+            sleep 5
+          done
+          echo "::error::知识卡提交失败（可能与其他自动化撞车），页面仍会按日期自动轮换，不影响浏览"
+          exit 1
+
+      - name: 运行摘要
+        if: always()
+        run: |
+          {
+            echo "### 每日知识卡"
+            echo ''
+            echo '```'
+            python scripts/daily_card.py || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

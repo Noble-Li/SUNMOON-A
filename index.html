@@ -151,6 +151,28 @@
   }
   .footer a { color: #6b7280; }
 
+  /* === 每日知识卡 === */
+  .card h2 .tag.card { background: #0d9488; }
+  .kc-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+  .kc-cat {
+    background: #ecfdf5; color: #0f766e; border: 1px solid #99f6e4;
+    font-size: .75rem; font-weight: 600; padding: 2px 9px; border-radius: 12px;
+  }
+  .kc-no { font-size: .75rem; color: #6b7280; }
+  .kc-title { font-size: 1.25rem; margin: 4px 0 8px; }
+  .kc-title .kc-en { font-size: .82rem; font-weight: 400; color: #6b7280; margin-left: 8px; }
+  .kc-oneliner { font-size: 1rem; font-weight: 600; color: #0F4C81; margin-bottom: 10px; }
+  .kc-detail { color: #374151; }
+  .kc-watch {
+    background: #f0fdfa; border-left: 4px solid #0d9488; padding: 10px 14px;
+    border-radius: 4px; font-size: .9rem; color: #134e4a; margin: 14px 0 8px;
+  }
+  .kc-foot { font-size: .78rem; color: #9ca3af; margin: 10px 0 0; }
+  .kc-recent { list-style: none; padding: 10px 0 0; margin: 14px 0 0; border-top: 1px dashed #eef0f3; }
+  .kc-recent li { font-size: .85rem; color: #4b5563; padding: 3px 0; display: flex; gap: 10px; }
+  .kc-recent .kc-rd { color: #9ca3af; min-width: 92px; }
+  .kc-recent li.is-today { color: #0f766e; font-weight: 600; }
+
   /* === Responsive === */
   @media (max-width: 640px) {
     .header { padding: 24px 16px; }
@@ -180,6 +202,7 @@
       <span>📅 <b id="todayDate">—</b></span>
       <span>🛰️ <b id="trackedCount">—</b> 个在跟项目（P01~P28）</span>
       <span>📋 共 <b id="reportCount">—</b> 期记录（2025-06 起）</span>
+      <span>📚 知识卡 <b id="cardIssue">—</b></span>
     </div>
   </header>
 
@@ -193,6 +216,21 @@
     <ul class="upcoming-list" id="todayUpcoming"></ul>
     <h3 style="margin-top: 18px;">⚠️ 检索受限说明</h3>
     <p id="todayConstraints" style="color: #6b7280; font-size: .9rem;"></p>
+  </section>
+
+  <!-- 每日知识卡（按日期自动轮换，云端每天 08:00 记录一次） -->
+  <section class="card" id="dailyCard" style="display:none;">
+    <h2><span class="tag card">每日知识卡</span><span id="cardDateLong">—</span></h2>
+    <div class="kc-meta">
+      <span class="kc-cat" id="kcCat">—</span>
+      <span class="kc-no" id="kcNo">—</span>
+    </div>
+    <h3 class="kc-title"><span id="kcTitle">—</span><span class="kc-en" id="kcEn"></span></h3>
+    <p class="kc-oneliner" id="kcOneLiner"></p>
+    <p class="kc-detail" id="kcDetail"></p>
+    <div class="kc-watch" id="kcWatch"></div>
+    <ul class="kc-recent" id="kcRecent"></ul>
+    <p class="kc-foot" id="kcFoot"></p>
   </section>
 
   <!-- 本周汇总卡 -->
@@ -230,15 +268,37 @@
 <script>
 /* === Data loading === */
 let siteData = null;
+let cardLib = null;
+let cardLog = null;
+
+// 离线单文件版把 JSON 内联在本页；在线时走 fetch
+async function loadJson(path, inlineId) {
+  const inline = document.getElementById(inlineId);
+  if (inline) return JSON.parse(inline.textContent);
+  const res = await fetch(path + "?v=" + Date.now());
+  if (!res.ok) throw new Error("加载失败：" + path);
+  return res.json();
+}
+
 async function loadData() {
   try {
-    const res = await fetch("./data/reports.json?v=" + Date.now());
-    if (!res.ok) throw new Error("加载失败");
-    siteData = await res.json();
+    siteData = await loadJson("./data/reports.json", "offline-data");
     render();
   } catch (err) {
     document.getElementById("todaySummary").innerHTML =
       '<span style="color:#b91c1c;">⚠️ 数据加载失败：' + err.message + '</span>';
+  }
+  // 知识卡单独加载：它挂了不影响日报
+  try {
+    cardLib = await loadJson("./data/knowledge_cards.json", "offline-cards");
+    try {
+      cardLog = await loadJson("./data/daily_cards.json", "offline-cardlog");
+    } catch (e) {
+      cardLog = null;
+    }
+    renderDailyCard();
+  } catch (err) {
+    document.getElementById("dailyCard").style.display = "none";
   }
 }
 
@@ -407,6 +467,119 @@ function escapeHtml(s) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
 }
+
+/* === 每日知识卡 ===
+   轮换算法必须与 scripts/daily_card.py 完全一致：
+   只依赖「日期 + 词库」，所以云端 Action 漏跑时页面自己也能算出今天的卡。 */
+const CARD_EPOCH_FALLBACK = "2026-10-26";
+const CARD_WEEKDAYS = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+
+// 统一用北京时间判断「今天」，避免访问者在别的时区看到跳期
+function shanghaiToday() {
+  try {
+    return new Intl.DateTimeFormat("en-CA", {
+      timeZone: "Asia/Shanghai", year: "numeric", month: "2-digit", day: "2-digit"
+    }).format(new Date());
+  } catch (e) {
+    const d = new Date();
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" +
+           String(d.getDate()).padStart(2, "0");
+  }
+}
+
+function dayDiff(from, to) {
+  const a = Date.UTC(+from.slice(0, 4), +from.slice(5, 7) - 1, +from.slice(8, 10));
+  const b = Date.UTC(+to.slice(0, 4), +to.slice(5, 7) - 1, +to.slice(8, 10));
+  return Math.round((b - a) / 86400000);
+}
+
+function weekdayOf(dateStr) {
+  const d = new Date(Date.UTC(+dateStr.slice(0, 4), +dateStr.slice(5, 7) - 1, +dateStr.slice(8, 10)));
+  return CARD_WEEKDAYS[d.getUTCDay()];
+}
+
+// 按类别轮转发牌：相邻两天来自不同类别，走完一轮接下一轮
+function buildCardOrder(lib) {
+  const groups = new Map();
+  (lib.cards || []).forEach(c => {
+    const k = c.category || "其他";
+    if (!groups.has(k)) groups.set(k, []);
+    groups.get(k).push(c);
+  });
+  const keys = (lib.categories || []).filter(k => groups.has(k));
+  groups.forEach((_, k) => { if (keys.indexOf(k) < 0) keys.push(k); });
+  const order = [];
+  let depth = 0;
+  for (;;) {
+    let added = false;
+    keys.forEach(k => {
+      const g = groups.get(k);
+      if (depth < g.length) { order.push(g[depth]); added = true; }
+    });
+    if (!added) break;
+    depth += 1;
+  }
+  return order;
+}
+
+function cardForDate(lib, dateStr) {
+  const order = buildCardOrder(lib);
+  if (!order.length) return null;
+  const epoch = (lib.rotation && lib.rotation.epoch) || CARD_EPOCH_FALLBACK;
+  const days = dayDiff(epoch, dateStr);
+  const n = order.length;
+  const idx = ((days % n) + n) % n;
+  return { card: order[idx], issue: days + 1, total: n };
+}
+
+function renderDailyCard() {
+  if (!cardLib || !(cardLib.cards || []).length) return;
+  const today = shanghaiToday();
+  const hit = cardForDate(cardLib, today);
+  if (!hit) return;
+  const c = hit.card;
+
+  document.getElementById("cardDateLong").textContent = today + " " + weekdayOf(today);
+  document.getElementById("cardIssue").textContent = "第 " + hit.issue + " 期";
+  document.getElementById("kcCat").textContent = c.category || "—";
+  document.getElementById("kcNo").textContent =
+    "第 " + hit.issue + " 期 · 词库 " + hit.total + " 张 · " + c.id;
+  document.getElementById("kcTitle").textContent = c.title || "";
+  document.getElementById("kcEn").textContent = c.en ? "（" + c.en + "）" : "";
+  document.getElementById("kcOneLiner").textContent = c.one_liner || "";
+  document.getElementById("kcDetail").textContent = c.detail || "";
+  document.getElementById("kcWatch").innerHTML = "📍 <b>对采购 / 投标的意义</b><br>" + escapeHtml(c.watch || "");
+
+  // 最近几期（来自云端记录；云端没跑过就只显示今天）
+  const byId = {};
+  (cardLib.cards || []).forEach(x => { byId[x.id] = x; });
+  const recent = document.getElementById("kcRecent");
+  const days = (cardLog && cardLog.days) || [];
+  const rows = days
+    .filter(d => d && d.date && d.date !== today && byId[d.card_id])
+    .slice(0, 6)
+    .map(d => `<li><span class="kc-rd">${escapeHtml(d.date)}</span>` +
+              `<span>${escapeHtml(byId[d.card_id].id)} ${escapeHtml(byId[d.card_id].title)}</span></li>`);
+  rows.unshift(`<li class="is-today"><span class="kc-rd">${escapeHtml(today)}</span>` +
+               `<span>${escapeHtml(c.id)} ${escapeHtml(c.title)}</span></li>`);
+  recent.innerHTML = rows.join("");
+
+  // 底部状态：如实说明云端是否跑过，页面本身不依赖云端
+  const latest = days[0];
+  let status;
+  if (latest && latest.date === today) {
+    status = "✅ 云端已更新（" + (cardLog.updated || today) + "，连续 " + (cardLog.streak || 1) + " 天）";
+  } else if (latest) {
+    status = "⚡ 云端最近一次记录 " + latest.date + "；本期由页面按日期自动推算，不依赖云端";
+  } else {
+    status = "⚡ 本期由页面按日期自动推算（云端尚未记录）";
+  }
+  document.getElementById("kcFoot").textContent =
+    status + " · " + hit.total + " 天一轮回 · " + (cardLib.note || "");
+
+  document.getElementById("dailyCard").style.display = "";
+}
+
 </script>
 </body>
 </html>
