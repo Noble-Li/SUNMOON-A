@@ -104,6 +104,10 @@
     background: var(--bg); overflow: hidden;
   }
   .stage canvas { display: block; width: 100%; height: 100%; }
+  .stage .vig {
+    position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(125% 95% at 50% 46%, rgba(0,0,0,0) 46%, rgba(0,0,0,.42) 100%);
+  }
   .stage.is-loading::after {
     content: "正在生成模型";
     position: absolute; inset: 0; display: grid; place-items: center;
@@ -273,6 +277,7 @@
     <section class="col col-stage" aria-label="三维视图">
       <div class="stage is-loading" id="stage">
         <canvas id="view" aria-label="霍尔电推进器三维拆解视图"></canvas>
+        <div class="vig"></div>
         <div class="labels" id="labels"></div>
         <div class="hud">
           <button class="btn" data-view="iso" type="button"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3l6 3.2v7.6L10 17l-6-3.2V6.2L10 3Z"/><path d="M4 6.2 10 9.5l6-3.3M10 9.5V17"/></svg>等轴</button>
@@ -357,191 +362,222 @@ renderer.toneMappingExposure = 1.34;
 if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
 
 var scene = new THREE.Scene();
-scene.fog = new THREE.Fog(0x05070C, 14, 30);
+scene.fog = new THREE.Fog(0x23150d, 16, 48);
 var camera = new THREE.PerspectiveCamera(42, 1, 0.1, 200);
 
 /* === 灯光：主光 + 冷补光 + 轮廓光 === */
-scene.add(new THREE.HemisphereLight(0x51667F, 0x0A0E14, 0.85));
-var key = new THREE.DirectionalLight(0xFFFFFF, 2.7);
+scene.add(new THREE.HemisphereLight(0x3A4150, 0x150D08, 0.6));
+var key = new THREE.DirectionalLight(0xFFC98A, 3.6);
 key.position.set(5.5, 6.5, 6.5);
 scene.add(key);
-var fill = new THREE.DirectionalLight(0x6DA8FF, 1.75);
+var fill = new THREE.DirectionalLight(0x4FA6CC, 0.9);
 fill.position.set(-6.5, -2.5, -4);
 scene.add(fill);
-var front = new THREE.DirectionalLight(0xA8C8F0, 0.85);
+var front = new THREE.DirectionalLight(0xFFD7AE, 0.7);
 front.position.set(7, 3.5, 9);
 scene.add(front);
-var rim = new THREE.DirectionalLight(0x9BD8FF, 1.5);
+var rim = new THREE.DirectionalLight(0x8FE4FF, 1.7);
 rim.position.set(-1.5, 4.5, -7);
 scene.add(rim);
+var bounce = new THREE.PointLight(0xFF9040, 2.4, 28, 2);
+bounce.position.set(1.5, -1.6, 5.5);
+scene.add(bounce);
 var plumeLight = new THREE.PointLight(0x38BDF8, 0.8, 12, 2);
 plumeLight.position.set(0, 0, 3.2);
 scene.add(plumeLight);
 
-/* === 背景：深空星场 + 银河带 + 星云 + 地面网格（全部由代码生成） === */
+/* === 环境：暖色地平线 + 技术转盘（全部由代码绘制） === */
 var sky = new THREE.Group();
 scene.add(sky);
 var twinkles = [];
-(function spaceBackdrop() {
-  // 星云贴图：多个随机团块叠出的低频云雾，配合加法混合当发光气团
-  function nebulaTexture(tint) {
-    var c = document.createElement('canvas');
-    c.width = c.height = 256;
-    var x = c.getContext('2d');
-    for (var i = 0; i < 68; i++) {
-      var cx = 48 + Math.random() * 160, cy = 48 + Math.random() * 160;
-      var r = 26 + Math.random() * 84;
-      var g = x.createRadialGradient(cx, cy, 0, cx, cy, r);
-      var a = 0.09 + Math.random() * 0.19;
-      g.addColorStop(0, 'rgba(' + tint[0] + ',' + tint[1] + ',' + tint[2] + ',' + a.toFixed(3) + ')');
-      g.addColorStop(1, 'rgba(' + tint[0] + ',' + tint[1] + ',' + tint[2] + ',0)');
-      x.fillStyle = g;
-      x.beginPath(); x.arc(cx, cy, r, 0, Math.PI * 2); x.fill();
-    }
-    var tex = new THREE.CanvasTexture(c);
-    if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
-    return tex;
-  }
-
-  // 星空层：球壳内随机分布，带轻微颜色差异
-  function starLayer(count, rMin, rMax, size, opacity, warmRatio) {
-    var pos = new Float32Array(count * 3);
-    var col = new Float32Array(count * 3);
-    var c = new THREE.Color();
-    for (var i = 0; i < count; i++) {
-      var r = rMin + Math.random() * (rMax - rMin);
-      var t = Math.random() * Math.PI * 2;
-      var p = Math.acos(2 * Math.random() - 1);
-      pos[i * 3] = r * Math.sin(p) * Math.cos(t);
-      pos[i * 3 + 1] = r * Math.cos(p);
-      pos[i * 3 + 2] = r * Math.sin(p) * Math.sin(t);
-      if (Math.random() < warmRatio) c.setHSL(0.09 + Math.random() * 0.05, 0.55, 0.72);
-      else c.setHSL(0.55 + Math.random() * 0.09, 0.35 + Math.random() * 0.3, 0.66 + Math.random() * 0.3);
-      col[i * 3] = c.r; col[i * 3 + 1] = c.g; col[i * 3 + 2] = c.b;
-    }
-    var g = new THREE.BufferGeometry();
-    g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    g.setAttribute('color', new THREE.BufferAttribute(col, 3));
-    var m = new THREE.PointsMaterial({
-      size: size, sizeAttenuation: true, transparent: true, opacity: opacity,
-      vertexColors: true, depthWrite: false, fog: false
-    });
-    sky.add(new THREE.Points(g, m));
-    return m;
-  }
-  starLayer(5200, 26, 46, 0.06, 0.85, 0.12);
-  starLayer(1400, 18, 28, 0.11, 0.9, 0.16);
-  var near = starLayer(260, 12, 18, 0.17, 0.95, 0.22);
-  twinkles.push({ material: near, base: 0.95, amp: 0.22, speed: 1.7, phase: Math.random() * 6 });
-
-  // 银河带：沿一条倾斜大圆聚集的暗星
-  (function milkyWay() {
-    var n = 2600, pos = new Float32Array(n * 3);
-    var col = new Float32Array(n * 3);
-    var c = new THREE.Color();
-    var axis = new THREE.Vector3(1, 0, 0);
-    for (var i = 0; i < n; i++) {
-      var a = Math.random() * Math.PI * 2;
-      var band = (Math.random() + Math.random() + Math.random() - 1.5) * 0.16;
-      var r = 38 + Math.random() * 8;
-      var v = new THREE.Vector3(Math.cos(a), band, Math.sin(a)).multiplyScalar(r);
-      v.applyAxisAngle(axis, 0.55);
-      pos[i * 3] = v.x; pos[i * 3 + 1] = v.y; pos[i * 3 + 2] = v.z;
-      c.setHSL(0.56 + Math.random() * 0.07, 0.4, 0.55 + Math.random() * 0.3);
-      col[i * 3] = c.r; col[i * 3 + 1] = c.g; col[i * 3 + 2] = c.b;
-    }
-    var g = new THREE.BufferGeometry();
-    g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    g.setAttribute('color', new THREE.BufferAttribute(col, 3));
-    sky.add(new THREE.Points(g, new THREE.PointsMaterial({
-      size: 0.075, sizeAttenuation: true, transparent: true, opacity: 0.55,
-      vertexColors: true, depthWrite: false, fog: false
-    })));
-  })();
-
-  // 星云气团：放在默认机位正对的方向，随星空一起缓慢转动
-  // 六团星云均匀铺在半径 120 的球面上，转到哪个角度背景都有东西
-  var clouds = [
-    { tint: [86, 148, 210], opacity: 0.46, scale: 170, pos: [-52, -30, -104] },
-    { tint: [120, 92, 178], opacity: 0.40, scale: 150, pos: [78, -22, -96] },
-    { tint: [58, 168, 176], opacity: 0.32, scale: 130, pos: [-88, 26, -88] },
-    { tint: [150, 130, 220], opacity: 0.34, scale: 140, pos: [30, 54, -118] },
-    { tint: [90, 130, 200], opacity: 0.26, scale: 140, pos: [112, 14, 70] },
-    { tint: [130, 100, 190], opacity: 0.24, scale: 130, pos: [-70, -16, 112] },
-    { tint: [196, 132, 168], opacity: 0.20, scale: 190, pos: [-20, 62, -132] },
-    { tint: [70, 120, 200], opacity: 0.18, scale: 210, pos: [40, -58, -140] }
-  ];
-  clouds.forEach(function (n) {
-    var sp = new THREE.Sprite(new THREE.SpriteMaterial({
-      map: nebulaTexture(n.tint), transparent: true, opacity: n.opacity,
-      blending: THREE.AdditiveBlending, depthWrite: false, fog: false
-    }));
-    sp.position.set(n.pos[0], n.pos[1], n.pos[2]);
-    sp.scale.setScalar(n.scale);
-    sky.add(sp);
-  });
-
-  // 远处的行星：暗面 + 大气边缘光，给深空一个尺度参照
-  (function planet() {
-    var R = 11, pos = new THREE.Vector3(-64, 26, -104);
-    var body = new THREE.Mesh(new THREE.SphereGeometry(R, 48, 32),
-      new THREE.MeshBasicMaterial({ color: 0x07111C }));
-    body.position.copy(pos);
-    sky.add(body);
-    var halo = new THREE.Mesh(new THREE.SphereGeometry(R * 1.04, 48, 32), new THREE.ShaderMaterial({
-      transparent: true, blending: THREE.AdditiveBlending, depthWrite: false,
-      uniforms: { uColor: { value: new THREE.Color(0x5FB6F0) } },
-      vertexShader: 'varying vec3 vN; varying vec3 vV; void main(){ vN = normalize(normalMatrix * normal); vec4 mv = modelViewMatrix * vec4(position, 1.0); vV = normalize(-mv.xyz); gl_Position = projectionMatrix * mv; }',
-      fragmentShader: 'uniform vec3 uColor; varying vec3 vN; varying vec3 vV; void main(){ float rim = pow(1.0 - max(dot(vN, vV), 0.0), 3.4); gl_FragColor = vec4(uColor, rim * 0.62); }'
-    }));
-    halo.position.copy(pos);
-    sky.add(halo);
-  })();
-
-  // 近景尘埃：给模型周围一点体积感
-  (function dust() {
-    var n = 520, dpos = new Float32Array(n * 3);
-    for (var i = 0; i < n; i++) {
-      dpos[i * 3] = (Math.random() - 0.5) * 44;
-      dpos[i * 3 + 1] = (Math.random() - 0.5) * 28;
-      dpos[i * 3 + 2] = (Math.random() - 0.5) * 36 - 4;
-    }
-    var dg = new THREE.BufferGeometry();
-    dg.setAttribute('position', new THREE.BufferAttribute(dpos, 3));
-    sky.add(new THREE.Points(dg, new THREE.PointsMaterial({
-      color: 0x8FBEE6, size: 0.032, transparent: true, opacity: 0.55,
-      depthWrite: false, fog: false
-    })));
-  })();
-
-  // 模型下方的冷光晕与参考环：给一个落点，又不像游戏地板
-  (function platform() {
+var dialMesh = null;
+(function environment() {
+  // 天空：从近黑夜空过渡到地平线暖色
+  (function skyGradient() {
     var cv = document.createElement('canvas');
-    cv.width = cv.height = 256;
-    var g2 = cv.getContext('2d');
-    var rg = g2.createRadialGradient(128, 128, 6, 128, 128, 126);
-    rg.addColorStop(0, 'rgba(72,152,220,0.26)');
-    rg.addColorStop(0.45, 'rgba(44,96,150,0.09)');
-    rg.addColorStop(1, 'rgba(4,10,18,0)');
-    g2.fillStyle = rg; g2.fillRect(0, 0, 256, 256);
+    cv.width = 64; cv.height = 512;
+    var g = cv.getContext('2d');
+    var grd = g.createLinearGradient(0, 0, 0, 512);
+    grd.addColorStop(0.00, '#04060a');
+    grd.addColorStop(0.34, '#070c12');
+    grd.addColorStop(0.455, '#0e1a22');
+    grd.addColorStop(0.492, '#1e2b31');
+        grd.addColorStop(0.503, '#7d4620');
+    grd.addColorStop(0.60, '#170f08');
+    grd.addColorStop(1.00, '#0a0705');
+    g.fillStyle = grd;
+    g.fillRect(0, 0, 64, 512);
+    var tex = new THREE.CanvasTexture(cv);
+    if (THREE.EquirectangularReflectionMapping) tex.mapping = THREE.EquirectangularReflectionMapping;
+    if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
+    scene.background = tex;
+  })();
+
+  // 地面：暖色沙地，远处淡入与地平线同色的雾
+  (function ground() {
+    var cv = document.createElement('canvas');
+    cv.width = cv.height = 512;
+    var g = cv.getContext('2d');
+    var rg = g.createRadialGradient(256, 256, 8, 256, 256, 256);
+    rg.addColorStop(0.00, '#33200f');
+    rg.addColorStop(0.26, '#241608');
+    rg.addColorStop(0.55, '#150e07');
+    rg.addColorStop(0.82, '#0e0a06');
+    rg.addColorStop(1.00, '#0a0806');
+    g.fillStyle = rg;
+    g.fillRect(0, 0, 512, 512);
+    g.globalAlpha = 0.07;
+    for (var i = 0; i < 150; i++) {
+      g.strokeStyle = i % 3 ? '#7a5433' : '#9a6a3e';
+      g.lineWidth = 1 + Math.random() * 2.2;
+      var y = Math.random() * 512;
+      g.beginPath();
+      g.moveTo(0, y);
+      g.bezierCurveTo(170, y + (Math.random() - 0.5) * 46, 340, y + (Math.random() - 0.5) * 46, 512, y + (Math.random() - 0.5) * 34);
+      g.stroke();
+    }
+    g.globalAlpha = 1;
     var tex = new THREE.CanvasTexture(cv);
     if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
-    var disc = new THREE.Mesh(new THREE.PlaneGeometry(17, 17), new THREE.MeshBasicMaterial({
+    var disc = new THREE.Mesh(new THREE.CircleGeometry(40, 96), new THREE.MeshBasicMaterial({ map: tex, fog: true }));
+    disc.rotation.x = -Math.PI / 2;
+    disc.position.y = -2.7;
+    scene.add(disc);
+  })();
+
+  // 技术转盘：主圈 + 刻度 + 角度标注 + 虚线内圈
+  (function dial() {
+    var S = 1024;
+    var cv = document.createElement('canvas');
+    cv.width = cv.height = S;
+    var g = cv.getContext('2d');
+    var cx = S / 2, cy = S / 2, R = S * 0.5;
+    function circle(r, color, w, dash) {
+      g.save();
+      g.setLineDash(dash || []);
+      g.strokeStyle = color;
+      g.lineWidth = w;
+      g.beginPath(); g.arc(cx, cy, r, 0, Math.PI * 2); g.stroke();
+      g.restore();
+    }
+    circle(R * 0.93, 'rgba(158,220,240,0.46)', 2.2);
+    circle(R * 0.895, 'rgba(158,220,240,0.16)', 1);
+    circle(R * 0.62, 'rgba(158,220,240,0.26)', 1.6, [10, 12]);
+    circle(R * 0.36, 'rgba(158,220,240,0.14)', 1.2);
+    circle(R * 0.20, 'rgba(200,160,110,0.18)', 1.2);
+    for (var a = 0; a < 360; a += 3) {
+      var major = (a % 15 === 0);
+      var len = major ? R * 0.045 : R * 0.019;
+      var rad = (a - 90) * Math.PI / 180;
+      var r1 = R * 0.93, r2 = R * 0.93 - len;
+      g.strokeStyle = major ? 'rgba(180,230,248,0.52)' : 'rgba(150,205,225,0.22)';
+      g.lineWidth = major ? 2.4 : 1.2;
+      g.beginPath();
+      g.moveTo(cx + Math.cos(rad) * r1, cy + Math.sin(rad) * r1);
+      g.lineTo(cx + Math.cos(rad) * r2, cy + Math.sin(rad) * r2);
+      g.stroke();
+    }
+    g.fillStyle = 'rgba(186,228,246,0.5)';
+    g.font = '600 21px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace';
+    g.textAlign = 'center';
+    g.textBaseline = 'middle';
+    for (var d = 0; d < 360; d += 30) {
+      var rad2 = (d - 90) * Math.PI / 180;
+      g.fillText(d + '\u00B0', cx + Math.cos(rad2) * R * 0.815, cy + Math.sin(rad2) * R * 0.815);
+    }
+    g.strokeStyle = 'rgba(180,228,246,0.34)';
+    g.lineWidth = 1.6;
+    for (var k = 0; k < 4; k++) {
+      var ra = k * Math.PI / 2;
+      g.beginPath();
+      g.moveTo(cx + Math.cos(ra) * R * 0.30, cy + Math.sin(ra) * R * 0.30);
+      g.lineTo(cx + Math.cos(ra) * R * 0.345, cy + Math.sin(ra) * R * 0.345);
+      g.stroke();
+    }
+    g.strokeStyle = 'rgba(200,160,110,0.28)';
+    g.lineWidth = 1.4;
+    g.beginPath(); g.moveTo(cx - R * 0.14, cy); g.lineTo(cx + R * 0.14, cy); g.stroke();
+    g.beginPath(); g.moveTo(cx, cy - R * 0.14); g.lineTo(cx, cy + R * 0.14); g.stroke();
+
+    var tex = new THREE.CanvasTexture(cv);
+    tex.anisotropy = 4;
+    if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
+    dialMesh = new THREE.Mesh(new THREE.CircleGeometry(11.5, 96), new THREE.MeshBasicMaterial({
+      map: tex, transparent: true, depthWrite: false, fog: true
+    }));
+    dialMesh.rotation.x = -Math.PI / 2;
+    dialMesh.position.set(1.2, -2.685, 0.2);
+    scene.add(dialMesh);
+  })();
+
+  // 模型附近的暖色地光
+  (function pool() {
+    var cv = document.createElement('canvas');
+    cv.width = cv.height = 256;
+    var g = cv.getContext('2d');
+    var rg = g.createRadialGradient(128, 128, 4, 128, 128, 126);
+    rg.addColorStop(0, 'rgba(232,150,80,0.20)');
+    rg.addColorStop(0.45, 'rgba(150,88,44,0.07)');
+    rg.addColorStop(1, 'rgba(20,12,8,0)');
+    g.fillStyle = rg;
+    g.fillRect(0, 0, 256, 256);
+    var tex = new THREE.CanvasTexture(cv);
+    if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
+    var disc = new THREE.Mesh(new THREE.PlaneGeometry(26, 26), new THREE.MeshBasicMaterial({
       map: tex, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, fog: false
     }));
     disc.rotation.x = -Math.PI / 2;
-    disc.position.y = -2.64;
+    disc.position.y = -2.675;
     scene.add(disc);
-    for (var i = 0; i < 3; i++) {
-      var ring = new THREE.Mesh(new THREE.RingGeometry(2.3 + i * 1.55, 2.34 + i * 1.55, 96),
-        new THREE.MeshBasicMaterial({
-          color: 0x4388BC, transparent: true, opacity: 0.18 - i * 0.045,
-          side: THREE.DoubleSide, depthWrite: false, fog: false
-        }));
-      ring.rotation.x = -Math.PI / 2;
-      ring.position.y = -2.62;
-      scene.add(ring);
+  })();
+
+  // 稀疏星点：只在地平线以上
+  (function stars() {
+    var n = 850;
+    var pos = new Float32Array(n * 3);
+    var col = new Float32Array(n * 3);
+    var c = new THREE.Color();
+    for (var i = 0; i < n; i++) {
+      var r = 62 + Math.random() * 46;
+      var t = Math.random() * Math.PI * 2;
+      var p = Math.acos(Math.random() * 0.92 + 0.04);
+      pos[i * 3] = r * Math.sin(p) * Math.cos(t);
+      pos[i * 3 + 1] = r * Math.cos(p);
+      pos[i * 3 + 2] = r * Math.sin(p) * Math.sin(t);
+      c.setHSL(0.55 + Math.random() * 0.08, 0.22, 0.62 + Math.random() * 0.33);
+      col[i * 3] = c.r; col[i * 3 + 1] = c.g; col[i * 3 + 2] = c.b;
     }
+    var geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+    var mat = new THREE.PointsMaterial({
+      size: 0.1, sizeAttenuation: true, transparent: true, opacity: 0.55,
+      vertexColors: true, depthWrite: false, fog: false
+    });
+    sky.add(new THREE.Points(geo, mat));
+    twinkles.push({ material: mat, base: 0.55, amp: 0.08, speed: 1.2, phase: Math.random() * 6 });
+  })();
+
+  // 近景浮尘
+  (function dust() {
+    var n = 420;
+    var dpos = new Float32Array(n * 3);
+    var dcol = new Float32Array(n * 3);
+    var c = new THREE.Color();
+    for (var i = 0; i < n; i++) {
+      dpos[i * 3] = (Math.random() - 0.5) * 34;
+      dpos[i * 3 + 1] = (Math.random() - 0.3) * 16;
+      dpos[i * 3 + 2] = (Math.random() - 0.5) * 30 - 3;
+      c.setHSL(0.07 + Math.random() * 0.05, 0.55, 0.62 + Math.random() * 0.2);
+      dcol[i * 3] = c.r; dcol[i * 3 + 1] = c.g; dcol[i * 3 + 2] = c.b;
+    }
+    var dg = new THREE.BufferGeometry();
+    dg.setAttribute('position', new THREE.BufferAttribute(dpos, 3));
+    dg.setAttribute('color', new THREE.BufferAttribute(dcol, 3));
+    sky.add(new THREE.Points(dg, new THREE.PointsMaterial({
+      size: 0.045, transparent: true, opacity: 0.45, vertexColors: true,
+      depthWrite: false, fog: false
+    })));
   })();
 })();
 
@@ -1782,6 +1818,7 @@ function frame() {
 
   // 深空：星空极缓慢自转 + 亮星闪烁
   if (typeof sky !== 'undefined') {
+    if (dialMesh) dialMesh.rotation.z += dt * 0.035;
     sky.rotation.y += dt * 0.007;
     sky.rotation.z = Math.sin(now * 0.00004) * 0.05;
     for (var ti = 0; ti < twinkles.length; ti++) {
