@@ -10,6 +10,10 @@
 
 ```
 ├── index.html                        # 主页面（Hero / 标语区 / 今日详情 / 每日知识卡 / 本周汇总 / 历史归档 / 跟踪项目表 / 关于）
+├── hall-thruster.html                # 霍尔推力器 3D 拆解页（Three.js，几何体全部代码生成）
+├── assets/
+│   ├── three.module.min.js           # Three.js r186 ESM 构建（本地自带，不依赖 CDN）
+│   └── three.core.min.js             # 同上，core 分片
 ├── data/
 │   ├── reports.json                  # 日报唯一数据源，每日追加
 │   ├── knowledge_cards.json          # 每日知识卡词库（72 张 / 8 类，手写维护）
@@ -197,3 +201,24 @@ python scripts/daily_card.py --write              # 生成当天记录
 - **状态**：链接与按钮有 hover / active（`scale(0.98)`）与 `:focus-visible` 描边；加载时显示与版式同形的骨架；数据加载失败在卡片内写明原因，不弹窗。
 
 改完 `index.html` 后，离线单文件版要一起重建：把 `data/` 三个 JSON 以 `<script id="offline-data">`、`offline-cards`、`offline-cardlog`（`type="application/json"`）内联到主 `<script>` 之前即可。
+## 3D 拆解页（hall-thruster.html）
+
+独立的交互页面，从日报页顶部导航的「3D 拆解」或页脚进入。整机用 Three.js 现成几何体（圆柱、环、管、盒、球）拼出来，**不加载任何外部模型文件**；轴向为 +Z（羽流方向），1 场景单位 = 50 mm，整机直径 2.12 单位 ≈ 106 mm。
+
+| 能力 | 实现 |
+|---|---|
+| 点击拆解 | 射线拾取 `userData.partId` → 该部件沿自身拆解向量平移，`easeInOutCubic` + 指数阻尼过渡 |
+| 高亮 | 选中部件材质 `emissive` 提升到 0.38 强度，并在部件包围球中心挂一张 canvas 生成的加法混合光晕 |
+| 视角 | 自写轨道控制（不引 OrbitControls）：左键拖拽旋转、滚轮缩放、右键拖拽平移、双指捏合缩放；另附等轴 / 正 / 侧 / 俯 / 背五个预设 |
+| 标注 | 把部件锚点投影到屏幕坐标，用 HTML 胶囊显示「名称 + 关键参数」，贴边自动夹回画布内 |
+| 面板 | 左侧部件清单（点击即拆解）、右侧详情（作用 + 参数表）、底部操作引导、右上整机参数 |
+| 性能 | 像素比上限 2，连续掉帧超 90 帧自动降到 1；三角面数由 `renderer.info` 实时写回引导栏 |
+
+改模型的位置：`hall-thruster.html` 里的 `PARTS` 数组，一项一个部件，字段含义：
+
+- `id` / `name` / `en` / `role`：内部键、中文名、英文名、作用分类
+- `specs`：`[标签, 值]` 数组，直接渲染成右侧参数表
+- `labelSpec`：拆解时标注胶囊里显示的那一个关键参数
+- `vec`：拆解方向与距离（场景单位），`+Z` 朝羽流方向
+
+几何体在 `addPart('id', ...)` 调用里生成，`vec` 改了不用动别的。参数均为 1.5 kW 级霍尔推力器的典型量级，只用于结构讲解。
