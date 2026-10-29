@@ -2,8 +2,10 @@ name: 每日知识卡
 
 on:
   schedule:
-    # 每天 08:00 北京时间（= 00:00 UTC）。GitHub cron 可能延迟 5~30 分钟，属正常。
-    - cron: '0 0 * * *'
+    # 每天 08:30 北京时间（= 00:30 UTC）。错开 08:00 的「每日自动更新」半小时，
+    # 避免两个 workflow 同时向 main 提交、互相把对方 rebase 掉。知识卡的轮换只
+    # 依赖「日期 + 词库」，即使这一步晚跑或漏跑，页面自己也能算出今天的卡。
+    - cron: '30 0 * * *'
   workflow_dispatch:
     inputs:
       date:

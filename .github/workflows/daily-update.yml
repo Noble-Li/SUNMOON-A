@@ -1,0 +1,101 @@
+name: 每日自动更新
+
+on:
+  schedule:
+    # 每天 08:00 北京时间（= 00:00 UTC）。GitHub cron 可能有 5~30 分钟延迟。
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: '只打印将要写入的内容，不提交'
+        type: boolean
+        default: false
+      page:
+        description: '每个分类翻几页（默认 6，约覆盖一周）'
+        default: '6'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 准备 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 运行每日更新
+        id: upd
+        env:
+          DRY_RUN: ${{ inputs.dry_run }}
+          PAGE: ${{ inputs.page }}
+        run: |
+          set +e
+          ARGS="--page ${PAGE:-6}"
+          if [ "$DRY_RUN" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          python scripts/update_daily.py $ARGS 2>&1 | tail -60
+          rc=${PIPESTATUS[0]}
+          echo "exit=$rc" >> "$GITHUB_OUTPUT"
+          # 退出码 2 = 今日条目已存在（同一天重复触发），不是失败。
+          if [ "$rc" -eq 2 ]; then
+            echo "今日条目已存在，跳过写入"
+            exit 0
+          fi
+          exit "$rc"
+
+      - name: 重建离线单文件版
+        if: ${{ inputs.dry_run != true }}
+        run: python scripts/build_offline.py
+
+      - name: 提交
+        if: ${{ inputs.dry_run != true }}
+        id: commit
+        run: |
+          git config user.name "sunmoon-daily"
+          git config user.email "daily@users.noreply.github.com"
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "无变化，跳过提交"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git add -A
+          git commit -m "每日更新 $(TZ=Asia/Shanghai date +%F)"
+          # 08:00 这一档同时有「每日知识卡」在提交，两边可能撞车 —— 用
+          # rebase --autostash 重试，冲突的是不同文件（reports.json vs
+          # daily_cards.json），rebase 能干净合并。
+          for i in 1 2 3 4; do
+            if git pull --rebase --autostash --quiet origin main && git push --quiet; then
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+              echo "已提交并推送"
+              exit 0
+            fi
+            echo "第 ${i} 次推送失败，5 秒后重试…"
+            sleep 5
+          done
+          echo "::error::台账提交失败（多次与其他自动化撞车）"
+          echo "changed=false" >> "$GITHUB_OUTPUT"
+          exit 1
+
+      - name: 运行摘要
+        if: always()
+        run: |
+          {
+            echo "### 每日自动更新"
+            echo ""
+            echo "- 日期：$(TZ=Asia/Shanghai date +%F)"
+            echo "- 是否有新增：${{ steps.upd.outcome }}"
+            echo "- 已提交：${{ steps.commit.outputs.changed || '否（dry-run 或已失败）' }}"
+            echo ""
+            echo "离线上一次构建时间：$(TZ=Asia/Shanghai date '+%F %H:%M')"
+          } >> "$GITHUB_STEP_SUMMARY"

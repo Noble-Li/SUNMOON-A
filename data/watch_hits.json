@@ -1,14 +1,51 @@
 {
-  "updated_at": "2026-10-29 14:52:46",
-  "hits": [],
+  "updated_at": "2026-10-29 16:31:01",
+  "hits": [
+    {
+      "found_at": "2026-10-29",
+      "title": "中国科学院空天信息创新研究院阴极气氛特性评价系统采购中标公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/zbgg/202610/t20261029_27583732.htm",
+      "date": "2026-10-29",
+      "keyword": "中央-中标公告",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-10-29",
+      "title": "清华大学真空玻璃腔、光学超稳腔采购项目（第二次）更正公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/gzgg/202610/t20261028_27580473.htm",
+      "date": "2026-10-28",
+      "keyword": "中央-更正公告",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-10-29",
+      "title": "ZYCGR24041501超高真空磁控溅射设备采购项目更正公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/gzgg/202610/t20261028_27577390.htm",
+      "date": "2026-10-28",
+      "keyword": "中央-更正公告",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-10-29",
+      "title": "长治市项目推进中心竞争性磋商京长项目谋划对接主题研讨和调研互访的更正公告",
+      "url": "http://www.ccgp.gov.cn/cggg/dfgg/gzgg/202610/t20261029_27583791.htm",
+      "date": "2026-10-29",
+      "keyword": "地方-更正公告",
+      "source": "ccgp-list",
+      "status": "pending"
+    }
+  ],
   "last_run": {
     "date": "2026-10-29",
     "sources": [
-      "ddg"
+      "ccgp-list"
     ],
-    "ccgp_blocked": true,
-    "raw": 10,
-    "added": 0,
+    "ccgp_blocked": false,
+    "raw": 4,
+    "added": 4,
     "stale_days": 0
   }
 }
