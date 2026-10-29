@@ -1,14 +1,14 @@
 {
-  "updated_at": "2026-10-29 14:52:46",
+  "updated_at": "2026-10-26 17:01:04",
   "hits": [],
   "last_run": {
-    "date": "2026-10-29",
+    "date": "2026-10-26",
     "sources": [
-      "ddg"
+      "bing"
     ],
     "ccgp_blocked": true,
-    "raw": 10,
+    "raw": 66,
     "added": 0,
-    "stale_days": 0
+    "stale_days": 3
   }
 }
