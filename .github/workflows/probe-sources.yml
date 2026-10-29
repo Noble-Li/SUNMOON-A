@@ -1,6 +1,6 @@
 name: 通道探测（一次性诊断）
 
-# 用来回答一个问题：GitHub Actions 的出口 IP 能不能读到政采网搜索结果？
+# 回答一个问题：GitHub Actions 的出口 IP 能不能读到政采网搜索结果？
 # 这决定了「早八点自动更新」该由云端跑还是必须由本机跑。
 # 诊断完可以直接删除本文件。
 
@@ -11,91 +11,13 @@ jobs:
   probe:
     runs-on: ubuntu-latest
     steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
       - name: 准备 Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
       - name: 逐个通道探测
-        run: |
-          python - <<'PY'
-          import urllib.request, urllib.parse, re, sys
-
-          UA_DESKTOP = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-                        "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
-
-          def get(url, ua=UA_DESKTOP, referer=None, timeout=40):
-              req = urllib.request.Request(url)
-              req.add_header("User-Agent", ua)
-              req.add_header("Accept-Language", "zh-CN,zh;q=0.9")
-              if referer:
-                  req.add_header("Referer", referer)
-              try:
-                  with urllib.request.urlopen(req, timeout=timeout) as r:
-                      raw = r.read()
-                  return r.status, raw
-              except Exception as e:
-                  return 0, repr(e).encode()
-
-          params = {
-              "searchtype": "1", "page_index": "1", "bidSort": "0", "buyerName": "",
-              "projectId": "", "pinMu": "0", "bidType": "0", "dbselect": "bidx",
-              "kw": "电推进", "start_time": "2026-10-18", "end_time": "2026-10-29",
-              "timeType": "6", "displayZone": "", "zoneId": "", "pppStatus": "0", "agentName": "",
-          }
-          ccgp_url = "http://search.ccgp.gov.cn/bxsearch?" + urllib.parse.urlencode(params)
-
-          def report(name, status, raw):
-              for enc in ("utf-8", "gbk", "gb18030"):
-                  try:
-                      body = raw.decode(enc); break
-                  except UnicodeDecodeError:
-                      body = raw.decode("utf-8", "replace")
-              blocked = ("频繁" in body) or ("访问过于" in body)
-              hits = len(re.findall(r"/t\d{8}_\d+\.htm", body))
-              print(f"::{ 'warning' if blocked or status == 0 else 'notice'}::{name}: status={status} "
-                    f"len={len(raw)} blocked={blocked} detail_links={hits}")
-              return blocked, hits
-
-          print("### 1) ccgp 直连（桌面 UA）")
-          s, raw = get(ccgp_url)
-          report("ccgp/desktop-UA", s, raw)
-
-          print("### 2) ccgp 直连（Python-urllib UA）")
-          s, raw = get(ccgp_url, ua="Python-urllib/3.11")
-          report("ccgp/urllib-UA", s, raw)
-
-          print("### 3) ccgp 首页（判断整站可达性）")
-          s, raw = get("http://search.ccgp.gov.cn/", referer="http://www.ccgp.gov.cn/")
-          print(f"::notice::ccgp 首页: status={s} len={len(raw)}")
-
-          print("### 4) 中国政府采购网公告页")
-          s, raw = get("https://www.ccgp.gov.cn/cggg/zygg/fblbgg/",
-                       referer="https://www.ccgp.gov.cn/")
-          for enc in ("utf-8", "gbk", "gb18030"):
-              try:
-                  body = raw.decode(enc); break
-              except UnicodeDecodeError:
-                  body = raw.decode("utf-8", "replace")
-          print(f"::notice::ccgp 公告列表: status={s} detail_links="
-                f"{len(re.findall(r'/t\d{8}_\d+\.htm', body))}")
-
-          print("### 5) Bing 搜索")
-          s, raw = get("https://cn.bing.com/search?q=" + urllib.parse.quote("电推进 招标 公告"))
-          for enc in ("utf-8", "gbk", "gb18030"):
-              try:
-                  body = raw.decode(enc); break
-              except UnicodeDecodeError:
-                  body = raw.decode("utf-8", "replace")
-          print(f"::notice::bing: status={s} len={len(raw)} "
-                f"ccgp_links={len(re.findall(r'ccgp', body))}")
-
-          print("### 6) DuckDuckGo html")
-          s, raw = get("https://html.duckduckgo.com/html/?q=" + urllib.parse.quote("电推进 招标"))
-          print(f"::notice::ddg: status={s} len={len(raw)}")
-          PY
-
-      - name: 运行摘要
-        if: always()
-        run: |
-          echo "探测完成，看上面各条 ::notice:: / ::warning:: 标注即可。" >> "$GITHUB_STEP_SUMMARY"
+        run: python scripts/probe_sources.py
