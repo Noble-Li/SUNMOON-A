@@ -2,8 +2,10 @@ name: 日报哨兵
 
 on:
   schedule:
-    # 每天 17:00 北京时间（= 09:00 UTC）。GitHub cron 可能有 5~30 分钟延迟，属正常。
-    - cron: '0 9 * * *'
+    # 每天 09:00 北京时间（= 01:00 UTC）。排在 08:00 自动更新之后一小时做复核：
+    # 更新成功就只记一次正常巡检，更新失败才兜底补登并告警。
+    # GitHub cron 可能有 5~30 分钟延迟，属正常。
+    - cron: '0 1 * * *'
   workflow_dispatch:
     inputs:
       force_alert:
