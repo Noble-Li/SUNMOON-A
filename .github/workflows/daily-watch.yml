@@ -67,6 +67,28 @@ jobs:
             echo "已创建提醒 Issue"
           fi
 
+      - name: 断更恢复后自动关单
+        # 台账已经不落后（含云端兜底补登成功）时，把此前遗留的断更提醒关掉，
+        # 避免 issue 列表里堆着早已失效的告警、看不出当前真实状态。
+        continue-on-error: true
+        if: steps.watch.outputs.stale_days == '0' || steps.watch.outputs.backfill == 'wrote'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set +e
+          if ! gh issue list --limit 1 >/dev/null 2>&1; then
+            echo "::warning::仓库未启用 Issues，跳过关单"
+            exit 0
+          fi
+          OPEN=$(gh issue list --label daily-watch --state open --json number --jq '.[].number')
+          if [ -z "$OPEN" ]; then
+            echo "没有待关闭的断更提醒"
+            exit 0
+          fi
+          for n in $OPEN; do
+            gh issue close "$n" --comment "台账已补登至 $(date -u -d '+8 hours' +%F)（本次运行 stale_days=${{ steps.watch.outputs.stale_days }}，backfill=${{ steps.watch.outputs.backfill }}），自动关闭本条提醒。" || true
+          done
+
       - name: 提交线索
         # 放在“发送提醒”之后，这样 Issues 不可用时的 ALERT.md 也能一并提交
         run: |
@@ -87,5 +109,6 @@ jobs:
           echo "### 哨兵本次运行结果" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "- 新增线索：${{ steps.watch.outputs.added || 0 }}" >> $GITHUB_STEP_SUMMARY
+          echo "- 兜底补登：${{ steps.watch.outputs.backfill || 'n/a' }}" >> $GITHUB_STEP_SUMMARY
           echo "- 日报落后天数：${{ steps.watch.outputs.stale_days || 'n/a' }}" >> $GITHUB_STEP_SUMMARY
           echo "- ccgp 是否被限流：${{ steps.watch.outputs.ccgp_blocked || 'n/a' }}" >> $GITHUB_STEP_SUMMARY

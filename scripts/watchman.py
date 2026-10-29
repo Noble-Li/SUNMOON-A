@@ -360,6 +360,75 @@ def load_known():
     return known
 
 
+WEEKDAY_CN = ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"]
+
+
+def _latest_date():
+    """读台账最新条目日期，失败返回 None"""
+    try:
+        d = json.load(io.open(REPORTS, encoding="utf-8"))
+        return d["reports"][0]["date"]
+    except Exception as e:  # noqa
+        log("读取最新条目失败:", repr(e)[:120])
+        return None
+
+
+def backfill_no_new(now, added_count):
+    """云端兜底补登：台账落后且本次没有待核实的候选线索时，补一条「无新增」记录。
+
+    只在 added_count == 0 时写入 —— 有候选线索必须人工核实后才能进台账，
+    自动写入未经核实的公告会污染这份台账的可信度。
+
+    返回 (status, detail)：
+      ("wrote", 新日期)      已补登
+      ("skipped", 原因)      没有需要补登的
+      ("deferred", 原因)     有候选线索，等人工核实
+    """
+    today = now.strftime("%Y-%m-%d")
+    try:
+        d = json.load(io.open(REPORTS, encoding="utf-8"))
+        reports = d.get("reports") or []
+        if not reports:
+            return "skipped", "台账为空"
+        latest = reports[0]["date"]
+        if latest >= today:
+            return "skipped", "台账已是最新（%s）" % latest
+        if added_count > 0:
+            return "deferred", "有 %d 条候选线索待人工核实，不自动写入" % added_count
+
+        gap = (now.date() - datetime.datetime.strptime(latest, "%Y-%m-%d").date()).days
+        summary = (
+            "【补更说明】因 %s 至 %s 期间本地自动化任务未触发（客户端未处于运行状态），"
+            "本次由云端哨兵兜底补登，覆盖 %s 至 %s：窗口内未检索到新增招标/采购/中标公告，"
+            "各跟踪项目状态无变化。台账以本次补登推进到当日；如后续人工核实到窗口内确有公告，"
+            "请以人工补更为准替换本条。"
+            % (latest, today, latest, today)
+        )
+        entry = {
+            "date": today,
+            "weekday": WEEKDAY_CN[now.weekday()],
+            "has_new": False,
+            "summary": summary,
+            "new_items": [],
+            "upcoming": [u for u in (reports[0].get("upcoming") or []) if u.get("date", "") >= today],
+            "constraints": reports[0].get("constraints", ""),
+            "auto_backfill": {
+                "by": "github-actions daily-watch",
+                "at": now.strftime("%Y-%m-%d %H:%M:%S"),
+                "gap_days": gap,
+                "from": latest,
+            },
+        }
+        d["reports"].insert(0, entry)
+        out = json.dumps(d, ensure_ascii=False, indent=2).replace("\n", "\r\n")
+        io.open(REPORTS, "w", encoding="utf-8", newline="").write(out)
+        log("云端兜底补登：%s -> %s（缺口 %d 天）" % (latest, today, gap))
+        return "wrote", today
+    except Exception as e:  # noqa
+        log("兜底补登失败（不影响告警）:", repr(e)[:150])
+        return "skipped", "补登异常：%s" % repr(e)[:80]
+
+
 def main():
     os.makedirs(OUT_DIR, exist_ok=True)
     now = today_cn()
@@ -466,6 +535,18 @@ def main():
     json.dump(hits_db, io.open(HITS_FILE, "w", encoding="utf-8"),
               ensure_ascii=False, indent=2)
     log("抓取原始 %d 条，新增线索 %d 条" % (len(raw_items), len(added)))
+
+    # --- 3.5 云端兜底补登（客户端不开也不断更） ---
+    bf_status, bf_detail = backfill_no_new(now, len(added))
+    log("兜底补登:", bf_status, bf_detail)
+    if bf_status == "wrote":
+        # 补登成功，重新读最新日期与落后天数，后续告警据此判断
+        latest = bf_detail
+        stale_days = 0
+    gout_bf = os.environ.get("GITHUB_OUTPUT")
+    if gout_bf:
+        with io.open(gout_bf, "a", encoding="utf-8") as f:
+            f.write("backfill=%s\n" % bf_status)
 
     # --- 4. 是否需要提醒 ---
     need = False
