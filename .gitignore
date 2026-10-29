@@ -5,3 +5,4 @@ _check.js
 _c.js
 .watch_out/
 __pycache__/
+*.bak-*
