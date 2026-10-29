@@ -94,7 +94,7 @@
   @media (max-width: 640px) { .page { padding: 80px var(--s200) var(--s600); } }
 
   /* === Hero：平整表面，仅标题使用文字渐变 === */
-  .hero { padding: var(--s600) 0 var(--s500); }
+  .hero { padding: var(--s500) 0 var(--s400); }
   .hero-brand { display: flex; align-items: center; gap: var(--s200); margin-bottom: var(--s300); }
   .hero-logo { height: 64px; width: 64px; border-radius: var(--r-full); background: var(--surface);
     box-shadow: 0 0 0 1px var(--line); flex: none; }
@@ -129,7 +129,7 @@
   }
 
   /* === 标语区：逐字从淡到实 === */
-  .tagline { padding: var(--s700) 0 var(--s600); }
+  .tagline { padding: var(--s500) 0 var(--s400); }
   .tagline-text { margin: 0; font-size: 36px; line-height: 40px; font-weight: 600; letter-spacing: -0.01em;
     max-width: 680px; text-wrap: balance; }
   .tagline-text .w { color: #A8AEBB; transition: color 600ms var(--ease); }
@@ -315,10 +315,14 @@
   .footer-links { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s75); margin-top: var(--s200); }
   .footer-links a { color: var(--ink-2); font-weight: 600; }
 
-  /* === 滚动进入：上移 32px 淡入，只播一次 === */
-  .reveal { opacity: 0; transform: translateY(var(--s400));
-    transition: opacity 700ms var(--ease), transform 700ms var(--ease); }
+  /* === 滚动进入：轻量淡入，一屏以上的长区块只淡化不位移 === */
+  .reveal { opacity: 0; transform: translateY(var(--s300));
+    transition: opacity 520ms var(--ease), transform 520ms var(--ease); }
   .reveal.is-in { opacity: 1; transform: none; }
+  /* 历史归档、跟踪项目这类超过一屏的区块：整层平移会让浏览器重绘上千像素，只做淡入 */
+  .reveal.is-tall { transform: none; transition: opacity 300ms linear; }
+  /* 首屏预点亮的区块直接就位，不播动画（放在最后，优先级高于上面两条） */
+  .reveal.no-anim, .reveal.no-anim.is-tall { transition: none; }
 
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
@@ -751,6 +755,9 @@ function render() {
       '<td>' + escapeHtml(p.amount) + '</td>' +
       '<td>' + escapeHtml(p.next_milestone) + '</td></tr>';
   }).join("");
+
+  // 全部区块填完后再按真实高度重判一次「长区块」
+  if (window.__revealMarkTall) window.__revealMarkTall();
 }
 
 /* === 每日知识卡 ===
@@ -879,6 +886,7 @@ function renderDailyCard(dateStr) {
     " · " + hit.total + " 天一轮回 · " + (cardLib.note || "");
 
   document.getElementById("card").hidden = false;
+  if (window.__revealWatch) window.__revealWatch(document.getElementById("card"));
 }
 
 function renderKcHistory(today, want) {
@@ -962,9 +970,12 @@ function setupTagline() {
   var pending = chars.slice();
   var queue = 0;
   var ticking = false;
+  var firstPaint = true;
   function paint() {
     ticking = false;
-    var line = window.innerHeight * 0.62;
+    // 首帧用更宽的下沿：标语本来就在首屏，不该顶着灰色等用户滚一下才亮
+    var line = window.innerHeight * (firstPaint ? 1.0 : 0.62);
+    if (firstPaint) firstPaint = false;
     for (var i = pending.length - 1; i >= 0; i--) {
       if (pending[i].getBoundingClientRect().top < line) {
         var el = pending.splice(i, 1)[0];
@@ -990,21 +1001,58 @@ function setupTagline() {
   paint();
 }
 
-/* === 滚动进入：上移淡入，只播一次 === */
+/* === 滚动进入：淡入，只播一次 ===
+   两条规则避免「首屏留白」和「整屏平移」：
+   1) 首屏及紧邻下方的区块在加载时直接点亮，不等滚动 —— 否则首屏下方就是一大片空白；
+   2) 高度超过大半个视口的区块（历史归档、跟踪项目）只淡化不位移 ——
+      整层 translateY 会让浏览器每帧重绘数千像素，长区块滚过去就是明显的卡顿。 */
 function setupReveal() {
-  var els = document.querySelectorAll(".reveal");
+  var els = Array.prototype.slice.call(document.querySelectorAll(".reveal"));
   if (!("IntersectionObserver" in window)) {
-    Array.prototype.forEach.call(els, function (el) { el.classList.add("is-in"); });
+    els.forEach(function (el) { el.classList.add("is-in"); });
     return;
   }
+  var vh = window.innerHeight;
+
+  // 高度只有等数据渲染完才准（初始是骨架屏），所以在真正点亮前一刻再判断
+  function markTall(el) {
+    if (el.offsetHeight > vh * 0.7) el.classList.add("is-tall");
+  }
+
+  // 首屏预点亮：top 落在视口内或视口下方 200px 以内的，直接就位，不参与动画
+  var rest = [];
+  els.forEach(function (el) {
+    if (el.hidden) { rest.push(el); return; }
+    var top = el.getBoundingClientRect().top;
+    if (top < vh + 200) { markTall(el); el.classList.add("is-in", "no-anim"); }
+    else rest.push(el);
+  });
+
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
       if (!e.isIntersecting) return;
+      markTall(e.target);
       e.target.classList.add("is-in");
       io.unobserve(e.target);
     });
-  }, { rootMargin: "0px 0px -10% 0px", threshold: 0.08 });
-  Array.prototype.forEach.call(els, function (el) { io.observe(el); });
+  }, { rootMargin: "0px 0px 18% 0px", threshold: 0 });
+  rest.forEach(function (el) { io.observe(el); });
+
+  // 隐藏区块（知识卡）在 render 里解除 hidden 之后才参与观察
+  window.addEventListener("resize", function () {
+    vh = window.innerHeight;
+    els.forEach(function (el) { if (!el.hidden) markTall(el); });
+  }, { passive: true });
+
+  // 数据渲染完高度会变（骨架屏 -> 真实内容），渲染后要重判一次
+  window.__revealMarkTall = function () {
+    els.forEach(function (el) { if (!el.hidden) markTall(el); });
+  };
+  window.__revealWatch = function (el) {
+    if (!el || el.classList.contains("is-in")) return;
+    markTall(el);
+    io.observe(el);
+  };
 }
 
 /* === 导航高亮当前板块 === */
