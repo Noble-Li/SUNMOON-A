@@ -1,27 +1,9 @@
 {
-  "updated": "2026-10-29",
-  "streak": 4,
-  "issue": 4,
+  "updated": "2026-10-26",
+  "streak": 1,
+  "issue": 1,
   "total": 72,
   "days": [
-    {
-      "date": "2026-10-29",
-      "card_id": "K28",
-      "index": 3,
-      "issue": 4
-    },
-    {
-      "date": "2026-10-28",
-      "card_id": "K20",
-      "index": 2,
-      "issue": 3
-    },
-    {
-      "date": "2026-10-27",
-      "card_id": "K11",
-      "index": 1,
-      "issue": 2
-    },
     {
       "date": "2026-10-26",
       "card_id": "K01",
