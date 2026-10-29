@@ -214,13 +214,27 @@ def main():
         time.sleep(2)
 
     has_new = bool(new_items)
+    # 漏跑会留下空白日期：中间断过几天就写清覆盖范围，读者才知道这几天不是
+    # "查过且无新增"，而是"根本没跑"——两者含义完全不同。
+    prev_day = reports[0].get("date") if reports else None
+    gap = ""
+    if prev_day:
+        try:
+            d0 = dt.datetime.strptime(prev_day, "%Y-%m-%d")
+            n = (dt.datetime.strptime(day, "%Y-%m-%d") - d0).days
+            if n > 1:
+                gap = "本次覆盖 %s 至 %s（上一条为 %s，中间 %d 天未运行，属补跑）。" % (
+                    prev_day, day, prev_day, n - 1)
+        except ValueError:
+            pass
+
     if has_new:
-        summary = ("云端自动巡检：新增 %d 条强相关公告（%s）。另有 %d 条只命中宽泛词的公告留在候选池，"
+        summary = (gap + "云端自动巡检：新增 %d 条强相关公告（%s）。另有 %d 条只命中宽泛词的公告留在候选池，"
                    "需人工判断是否收录。"
                    % (len(new_items), "、".join(it["title"][:34] for it in new_items),
                       len(weak)))
     else:
-        summary = ("云端自动巡检：ccgp 分类列表页共 %d 条公告，其中未见于台账 %d 条，"
+        summary = (gap + "云端自动巡检：ccgp 分类列表页共 %d 条公告，其中未见于台账 %d 条，"
                    "无强相关新增；%d 条弱相关候选留在候选池待人工判断。"
                    % (len(candidates), len(fresh), len(weak)))
 
