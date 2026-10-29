@@ -112,6 +112,8 @@ def fetch(url, timeout=30, referer=None, retries=2):
 
 # ---------------- 源 1：中国政府采购网搜索 ----------------
 def ccgp_search(kw, start, end):
+    """搜索接口。2026-10 起对本机和 Actions 出口都返回 2920 字节的限流页，
+    保留它是为了限流解除后能自动恢复；被限流时会由 ccgp_lists() 顶上。"""
     params = {
         "searchtype": "1",
         "page_index": "1",
@@ -132,6 +134,87 @@ def ccgp_search(kw, start, end):
     }
     url = "http://search.ccgp.gov.cn/bxsearch?" + urllib.parse.urlencode(params)
     return fetch(url, referer="http://search.ccgp.gov.cn/")
+
+
+# ---------------- 源 1b：中国政府采购网「分类列表页」 ----------------
+# 搜索接口被限流时，站点的静态分类列表页仍然可用（2026-10-29 实测本机与
+# Actions 出口都是 5/5 可达，且必须用 http:// —— https:// 返回 403）。
+# 每页 35 条、按发布时间倒序，翻 index_1.htm / index_2.htm …… 可回溯到更早。
+CCGP_LISTS = [
+    ("中央-公开招标", "http://www.ccgp.gov.cn/cggg/zygg/gkzb/"),
+    ("中央-中标公告", "http://www.ccgp.gov.cn/cggg/zygg/zbgg/"),
+    ("中央-废标终止", "http://www.ccgp.gov.cn/cggg/zygg/fblbgg/"),
+    ("中央-更正公告", "http://www.ccgp.gov.cn/cggg/zygg/gzgg/"),
+    ("中央-其他公告", "http://www.ccgp.gov.cn/cggg/zygg/qtgg/"),
+    ("地方-公开招标", "http://www.ccgp.gov.cn/cggg/dfgg/gkzb/"),
+    ("地方-中标公告", "http://www.ccgp.gov.cn/cggg/dfgg/zbgg/"),
+    ("地方-废标终止", "http://www.ccgp.gov.cn/cggg/dfgg/fblbgg/"),
+    ("地方-更正公告", "http://www.ccgp.gov.cn/cggg/dfgg/gzgg/"),
+]
+LIST_PAGES = 6          # 每个分类翻几页（35 条/页，够覆盖一周以上）
+
+LIST_ITEM_RE = re.compile(
+    r'href="(\./20\d{4}/t\d{8}_\d+\.htm)"[^>]*title="([^"]{4,120})"')
+
+
+def ccgp_lists(pages=LIST_PAGES):
+    """翻分类列表页，返回 (items, ok)。标题命中 MUST_HIT 的才留下。
+
+    与搜索接口相比这里是「全量拉取 + 本地过滤」：政采网每天新增几百条公告，
+    翻 8 个分类 × pages 页足够覆盖推进类这种低频品类。
+    """
+    items = []
+    seen_urls = set()
+    ok_cats = 0
+    for cat, base in CCGP_LISTS:
+        got_cat = 0
+        for page in range(pages):
+            url = base if page == 0 else base + "index_%d.htm" % page
+            html = fetch(url, referer="http://www.ccgp.gov.cn/")
+            if not html:
+                break
+            found = LIST_ITEM_RE.findall(html)
+            if not found:
+                break
+            pages_items = []
+            for rel, title in found:
+                title = re.sub(r"\s+", " ", title).strip()
+                if not any(k in title for k in MUST_HIT):
+                    continue
+                if any(b in title for b in BLACKLIST):
+                    continue
+                abs_url = ("http://www.ccgp.gov.cn"
+                           + base.replace("http://www.ccgp.gov.cn", "")
+                           + rel.lstrip("./"))
+                # 同一条公告会同时出现在「列表页」和「分类首页」里，
+                # 也可能被多个分类收录，按 URL 去重避免重复候选。
+                if abs_url in seen_urls:
+                    continue
+                seen_urls.add(abs_url)
+                date = ""
+                dm2 = re.search(r"/t(20\d{6})_", rel)
+                if dm2:
+                    date = "%s-%s-%s" % (dm2.group(1)[:4], dm2.group(1)[4:6], dm2.group(1)[6:8])
+                pages_items.append({"title": title, "url": abs_url, "date": date,
+                                    "category": cat, "source": "ccgp-list"})
+            items.extend(pages_items)
+            got_cat += len(pages_items)
+            # 这一页全是十天前的公告就没必要继续往后翻
+            dm = re.search(r"/t(20\d{6})_", found[-1][0])
+            if dm:
+                try:
+                    oldest = datetime.datetime.strptime(dm.group(1), "%Y%m%d")
+                    if (today_cn().replace(tzinfo=None) - oldest).days > LOOKBACK_DAYS:
+                        break
+                except ValueError:
+                    pass
+            time.sleep(1)
+        if got_cat:
+            log("ccgp-list[%s] -> %d 条" % (cat, got_cat))
+            ok_cats += 1
+        else:
+            log("ccgp-list[%s] -> 0 条" % cat)
+    return items, ok_cats > 0
 
 
 def parse_ccgp(html):
@@ -474,11 +557,24 @@ def main():
             time.sleep(6)
 
     if blocked:
-        se_items, se_src = search_engine_fallback()
-        sources.extend(se_src)
-        for it in se_items:
-            it.setdefault("keyword", it.get("query", ""))
-        raw_items.extend(se_items)
+        # 搜索接口不可用时，先试分类列表页（静态 HTML，通常还通），
+        # 仍然拿不到再退到搜索引擎。列表页是全量拉取+本地过滤，
+        # 覆盖率取决于翻了多少页，所以它单独记一个来源名。
+        list_items, list_ok = ccgp_lists()
+        if list_ok:
+            sources.append("ccgp-list")
+            blocked = not list_items  # 列表页通了但零命中 = 真无公告，不算被限流
+            for it in list_items:
+                it.setdefault("keyword", it.get("category", ""))
+            raw_items.extend(list_items)
+            log("列表页通道 -> %d 条候选" % len(list_items))
+        if not list_ok:
+            log("列表页也不可用，退到搜索引擎")
+            se_items, se_src = search_engine_fallback()
+            sources.extend(se_src)
+            for it in se_items:
+                it.setdefault("keyword", it.get("query", ""))
+            raw_items.extend(se_items)
 
     # 原始结果全量落盘 + 摘要打印，方便在 Actions 日志里核对抓取源到底返回了什么
     try:
