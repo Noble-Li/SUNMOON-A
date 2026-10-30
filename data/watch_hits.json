@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-29 16:31:01",
+  "updated_at": "2026-10-30 14:54:22",
   "hits": [
     {
       "found_at": "2026-10-29",
@@ -36,16 +36,88 @@
       "keyword": "地方-更正公告",
       "source": "ccgp-list",
       "status": "pending"
+    },
+    {
+      "found_at": "2026-10-30",
+      "title": "中国科学院空天信息创新研究院高真空高压放电检测与评价系统采购公开招标公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/gkzb/202610/t20261030_27590250.htm",
+      "date": "2026-10-30",
+      "keyword": "中央-公开招标",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-10-30",
+      "title": "中国科学院上海光学精密机械研究所束组转换真空箱体及桁架加工公开招标公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/gkzb/202610/t20261029_27587488.htm",
+      "date": "2026-10-29",
+      "keyword": "中央-公开招标",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-10-30",
+      "title": "中国科学院上海光学精密机械研究所真空光管道及桁架加工公开招标公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/gkzb/202610/t20261029_27587484.htm",
+      "date": "2026-10-29",
+      "keyword": "中央-公开招标",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-10-30",
+      "title": "中国科学院上海光学精密机械研究所真空控制系统公开招标公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/gkzb/202610/t20261029_27587477.htm",
+      "date": "2026-10-29",
+      "keyword": "中央-公开招标",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-10-30",
+      "title": "合肥物质院等离子体所真空互联X射线光电子能谱采购项目更正公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/gzgg/202610/t20261030_27590534.htm",
+      "date": "2026-10-30",
+      "keyword": "中央-更正公告",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-10-30",
+      "title": "zycgr24041501太阳电池活性层及功能层真空蒸镀设备采购更正公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/gzgg/202610/t20261029_27587705.htm",
+      "date": "2026-10-29",
+      "keyword": "中央-更正公告",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-10-30",
+      "title": "中国科学院声学研究所低振动动力电机与钛合金耐腐蚀推进器装置采购项目更正公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/gzgg/202610/t20261029_27586040.htm",
+      "date": "2026-10-29",
+      "keyword": "中央-更正公告",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-10-30",
+      "title": "2026年耕地建设与利用资金-“三新”集成推进县项目二次终止公告",
+      "url": "http://www.ccgp.gov.cn/cggg/dfgg/fblbgg/202610/t20261030_27589006.htm",
+      "date": "2026-10-30",
+      "keyword": "地方-废标终止",
+      "source": "ccgp-list",
+      "status": "pending"
     }
   ],
   "last_run": {
-    "date": "2026-10-29",
+    "date": "2026-10-30",
     "sources": [
       "ccgp-list"
     ],
     "ccgp_blocked": false,
-    "raw": 4,
-    "added": 4,
+    "raw": 10,
+    "added": 8,
     "stale_days": 0
   }
 }
