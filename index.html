@@ -78,7 +78,9 @@
   .nav { position: fixed; z-index: 50; top: var(--s100); left: 50%; transform: translateX(-50%);
     display: flex; align-items: center; gap: var(--s25); max-width: calc(100% - 32px);
     padding: var(--s25); overflow-x: auto; scrollbar-width: none;
-    background: rgba(255, 255, 255, 0.78); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    /* 不用 backdrop-filter：固定元素上的模糊要每帧重算底下的内容，
+       在弱 GPU / 移动端是滚动掉帧的头号原因。提高不透明度换取同样的观感。 */
+    background: rgba(255, 255, 255, 0.94);
     border: 1px solid var(--line); border-radius: var(--r-full);
     box-shadow: 0 1px 2px rgba(15, 17, 21, 0.04), 0 8px 24px rgba(15, 17, 21, 0.06); }
   .nav::-webkit-scrollbar { display: none; }
@@ -215,6 +217,12 @@
   .week-status { margin-top: var(--s75); }
   .empty-line { margin: 0; font-size: 14px; line-height: 20px; color: var(--ink-2); }
 
+  /* 数据滞后提醒（只在真的滞后时显示） */
+  .stale-note { margin: var(--s75) 0 0; padding: var(--s75) var(--s100); border-radius: var(--r-sm);
+    background: #FEF3C7; border: 1px solid #FDE68A; color: #92400E;
+    font-size: 13px; line-height: 18px; }
+  .stale-note[hidden] { display: none; }
+
   /* === 每日知识卡 === */
   .kc-meta { display: flex; align-items: center; flex-wrap: wrap; gap: var(--s75); }
   .kc-cat { padding: var(--s25) var(--s75); border-radius: var(--r-sm);
@@ -268,7 +276,10 @@
   .month::before { content: ""; width: 3px; height: 16px; background: var(--accent); border-radius: var(--r-sm); }
   .month:first-child { margin-top: 0; }
   .entry { border: 1px solid var(--line); border-radius: 0; margin-bottom: var(--s75); background: var(--surface);
-    transition: border-color 300ms var(--ease); }
+    transition: border-color 300ms var(--ease);
+    /* 归档里二十多条：离屏的直接跳过布局与绘制，滚到附近才渲染。
+       60px 是收起状态（只有 summary）的实测高度，浏览器首次渲染后会记住真实值。 */
+    content-visibility: auto; contain-intrinsic-size: auto 60px; }
   .entry:hover { border-color: var(--ink-3); }
   .entry > summary { display: flex; align-items: center; flex-wrap: wrap; gap: var(--s75);
     padding: var(--s100) var(--s200); cursor: pointer; font-size: 16px; line-height: 24px; font-weight: 600;
@@ -320,7 +331,7 @@
     transition: opacity 520ms var(--ease), transform 520ms var(--ease); }
   .reveal.is-in { opacity: 1; transform: none; }
   /* 历史归档、跟踪项目这类超过一屏的区块：整层平移会让浏览器重绘上千像素，只做淡入 */
-  .reveal.is-tall { transform: none; transition: opacity 300ms linear; }
+  .reveal.is-tall { transform: none; transition: none; }
   /* 首屏预点亮的区块直接就位，不播动画（放在最后，优先级高于上面两条） */
   .reveal.no-anim, .reveal.no-anim.is-tall { transition: none; }
 
@@ -393,7 +404,7 @@
 <a class="skip" href="#main">跳到主要内容</a>
 
 <nav class="nav" aria-label="页面导航">
-  <a href="#today">今日详情</a>
+  <a href="#today" id="navToday">最新一期</a>
   <a href="#card">每日知识卡</a>
   <a href="#week">本周汇总</a>
   <a href="#archive">历史归档</a>
@@ -415,7 +426,7 @@
     </div>
     <p class="hero-lede">只记录能从公开渠道核到的条目：招标、采购、中标、成交，以及每个项目下一个关键节点。每天 08:00 更新一版，漏跑会在下一条里写明补更范围。</p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="#today">查看今日新增<svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h11M11 6l4 4-4 4"/></svg></a>
+      <a class="btn btn-primary" href="#today" id="heroTodayBtn">查看最新一期<svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h11M11 6l4 4-4 4"/></svg></a>
       <a class="btn btn-quiet" href="#archive">浏览历史归档</a>
       <a class="btn btn-quiet" href="./hall-thruster.html?v=3">看三维拆解</a>
     </div>
@@ -434,11 +445,12 @@
   <!-- 今日详情 -->
   <section class="card reveal" id="today" aria-busy="true">
     <div class="section-head">
-      <span class="section-tag"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M10 6.5v7M6.5 10h7"/></svg>今日详情</span>
+      <span class="section-tag" id="todayTag"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M10 6.5v7M6.5 10h7"/></svg><span id="todayTagText">最新一期</span></span>
       <h2 class="section-title" id="todayDateLong">正在载入</h2>
     </div>
+    <p class="stale-note" id="staleNote" hidden></p>
     <p id="todaySummary">正在读取今天的记录。</p>
-    <h3 class="sub-head"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M10 6.5v7M6.5 10h7"/></svg>今日新增</h3>
+    <h3 class="sub-head"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M10 6.5v7M6.5 10h7"/></svg><span id="todayNewHead">本期新增</span></h3>
     <div id="todayNew"><div class="skeleton"><div class="skel wide"></div><div class="skel"></div><div class="skel"></div></div></div>
     <h3 class="sub-head"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4.5" width="13" height="12" rx="2"/><path d="M3.5 8.5h13M7 3v3M13 3v3"/></svg>近期值得关注的时间节点</h3>
     <ul class="timeline" id="todayUpcoming"><li class="empty-line">正在载入时间节点。</li></ul>
@@ -695,6 +707,28 @@ function entryHtml(r) {
 }
 
 /* === 渲染 === */
+
+/* 北京时间当天（YYYY-MM-DD）。台账日期都是北京日期，比较必须同口径。 */
+function cnToday() {
+  return new Date(Date.now() + 8 * 3600 * 1000).toISOString().slice(0, 10);
+}
+
+/* 差几天：dataDate 比今天早多少天。0=今天，1=昨天，2+=更早。 */
+function daysBehind(dataDate) {
+  var a = Date.parse(dataDate + "T00:00:00Z");
+  var b = Date.parse(cnToday() + "T00:00:00Z");
+  if (isNaN(a) || isNaN(b)) return 0;
+  return Math.round((b - a) / 86400000);
+}
+
+/* 标签跟着数据日期走，不写死「今日」——数据没更新时不能再叫今日。 */
+function labelsFor(dataDate) {
+  var d = daysBehind(dataDate);
+  if (d <= 0) return { tag: "今日详情", newHead: "今日新增", nav: "今日详情" };
+  if (d === 1) return { tag: "昨日详情", newHead: "昨日新增", nav: "昨日详情" };
+  return { tag: "最新一期", newHead: "本期新增", nav: "最新一期" };
+}
+
 function render() {
   if (!siteData) return;
   var s = siteData.site;
@@ -703,6 +737,16 @@ function render() {
 
   var reports = (siteData.reports || []).slice().sort(function (a, b) { return b.date.localeCompare(a.date); });
   var today = reports[0];
+
+  // 标签按「数据日期 vs 北京今天」自适应
+  var lb = labelsFor(today.date);
+  var behind = daysBehind(today.date);
+  document.getElementById("todayTagText").textContent = lb.tag;
+  document.getElementById("todayNewHead").textContent = lb.newHead;
+  var nav = document.getElementById("navToday");
+  if (nav) nav.textContent = lb.nav;
+  var hero = document.getElementById("heroTodayBtn");
+  if (hero) hero.childNodes[0].nodeValue = "查看" + lb.newHead;
 
   document.getElementById("todayDate").textContent = today.date;
   document.getElementById("trackedCount").textContent = (s.tracked_projects || []).length;
@@ -717,6 +761,18 @@ function render() {
 
   document.getElementById("todayConstraints").textContent = today.constraints || "无";
   document.getElementById("today").setAttribute("aria-busy", "false");
+
+  // 数据滞后提醒：只在真的滞后时出现，不滞后就彻底不占位
+  var stale = document.getElementById("staleNote");
+  if (behind >= 1) {
+    stale.textContent = behind === 1
+      ? "本页数据截至" + today.date + "（昨天），今天的一期尚未生成。"
+      : "本页数据截至" + today.date + "，已滞后 " + behind + " 天，最新一期尚未生成。";
+    stale.hidden = false;
+  } else {
+    stale.hidden = true;
+    stale.textContent = "";
+  }
 
   // 本周汇总（最近 7 个自然日）
   var weekGrid = document.getElementById("weekGrid");
@@ -1055,6 +1111,29 @@ function setupReveal() {
   };
 }
 
+/* === 站内跳转：近距离用平滑，远距离直接到位 ===
+   原生 scroll-behavior:smooth 在一万像素的跳跃上会达到每帧四五百像素的位移，
+   看起来就是整屏内容一闪而过 —— 距离太远时平滑反而不如直接跳。 === */
+function setupAnchorScroll() {
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.addEventListener("click", function (ev) {
+    var a = ev.target && ev.target.closest ? ev.target.closest('a[href^="#"]') : null;
+    if (!a) return;
+    var id = a.getAttribute("href").slice(1);
+    var target = id === "top" ? document.body : document.getElementById(id);
+    if (!target) return;
+    var top = id === "top" ? 0 : target.getBoundingClientRect().top + window.scrollY - 96;
+    var far = Math.abs(top - window.scrollY) > window.innerHeight * 2.5;
+    if (reduce || far) {
+      ev.preventDefault();
+      // 必须写 "instant"：behavior:"auto" 会读 CSS 的 scroll-behavior:smooth，
+      // 结果又变回平滑滚动（这个坑踩过一次）
+      window.scrollTo({ top: top, behavior: "instant" });
+      history.replaceState(null, "", "#" + id);
+    }
+  });
+}
+
 /* === 导航高亮当前板块 === */
 function setupScrollSpy() {
   var links = Array.prototype.slice.call(document.querySelectorAll(".nav a"));
@@ -1083,6 +1162,7 @@ function setupScrollSpy() {
 window.addEventListener("DOMContentLoaded", function () {
   setupReveal();
   setupTagline();
+  setupAnchorScroll();
   setupScrollSpy();
   loadData();
 });
