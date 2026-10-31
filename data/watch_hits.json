@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-30 14:54:22",
+  "updated_at": "2026-10-31 14:47:40",
   "hits": [
     {
       "found_at": "2026-10-29",
@@ -108,16 +108,61 @@
       "keyword": "地方-废标终止",
       "source": "ccgp-list",
       "status": "pending"
+    },
+    {
+      "found_at": "2026-10-31",
+      "title": "北京理工大学超高真空双室电子束蒸发薄膜沉积系统采购项目公开招标公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/gkzb/202610/t20261030_27596350.htm",
+      "date": "2026-10-30",
+      "keyword": "中央-公开招标",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-10-31",
+      "title": "中国科学院宁波材料技术与工程研究所采购中大功率水下推进电机工程技术试验平台项目（标项三）公开招标公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/gkzb/202610/t20261030_27596121.htm",
+      "date": "2026-10-30",
+      "keyword": "中央-公开招标",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-10-31",
+      "title": "中国科学院宁波材料技术与工程研究所采购中大功率水下推进电机工程技术试验平台项目（标项二）公开招标公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/gkzb/202610/t20261030_27596119.htm",
+      "date": "2026-10-30",
+      "keyword": "中央-公开招标",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-10-31",
+      "title": "中国科学院宁波材料技术与工程研究所采购中大功率水下推进电机工程技术试验平台项目（标项一）公开招标公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/gkzb/202610/t20261030_27596117.htm",
+      "date": "2026-10-30",
+      "keyword": "中央-公开招标",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-10-31",
+      "title": "14.45eV真空紫外光源（A）招标公告",
+      "url": "http://www.ccgp.gov.cn/cggg/dfgg/gkzb/202610/t20261031_27596970.htm",
+      "date": "2026-10-31",
+      "keyword": "地方-公开招标",
+      "source": "ccgp-list",
+      "status": "pending"
     }
   ],
   "last_run": {
-    "date": "2026-10-30",
+    "date": "2026-10-31",
     "sources": [
       "ccgp-list"
     ],
     "ccgp_blocked": false,
     "raw": 10,
-    "added": 8,
+    "added": 5,
     "stale_days": 0
   }
 }
