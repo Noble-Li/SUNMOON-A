@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-01 15:14:15",
+  "updated_at": "2026-11-02 15:28:40",
   "hits": [
     {
       "found_at": "2026-10-29",
@@ -153,16 +153,43 @@
       "keyword": "地方-公开招标",
       "source": "ccgp-list",
       "status": "pending"
+    },
+    {
+      "found_at": "2026-11-02",
+      "title": "北京师范大学超高真空扫描隧道显微镜针尖处理系统采购项目中标公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/zbgg/202611/t20261102_27600866.htm",
+      "date": "2026-11-02",
+      "keyword": "中央-中标公告",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-11-02",
+      "title": "中国科学院上海技术物理研究所高精度微隙汇流真空链路加工及装配集成采购项目终止公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/fblbgg/202611/t20261102_27601083.htm",
+      "date": "2026-11-02",
+      "keyword": "中央-废标终止",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-11-02",
+      "title": "大荔县发展和改革局大荔县推进农业现代化行动方案编制项目采购更正公告（第一次）",
+      "url": "http://www.ccgp.gov.cn/cggg/dfgg/gzgg/202611/t20261102_27600978.htm",
+      "date": "2026-11-02",
+      "keyword": "地方-更正公告",
+      "source": "ccgp-list",
+      "status": "pending"
     }
   ],
   "last_run": {
-    "date": "2026-11-01",
+    "date": "2026-11-02",
     "sources": [
       "ccgp-list"
     ],
     "ccgp_blocked": false,
-    "raw": 8,
-    "added": 0,
+    "raw": 7,
+    "added": 3,
     "stale_days": 0
   }
 }
