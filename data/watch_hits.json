@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-02 15:28:40",
+  "updated_at": "2026-11-03 15:43:26",
   "hits": [
     {
       "found_at": "2026-10-29",
@@ -180,15 +180,42 @@
       "keyword": "地方-更正公告",
       "source": "ccgp-list",
       "status": "pending"
+    },
+    {
+      "found_at": "2026-11-03",
+      "title": "中国科学院上海微系统与信息技术研究所真空压膜机中标公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/zbgg/202611/t20261103_27609565.htm",
+      "date": "2026-11-03",
+      "keyword": "中央-中标公告",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-11-03",
+      "title": "真空液态成形机（三次）中标公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/zbgg/202611/t20261103_27609515.htm",
+      "date": "2026-11-03",
+      "keyword": "中央-中标公告",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-11-03",
+      "title": "富宁县2026年部级甘蔗单产提升整建制推进示范县项目（药肥采购）终止公告",
+      "url": "http://www.ccgp.gov.cn/cggg/dfgg/fblbgg/202611/t20261103_27608136.htm",
+      "date": "2026-11-03",
+      "keyword": "地方-废标终止",
+      "source": "ccgp-list",
+      "status": "pending"
     }
   ],
   "last_run": {
-    "date": "2026-11-02",
+    "date": "2026-11-03",
     "sources": [
       "ccgp-list"
     ],
     "ccgp_blocked": false,
-    "raw": 7,
+    "raw": 5,
     "added": 3,
     "stale_days": 0
   }
