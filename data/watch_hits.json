@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-03 15:43:26",
+  "updated_at": "2026-11-04 15:21:39",
   "hits": [
     {
       "found_at": "2026-10-29",
@@ -207,16 +207,52 @@
       "keyword": "地方-废标终止",
       "source": "ccgp-list",
       "status": "pending"
+    },
+    {
+      "found_at": "2026-11-04",
+      "title": "南京理工大学机械工程学院高压推进试验台机械加工及技术服务公开招标公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/gkzb/202611/t20261104_27616911.htm",
+      "date": "2026-11-04",
+      "keyword": "中央-公开招标",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-11-04",
+      "title": "中国科学院上海光学精密机械研究所真空压缩腔体采购项目公开招标公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/gkzb/202611/t20261104_27616373.htm",
+      "date": "2026-11-04",
+      "keyword": "中央-公开招标",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-11-04",
+      "title": "南京理工大学材料学院真空高压气淬炉采购中标公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/zbgg/202611/t20261104_27616919.htm",
+      "date": "2026-11-04",
+      "keyword": "中央-中标公告",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-11-04",
+      "title": "中国科学院微小卫星创新研究院环月低频射电天文台卫星主星推进子系统终止公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/fblbgg/202611/t20261104_27617788.htm",
+      "date": "2026-11-04",
+      "keyword": "中央-废标终止",
+      "source": "ccgp-list",
+      "status": "pending"
     }
   ],
   "last_run": {
-    "date": "2026-11-03",
+    "date": "2026-11-04",
     "sources": [
       "ccgp-list"
     ],
     "ccgp_blocked": false,
     "raw": 5,
-    "added": 3,
+    "added": 4,
     "stale_days": 0
   }
 }
