@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-04 15:21:39",
+  "updated_at": "2026-11-05 15:47:00",
   "hits": [
     {
       "found_at": "2026-10-29",
@@ -243,16 +243,61 @@
       "keyword": "中央-废标终止",
       "source": "ccgp-list",
       "status": "pending"
+    },
+    {
+      "found_at": "2026-11-05",
+      "title": "中国科学院上海应用物理研究所白光加速器磁铁、真空、机械支撑公开招标公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/gkzb/202611/t20261105_27625956.htm",
+      "date": "2026-11-05",
+      "keyword": "中央-公开招标",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-11-05",
+      "title": "中国海洋大学短程（分子）蒸馏设备、真空带式连续干燥机等设备采购项目公开招标公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/gkzb/202611/t20261105_27625750.htm",
+      "date": "2026-11-05",
+      "keyword": "中央-公开招标",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-11-05",
+      "title": "中国科学院兰州化学物理研究所润滑油脂真空原位摩擦磨损及寿命测试试验机公开招标公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/gkzb/202611/t20261104_27622846.htm",
+      "date": "2026-11-04",
+      "keyword": "中央-公开招标",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-11-05",
+      "title": "中国科学院兰州化学物理研究所高真空螺旋轨道SOT/四球/销盘摩擦磨损试验机公开招标公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/gkzb/202611/t20261104_27622843.htm",
+      "date": "2026-11-04",
+      "keyword": "中央-公开招标",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-11-05",
+      "title": "中国科学院兰州化学物理研究所高低温交变高真空摩擦磨损试验机公开招标公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/gkzb/202611/t20261104_27622837.htm",
+      "date": "2026-11-04",
+      "keyword": "中央-公开招标",
+      "source": "ccgp-list",
+      "status": "pending"
     }
   ],
   "last_run": {
-    "date": "2026-11-04",
+    "date": "2026-11-05",
     "sources": [
       "ccgp-list"
     ],
     "ccgp_blocked": false,
-    "raw": 5,
-    "added": 4,
+    "raw": 7,
+    "added": 5,
     "stale_days": 0
   }
 }
