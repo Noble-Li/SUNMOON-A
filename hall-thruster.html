@@ -889,24 +889,45 @@ addPart('thrShell', (function () {
   return g;
 })()).labelOffset.set(1.95, 1.25, -0.35);
 
-/* 2 前端方形安装法兰（四角圆角 + 4 颗内六角螺钉 + 中心圆凸台） */
+/* 圆角方形轮廓（用于挤出带孔法兰板） */
+function roundedPlateShape(w, h, r) {
+  var s = new THREE.Shape();
+  var x = -w / 2, y = -h / 2;
+  s.moveTo(x + r, y);
+  s.lineTo(x + w - r, y);
+  s.quadraticCurveTo(x + w, y, x + w, y + r);
+  s.lineTo(x + w, y + h - r);
+  s.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  s.lineTo(x + r, y + h);
+  s.quadraticCurveTo(x, y + h, x, y + h - r);
+  s.lineTo(x, y + r);
+  s.quadraticCurveTo(x, y, x + r, y);
+  return s;
+}
+
+/* 2 前端方形安装法兰：四角圆角、中心为真正的圆孔（外磁极与通道从孔中露出） */
 addPart('thrFlange', (function () {
   var g = new THREE.Group();
   var m = metal(0xB9BEC4, 0.42, 0.85);
-  var W = 2.30, T = 0.14, R = 0.34;
-  g.add(boxAt(W - 2 * R, W, T, m, 0, 0, 0.62));
-  g.add(boxAt(W, W - 2 * R, T, m, 0, 0, 0.62));
-  [[1, 1], [1, -1], [-1, 1], [-1, -1]].forEach(function (c) {
-    g.add(cylAt(R, T, m, c[0] * (W / 2 - R), c[1] * (W / 2 - R), 0.62, 'z'));
-  });
+  var W = 2.30, T = 0.14, R = 0.34, OPEN = 0.94;
+  var shape = roundedPlateShape(W, W, R);
+  var hole = new THREE.Path();
+  hole.absarc(0, 0, OPEN, 0, Math.PI * 2, true);
+  shape.holes.push(hole);
+  var plate = new THREE.Mesh(
+    new THREE.ExtrudeGeometry(shape, { depth: T, bevelEnabled: false, curveSegments: 48 }), m);
+  plate.position.z = 0.55;
+  g.add(plate);
+  /* 孔口加强环：坐在法兰外表面上，不与板体共面 */
+  g.add(ringAnn(OPEN, OPEN + 0.12, 0.07, 0.725, m, 64));
+  /* 四角内六角螺钉 */
   var bolt = metal(0x8A939B, 0.3, 0.95);
-  var hole = metal(0x3E464E, 0.6, 0.5);
+  var socket = metal(0x3E464E, 0.6, 0.5);
   [[1, 1], [1, -1], [-1, 1], [-1, -1]].forEach(function (c) {
     var x = c[0] * 0.90, y = c[1] * 0.90;
-    g.add(cylAt(0.135, 0.10, bolt, x, y, 0.70, 'z'));
-    g.add(cylAt(0.072, 0.12, hole, x, y, 0.735, 'z'));
+    g.add(cylAt(0.135, 0.10, bolt, x, y, 0.74, 'z'));
+    g.add(cylAt(0.072, 0.10, socket, x, y, 0.80, 'z'));
   });
-  g.add(ringAnn(0.62, 0.94, 0.18, 0.66, m, 64));
   return g;
 })()).labelOffset.set(1.95, 1.65, 0.60);
 
@@ -1384,6 +1405,48 @@ var HOME = { target: new THREE.Vector3(0, -0.5, -2.0), dist: 13.4, size: new THR
       if (sz.length() > 5) console.log('BIG', p.id, sz.toArray().map(function (v) { return v.toFixed(2); }).join(', '));
     });
   }
+})();
+
+/* === 拆解方向：一律由装配体中心指向部件自身，保证全部朝外散开 === */
+(function computeExplode() {
+  var c = HOME.target.clone();
+  var THRSET = { thrShell: 1, thrChannel: 1, thrAnode: 1, thrOuterPole: 1, thrInnerPole: 1,
+                 thrCoilOuter: 1, thrCoilInner: 1, thrMagShield: 1, thrFlange: 1, plume: 1 };
+  var PPUSET = { ppuLid: 1, ppuBody: 1, ppuBase: 1, ppuConn: 1, ppuModules: 1 };
+  var SUPSET = { supPlate: 1, supTank: 1, supRegulator: 1, supFlow: 1 };
+  var gc = {
+    thr: THR_OFFSET.clone(),
+    ppu: PPU.pos.clone().add(new THREE.Vector3(0, PPU.H / 2, 0)),
+    sup: SUP.pos.clone().add(new THREE.Vector3(0, 0, -0.40))
+  };
+  function groupOf(id) {
+    if (THRSET[id]) return 'thr';
+    if (PPUSET[id]) return 'ppu';
+    if (SUPSET[id]) return 'sup';
+    return 'misc';
+  }
+  var idx = {}, grp = new THREE.Vector3(), rad = new THREE.Vector3();
+  PARTS.forEach(function (p) {
+    if (!p.center) return;
+    if (p.id === 'sysRack') { p.vec = [0, -2.60, 0]; return; }   /* 底板整块下沉 */
+    var name = groupOf(p.id);
+    var center = (name === 'misc') ? c : gc[name];
+    var k = (idx[name] = (idx[name] || 0) + 1) - 1;
+    /* 组间：从装配体中心把这一组整体推开 */
+    grp.subVectors(center, c);
+    if (grp.length() < 0.25) grp.set(0, 0.5, 0);
+    grp.normalize().multiplyScalar(name === 'misc' ? 1.55 : 1.35);
+    /* 组内：从本组中心朝部件自身散开，并加一点扇形错位 */
+    rad.subVectors(p.center, center);
+    var ang = k * 2.399963;
+    if (rad.length() < 0.30) rad.set(Math.cos(ang), 0.45, Math.sin(ang));
+    rad.normalize();
+    rad.x += Math.cos(ang) * 0.60;
+    rad.z += Math.sin(ang) * 0.60;
+    rad.y += 0.30;
+    rad.normalize().multiplyScalar(1.05 + Math.min(p.radius || 1, 1.4) * 0.55 + (k % 3) * 0.32);
+    p.vec = [grp.x + rad.x, grp.y + rad.y, grp.z + rad.z];
+  });
 })();
 
 /* 当前拆解状态下的整体包围盒（每个部件按自己的位移平移后求并） */
