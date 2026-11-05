@@ -285,7 +285,7 @@
           <button class="btn" data-view="side" type="button">侧视</button>
           <button class="btn" data-view="top" type="button">俯视</button>
           <button class="btn" data-view="back" type="button">背视</button>
-          <button class="btn" id="btnSpin" type="button" aria-pressed="true"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3v14M3 10h14"/><path d="M7.5 5.5 10 3l2.5 2.5M7.5 14.5 10 17l2.5-2.5M5.5 7.5 3 10l2.5 2.5M14.5 7.5 17 10l-2.5 2.5"/></svg>自动旋转</button>
+          <button class="btn" id="btnSpin" type="button" aria-pressed="false"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3v14M3 10h14"/><path d="M7.5 5.5 10 3l2.5 2.5M7.5 14.5 10 17l2.5-2.5M5.5 7.5 3 10l2.5 2.5M14.5 7.5 17 10l-2.5 2.5"/></svg>自动旋转</button>
           <button class="btn" id="btnLabels" type="button" aria-pressed="true"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5V5h5.5l6 6-5 5-6-6Z"/><circle cx="7" cy="8" r="1"/></svg>标注</button>
           <button class="btn" id="btnSection" type="button" aria-pressed="false"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M10 3v14"/><path d="M10 3a7 7 0 0 1 0 14"/></svg>剖面</button>
         </div>
@@ -752,6 +752,13 @@ var PARTS = [
     specs: [['量程', '0～50 MPa'], ['配套', 'PT1000 温度传感器'], ['外形尺寸', '总长 68 mm、六角对边 17.58 mm（选型册图纸）'], ['备注', '选型册「精密系统组成 03」正文重复了 01 节 PPU 的指标，属原文错误，未采用']],
     desc: '测量供气路压力并把信号送 PPU 的压调闭环。选型册给出量程 0～50 MPa，外形图为总长 68 mm、六角对边 17.58 mm 的接管式结构。',
     vec: [1.2, 1, 1.4]
+  },
+  {
+    id: 'sysRack', name: '系统安装底板与连接线束', en: 'System mounting plate and interconnects',
+    role: '总装 / 连接', labelSpec: '工程示意',
+    specs: [['作用', '承载推力器、PPU 与贮供单元，并引出供气管路与电缆'], ['底板', '约 570 × 350 mm（工程示意）'], ['来源', '按选型册系统组成「1 台推力器 + 1 套 PPU + 1 套贮供单元」补齐总装关系'], ['说明', '选型册未给出系统总装结构与安装底板尺寸，底板与管路走向均为装配示意']],
+    desc: '把三套组件装到同一块底板上，并补出供气管路与 PPU 到推力器的电缆，便于看清整机装配关系。底板尺寸与管路走向均为工程示意，不是选型册图纸数据。',
+    vec: [0, -1.70, 0]
   }
 ];
 
@@ -855,6 +862,8 @@ function latticeWall(w, h, rows, cols, t, mat) {
     m.position.set(x, y, 0);
     g.add(m);
   }
+  /* 先铺一层薄壁底板：图纸上是厚壁上的盲窗（不贯穿），不能做成通透栅栏 */
+  g.add(boxAt(w, h, t * 0.34, metal(0x5A6570, 0.62, 0.5), 0, 0, -t * 0.31));
   for (var r = 0; r <= rows; r++) bar(w, rh, 0, -h / 2 + r * (rh + wh) + rh / 2);
   for (var c = 0; c <= cols; c++) {
     var x = -w / 2 + c * (mw + ww) + mw / 2;
@@ -1037,7 +1046,7 @@ addPart('hollowCathode', (function () {
   [[1, 1], [1, -1], [-1, 1], [-1, -1]].forEach(function (c) {
     g.add(cylAt(0.033, 0.30, bolt, c[0] * 0.19, -0.19, c[1] * 0.19, 'y'));
   });
-  g.position.set(1.78, -0.55, 0.40);
+  g.position.set(0.58, 0.00, 0.75);
   g.rotation.set(0.10, 0.35, 0.05);
   return g;
 })()).labelOffset.set(0.90, -1.05, 0.45);
@@ -1048,9 +1057,10 @@ addPart('hollowCathode', (function () {
    图纸特征：四侧壁为 3 行矩形窗口的减重机加壁，四角圆角立柱，
    底部四角安装支耳 + 长边两处半圆定位凸台，顶面 2 个矩形 + 2 个圆形连接器。
    ===================================================================== */
+var RACK_TOP_Y = -1.36;
 var PPU = { W: 3.70, D: 3.38, H: 1.62, WALL: 0.06, BASE: 0.10, LID: 0.10 };
 var PPU_H = PPU.H - PPU.BASE - PPU.LID;
-PPU.pos = new THREE.Vector3(-3.75, -0.85, -2.90);
+PPU.pos = new THREE.Vector3(-3.40, RACK_TOP_Y, -2.70);
 
 var pAlu   = metal(0x93A0AC, 0.45, 0.85);
 var pAluD  = metal(0x606B77, 0.55, 0.75);
@@ -1156,13 +1166,13 @@ addPart('ppuModules', (function () {
 })()).labelOffset.set(0.30, 0.30, 1.70);
 
 /* =====================================================================
-   C 组：贮供单元（外形按选型册图纸）
+   C 组：贮供单元（外形按选型册图纸；贮箱按装配需要竖立放置）
    包络 307 × 256.81 × 112.07 mm → 6.140 × 5.1362 × 2.2414 场景单位。
-   图纸特征：竖直安装面板；下部为横向钟形贮箱（带 4 道卡箍、左端瓶口）；
-   中部两个圆筒形减压/稳压件；上部为多阀体 + 管路 + 接头组成的阀组。
+   图纸特征：竖直安装面板；钟形贮箱带 4 道卡箍；面板右侧为两个圆筒形
+   减压/稳压件，上部为多阀体 + 管路 + 接头组成的阀组。
    ===================================================================== */
 var SUP = { W: 6.140, D: 5.1362, T: 2.2414 };
-SUP.pos = new THREE.Vector3(2.90, -1.05, -3.20);
+SUP.pos = new THREE.Vector3(2.35, 1.2081, -3.45);
 function sGroup() { var g = new THREE.Group(); g.position.copy(SUP.pos); return g; }
 
 /* 17 贮供单元安装面板与支耳 */
@@ -1178,74 +1188,105 @@ addPart('supPlate', (function () {
     g.add(cylAt(0.10, 0.26, hole, x, y, -1.01, 'z'));
   });
   var pipe = metal(0x9AA7B8, 0.3, 0.95);
-  g.add(cylAt(0.075, 0.70, pipe, 0.35, -0.72, -0.60, 'z'));
-  g.add(cylAt(0.075, 0.70, pipe, 1.50, 1.00, -0.60, 'z'));
+  g.add(cylAt(0.075, 0.70, pipe, -1.50, 0.10, -0.60, 'z'));
+  g.add(cylAt(0.075, 0.70, pipe, 1.30, 0.90, -0.60, 'z'));
   return g;
-})()).labelOffset.set(-2.85, -1.95, -1.00);
+})()).labelOffset.set(-3.00, -2.10, -1.00);
 
-/* 18 氪气贮箱（钟形，横向，带 4 道卡箍 —— 图纸下方主体） */
+/* 18 氪气贮箱（钟形，竖立，带 4 道卡箍） */
 addPart('supTank', (function () {
   var g = sGroup();
   var m = metal(0xA9B4C0, 0.28, 0.95);
   var body = latheBody([
-    [0.00, -2.58], [0.20, -2.58], [0.20, -2.36], [0.36, -2.31], [0.36, -2.20],
-    [1.05, -1.45], [1.05, 1.55], [0.90, 2.05], [0.48, 2.42], [0.00, 2.58]
+    [0.00, -2.45], [0.20, -2.45], [0.20, -2.28], [0.36, -2.24], [0.36, -2.14],
+    [1.05, -1.45], [1.05, 1.50], [0.90, 1.95], [0.48, 2.28], [0.00, 2.45]
   ], m, 64);
-  body.rotation.z = -Math.PI / 2;
-  body.position.set(0.35, -0.72, 0.10);
+  body.position.set(-1.50, 0.10, 0.42);
   g.add(body);
   var strap = metal(0x6E7A86, 0.5, 0.8);
-  [-1.05, -0.20, 0.65, 1.45].forEach(function (x) {
-    var t = torusX(0.35 + x, 1.07, 0.055, strap);
-    t.position.y = -0.72;
-    t.position.z = 0.10;
+  [-1.42, -0.50, 0.45, 1.32].forEach(function (dy) {
+    var t = new THREE.Mesh(new THREE.TorusGeometry(1.07, 0.055, 10, 48), strap);
+    t.rotation.x = Math.PI / 2;
+    t.position.set(-1.50, 0.10 + dy, 0.42);
     g.add(t);
   });
-  g.add(cylAt(0.30, 0.40, metal(0x8A95A1, 0.35, 0.9), -2.25, -0.72, 0.10, 'x'));
-  g.add(cylAt(0.16, 0.30, metal(0xC08447, 0.32, 0.9), -2.55, -0.72, 0.10, 'x'));
+  g.add(cylAt(0.30, 0.34, metal(0x8A95A1, 0.35, 0.9), -1.50, 2.62, 0.42, 'y'));
+  g.add(cylAt(0.16, 0.26, metal(0xC08447, 0.32, 0.9), -1.50, 2.86, 0.42, 'y'));
+  g.add(cylAt(0.22, 0.24, metal(0x8A95A1, 0.35, 0.9), -1.50, -2.55, 0.42, 'y'));
   return g;
-})()).labelOffset.set(0.35, -2.05, 0.10);
+})()).labelOffset.set(-1.60, 0.10, 0.50);
 
-/* 19 压力调节模块（图纸中部两个圆筒件 + 连接管路） */
+/* 19 压力调节模块（面板右侧两个圆筒件 + 连接管路） */
 addPart('supRegulator', (function () {
   var g = sGroup();
   var body = metal(0x8E99A5, 0.4, 0.85);
   var pipe = metal(0x9AA7B8, 0.3, 0.95);
-  [[1.50, 1.45], [1.50, 0.55]].forEach(function (c) {
-    g.add(cylAt(0.475, 0.80, body, c[0], c[1], 0.28, 'z'));
-    g.add(cylAt(0.52, 0.10, metal(0xC08447, 0.32, 0.9), c[0], c[1], 0.64, 'z'));
-    g.add(cylAt(0.30, 0.14, metal(0x6E7A86, 0.5, 0.8), c[0], c[1], 0.74, 'z'));
+  [[1.30, 0.90], [1.30, -0.35]].forEach(function (c) {
+    g.add(cylAt(0.475, 0.80, body, c[0], c[1], 0.55, 'z'));
+    g.add(cylAt(0.52, 0.10, metal(0xC08447, 0.32, 0.9), c[0], c[1], 0.92, 'z'));
+    g.add(cylAt(0.30, 0.14, metal(0x6E7A86, 0.5, 0.8), c[0], c[1], 1.02, 'z'));
   });
-  g.add(cylAt(0.07, 0.95, pipe, 1.50, 1.00, 0.28, 'y'));
-  g.add(cylAt(0.07, 1.40, pipe, 1.50, -0.35, 0.28, 'y'));
-  g.add(cylAt(0.07, 1.30, pipe, 1.50, -1.10, 0.28, 'y'));
-  g.add(cylAt(0.07, 4.30, pipe, 0.05, -0.10, 0.28, 'x'));
+  g.add(cylAt(0.07, 1.35, pipe, 1.30, 0.28, 0.55, 'y'));
+  g.add(cylAt(0.07, 1.20, pipe, 1.30, -1.15, 0.55, 'y'));
+  g.add(cylAt(0.07, 2.95, pipe, 0.05, -1.60, 0.55, 'x'));
   return g;
-})()).labelOffset.set(1.50, 2.00, 0.95);
+})()).labelOffset.set(1.35, 1.10, 1.15);
 
-/* 20 流量调节模块（图纸上部阀组：多阀体 + 管路 + 接头） */
+/* 20 流量调节模块（面板上部阀组：多阀体 + 管路 + 接头） */
 addPart('supFlow', (function () {
   var g = sGroup();
   var tube = metal(0x9AA7B8, 0.3, 0.95);
   var body = metal(0xAEB8C2, 0.35, 0.9);
   var nut = metal(0xB9C2CB, 0.3, 0.95);
-  [2.32, 1.96, 1.62].forEach(function (y) {
-    g.add(cylAt(0.065, 5.40, tube, -0.10, y, 0.30, 'x'));
+  [2.28, 1.94, 1.60].forEach(function (y) {
+    g.add(cylAt(0.065, 2.85, tube, 1.45, y, 0.55, 'x'));
   });
-  [[-2.05, 2.32], [-1.15, 2.32], [-0.30, 2.32],
-   [-2.20, 1.96], [-0.95, 1.96], [0.35, 1.96],
-   [-1.85, 1.62], [-0.35, 1.62], [1.15, 1.62]].forEach(function (v) {
-    g.add(cylAt(0.20, 0.44, body, v[0], v[1], 0.30, 'x'));
-    g.add(hexAt(0.34, 0.14, nut, v[0] - 0.30, v[1], 0.30, 'x'));
-    g.add(hexAt(0.34, 0.14, nut, v[0] + 0.30, v[1], 0.30, 'x'));
+  [[0.30, 2.28], [1.45, 2.28], [2.55, 2.28],
+   [0.30, 1.94], [1.45, 1.94], [2.55, 1.94],
+   [0.30, 1.60], [1.45, 1.60], [2.55, 1.60]].forEach(function (v) {
+    g.add(cylAt(0.20, 0.44, body, v[0], v[1], 0.55, 'x'));
+    g.add(hexAt(0.34, 0.14, nut, v[0] - 0.30, v[1], 0.55, 'x'));
+    g.add(hexAt(0.34, 0.14, nut, v[0] + 0.30, v[1], 0.55, 'x'));
   });
-  g.add(cylAt(0.05, 4.60, tube, -0.30, 2.58, 0.30, 'x'));
-  g.add(boxAt(0.28, 0.24, 0.28, body, -2.70, 2.58, 0.30));
-  g.add(boxAt(0.24, 0.22, 0.24, body, 1.25, 2.58, 0.30));
-  g.add(boxAt(1.15, 0.72, 0.82, metal(0x8E99A5, 0.42, 0.85), -1.90, 0.95, 0.35));
-  g.add(boxAt(0.70, 0.52, 0.60, metal(0x8E99A5, 0.42, 0.85), 0.95, 1.05, 0.35));
+  g.add(boxAt(1.10, 0.72, 0.82, metal(0x8E99A5, 0.42, 0.85), 1.45, 0.95, 0.62));
   return g;
-})()).labelOffset.set(-2.20, 2.65, 0.95);
+})()).labelOffset.set(1.45, 2.60, 1.15);
+
+/* =====================================================================
+   E 组：系统安装底板与连接（工程示意 —— 选型册未给出系统总装结构）
+   三套组件装在同一块底板上，并补出推力器安装座、供气管路与 PPU 到
+   推力器的电缆，用于看清整机装配关系。底板与管路尺寸均为示意。
+   ===================================================================== */
+var RACK_TOP = -1.36;
+addPart('sysRack', (function () {
+  var g = new THREE.Group();
+  var plate = metal(0x5E6A75, 0.55, 0.75);
+  g.add(boxAt(10.60, 0.24, 5.90, plate, 0.10, RACK_TOP - 0.12, -1.70));
+  var foot = metal(0x4A545E, 0.6, 0.7);
+  [[1, 1], [1, -1], [-1, 1], [-1, -1]].forEach(function (c) {
+    g.add(cylAt(0.22, 0.20, foot, 0.10 + c[0] * 4.90, RACK_TOP - 0.32, -1.70 + c[1] * 2.60, 'y'));
+  });
+  /* 推力器安装座 */
+  g.add(boxAt(2.10, 0.60, 1.60, metal(0x6E7A86, 0.5, 0.8), -1.20, RACK_TOP + 0.30, 0.30));
+  g.add(boxAt(1.70, 0.10, 1.20, metal(0x8A9299, 0.45, 0.85), -1.20, RACK_TOP + 0.65, 0.30));
+  /* 底板上的走线/走管夹 */
+  g.add(boxAt(0.30, 0.18, 0.30, metal(0x8A9299, 0.45, 0.85), -0.30, RACK_TOP + 0.09, -0.80));
+  g.add(boxAt(0.30, 0.18, 0.30, metal(0x8A9299, 0.45, 0.85), 1.20, RACK_TOP + 0.09, -2.20));
+  var gas = metal(0x9AA7B8, 0.3, 0.95);
+  function tube(points, r) {
+    var curve = new THREE.CatmullRomCurve3(points.map(function (p) { return new THREE.Vector3(p[0], p[1], p[2]); }));
+    return new THREE.Mesh(new THREE.TubeGeometry(curve, 64, r, 8, false), gas);
+  }
+  /* 贮箱出口 → 压力调节模块 */
+  g.add(tube([[0.85, -1.24, -3.03], [1.60, -0.20, -2.95], [2.60, 1.20, -2.90], [3.65, 2.05, -2.90]], 0.070));
+  /* 流量调节模块 → 推力器阳极 */
+  g.add(tube([[3.80, 3.10, -2.90], [2.60, 1.90, -2.20], [0.60, 0.60, -1.10], [-1.00, 0.60, 0.20], [-1.15, 0.55, 0.55]], 0.060));
+  g.add(tube([[0.85, -1.30, -3.03], [0.10, -0.90, -2.10], [-0.80, -0.30, -0.60], [-1.15, 0.05, 0.45]], 0.050));
+  var cable = metal(0x2B3644, 0.65, 0.3);
+  g.add(tube([[-2.80, 0.55, -3.40], [-2.30, 0.10, -2.30], [-1.70, 0.15, -1.00], [-1.20, 0.45, -0.55]], 0.085));
+  g.add(tube([[-2.55, 0.45, -3.45], [-2.05, -0.05, -2.40], [-1.45, 0.00, -1.10], [-0.95, 0.30, -0.60]], 0.070));
+  return g;
+})()).labelOffset.set(-4.80, -1.20, -4.60);
 
 /* =====================================================================
    D 组：单件
@@ -1274,6 +1315,15 @@ addPart('pressureSensor', (function () {
   g.rotation.set(0, 0.35, 0);
   return g;
 })()).labelOffset.set(-0.35, -0.90, 0.35);
+
+/* === 装配定位：把推力器组整体移到推力器安装座上方 === */
+var THR_OFFSET = new THREE.Vector3(-1.20, 0.55, 0.35);
+['thrShell', 'thrChannel', 'thrAnode', 'thrOuterPole', 'thrInnerPole',
+ 'thrCoilOuter', 'thrCoilInner', 'thrMagShield', 'thrFlange', 'plume'].forEach(function (id) {
+  for (var i = 0; i < PARTS.length; i++) {
+    if (PARTS[i].id === id && PARTS[i].group) PARTS[i].group.position.copy(THR_OFFSET);
+  }
+});
 
 /* === 选中时的发光光晕（canvas 生成的径向贴图，随部件大小缩放） === */
 var glowTex = (function () {
@@ -1384,9 +1434,9 @@ function fitDistForBox(yaw, pitch, box) {
 }
 var userZoomed = false;
 var fittedOnce = false;
-var cam = { yaw: 0.64, pitch: 0.28, dist: 13.4, target: HOME.target.clone() };
+var cam = { yaw: 0.45, pitch: 0.26, dist: 13.4, target: HOME.target.clone() };
 var want = { yaw: cam.yaw, pitch: cam.pitch, dist: cam.dist, target: cam.target.clone() };
-var spin = true;
+var spin = false;
 var showLabels = true;
 var dragging = false;
 var pointers = new Map();
@@ -1394,7 +1444,7 @@ var pinchStart = 0;
 var pinchDist = 0;
 
 var VIEWS = {
-  iso: { yaw: 0.64, pitch: 0.28 },
+  iso: { yaw: 0.45, pitch: 0.26 },
   front: { yaw: 0.02, pitch: 0.06 },
   side: { yaw: Math.PI / 2, pitch: 0.08 },
   top: { yaw: 0.6, pitch: 1.2 },
