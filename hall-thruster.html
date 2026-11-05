@@ -1428,7 +1428,9 @@ var HOME = { target: new THREE.Vector3(0, -0.5, -2.0), dist: 13.4, size: new THR
   var idx = {}, grp = new THREE.Vector3(), rad = new THREE.Vector3();
   PARTS.forEach(function (p) {
     if (!p.center) return;
-    if (p.id === 'sysRack') { p.vec = [0, -2.60, 0]; return; }   /* 底板整块下沉 */
+    /* 安装底板只做小幅下沉：场景地面在 y=-2.7，底板底面 y=-1.60，
+       下沉 0.70 后到 -2.30，既不穿地板又足够与上方组件拉开 */
+    if (p.id === 'sysRack') { p.vec = [0, -0.70, 0]; return; }
     var name = groupOf(p.id);
     var center = (name === 'misc') ? c : gc[name];
     var k = (idx[name] = (idx[name] || 0) + 1) - 1;
