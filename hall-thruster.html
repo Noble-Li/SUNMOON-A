@@ -1067,7 +1067,7 @@ addPart('hollowCathode', (function () {
   [[1, 1], [1, -1], [-1, 1], [-1, -1]].forEach(function (c) {
     g.add(cylAt(0.033, 0.30, bolt, c[0] * 0.19, -0.19, c[1] * 0.19, 'y'));
   });
-  g.position.set(0.58, 0.00, 0.75);
+  g.position.set(1.58, 0.00, 0.05);
   g.rotation.set(0.10, 0.35, 0.05);
   return g;
 })()).labelOffset.set(0.90, -1.05, 0.45);
@@ -1209,8 +1209,8 @@ addPart('supPlate', (function () {
     g.add(cylAt(0.10, 0.26, hole, x, y, -1.01, 'z'));
   });
   var pipe = metal(0x9AA7B8, 0.3, 0.95);
-  g.add(cylAt(0.075, 0.70, pipe, -1.50, 0.10, -0.60, 'z'));
-  g.add(cylAt(0.075, 0.70, pipe, 1.30, 0.90, -0.60, 'z'));
+  g.add(cylAt(0.075, 0.55, pipe, -1.50, 0.10, -0.50, 'z'));
+  g.add(cylAt(0.075, 0.55, pipe, 1.30, 0.90, -0.50, 'z'));
   return g;
 })()).labelOffset.set(-3.00, -2.10, -1.00);
 
@@ -1222,18 +1222,18 @@ addPart('supTank', (function () {
     [0.00, -2.45], [0.20, -2.45], [0.20, -2.28], [0.36, -2.24], [0.36, -2.14],
     [1.05, -1.45], [1.05, 1.50], [0.90, 1.95], [0.48, 2.28], [0.00, 2.45]
   ], m, 64);
-  body.position.set(-1.50, 0.10, 0.42);
+  body.position.set(-1.50, 0.10, 0.20);
   g.add(body);
   var strap = metal(0x6E7A86, 0.5, 0.8);
   [-1.42, -0.50, 0.45, 1.32].forEach(function (dy) {
     var t = new THREE.Mesh(new THREE.TorusGeometry(1.07, 0.055, 10, 48), strap);
     t.rotation.x = Math.PI / 2;
-    t.position.set(-1.50, 0.10 + dy, 0.42);
+    t.position.set(-1.50, 0.10 + dy, 0.20);
     g.add(t);
   });
-  g.add(cylAt(0.30, 0.34, metal(0x8A95A1, 0.35, 0.9), -1.50, 2.62, 0.42, 'y'));
-  g.add(cylAt(0.16, 0.26, metal(0xC08447, 0.32, 0.9), -1.50, 2.86, 0.42, 'y'));
-  g.add(cylAt(0.22, 0.24, metal(0x8A95A1, 0.35, 0.9), -1.50, -2.55, 0.42, 'y'));
+  g.add(cylAt(0.30, 0.34, metal(0x8A95A1, 0.35, 0.9), -1.50, 2.62, 0.20, 'y'));
+  g.add(cylAt(0.16, 0.26, metal(0xC08447, 0.32, 0.9), -1.50, 2.86, 0.20, 'y'));
+  g.add(cylAt(0.22, 0.24, metal(0x8A95A1, 0.35, 0.9), -1.50, -2.55, 0.20, 'y'));
   return g;
 })()).labelOffset.set(-1.60, 0.10, 0.50);
 
@@ -1282,30 +1282,36 @@ var RACK_TOP = -1.36;
 addPart('sysRack', (function () {
   var g = new THREE.Group();
   var plate = metal(0x5E6A75, 0.55, 0.75);
-  g.add(boxAt(10.60, 0.24, 5.90, plate, 0.10, RACK_TOP - 0.12, -1.70));
+  /* 底板收到刚好包住三套组件；四周加一圈低边框，把三块框成一台设备 */
+  var PW = 11.10, PD = 5.70, PCX = 0.085, PCZ = -1.80, LIP = 0.14, LIPH = 0.30;
+  g.add(boxAt(PW, 0.24, PD, plate, PCX, RACK_TOP - 0.12, PCZ));
+  var lipM = metal(0x6E7A86, 0.5, 0.78);
+  g.add(boxAt(PW, LIPH, LIP, lipM, PCX, RACK_TOP + LIPH / 2, PCZ + PD / 2 - LIP / 2));
+  g.add(boxAt(PW, LIPH, LIP, lipM, PCX, RACK_TOP + LIPH / 2, PCZ - PD / 2 + LIP / 2));
+  g.add(boxAt(LIP, LIPH, PD - LIP * 2, lipM, PCX - PW / 2 + LIP / 2, RACK_TOP + LIPH / 2, PCZ));
+  g.add(boxAt(LIP, LIPH, PD - LIP * 2, lipM, PCX + PW / 2 - LIP / 2, RACK_TOP + LIPH / 2, PCZ));
   var foot = metal(0x4A545E, 0.6, 0.7);
   [[1, 1], [1, -1], [-1, 1], [-1, -1]].forEach(function (c) {
-    g.add(cylAt(0.22, 0.20, foot, 0.10 + c[0] * 4.90, RACK_TOP - 0.32, -1.70 + c[1] * 2.60, 'y'));
+    g.add(cylAt(0.22, 0.20, foot, PCX + c[0] * 5.20, RACK_TOP - 0.32, PCZ + c[1] * 2.50, 'y'));
   });
-  /* 推力器安装座 */
-  g.add(boxAt(2.10, 0.60, 1.60, metal(0x6E7A86, 0.5, 0.8), -1.20, RACK_TOP + 0.30, 0.30));
-  g.add(boxAt(1.70, 0.10, 1.20, metal(0x8A9299, 0.45, 0.85), -1.20, RACK_TOP + 0.65, 0.30));
-  /* 底板上的走线/走管夹 */
-  g.add(boxAt(0.30, 0.18, 0.30, metal(0x8A9299, 0.45, 0.85), -0.30, RACK_TOP + 0.09, -0.80));
-  g.add(boxAt(0.30, 0.18, 0.30, metal(0x8A9299, 0.45, 0.85), 1.20, RACK_TOP + 0.09, -2.20));
+  /* 推力器安装座（随推力器一起移到中前方） */
+  g.add(boxAt(2.10, 0.60, 1.60, metal(0x6E7A86, 0.5, 0.8), -0.20, RACK_TOP + 0.30, -0.30));
+  g.add(boxAt(1.70, 0.10, 1.20, metal(0x8A9299, 0.45, 0.85), -0.20, RACK_TOP + 0.65, -0.30));
+  /* 走线/走管夹 */
+  g.add(boxAt(0.30, 0.18, 0.30, metal(0x8A9299, 0.45, 0.85), 0.60, RACK_TOP + 0.09, -1.55));
+  g.add(boxAt(0.30, 0.18, 0.30, metal(0x8A9299, 0.45, 0.85), 2.60, RACK_TOP + 0.09, -2.90));
   var gas = metal(0x9AA7B8, 0.3, 0.95);
   function tube(points, r) {
     var curve = new THREE.CatmullRomCurve3(points.map(function (p) { return new THREE.Vector3(p[0], p[1], p[2]); }));
     return new THREE.Mesh(new THREE.TubeGeometry(curve, 64, r, 8, false), gas);
   }
-  /* 贮箱出口 → 压力调节模块 */
-  g.add(tube([[0.85, -1.24, -3.03], [1.60, -0.20, -2.95], [2.60, 1.20, -2.90], [3.65, 2.05, -2.90]], 0.070));
-  /* 流量调节模块 → 推力器阳极 */
-  g.add(tube([[3.80, 3.10, -2.90], [2.60, 1.90, -2.20], [0.60, 0.60, -1.10], [-1.00, 0.60, 0.20], [-1.15, 0.55, 0.55]], 0.060));
-  g.add(tube([[0.85, -1.30, -3.03], [0.10, -0.90, -2.10], [-0.80, -0.30, -0.60], [-1.15, 0.05, 0.45]], 0.050));
+  /* 管路加粗，让"连成一体"读得出来 */
+  g.add(tube([[0.85, -1.24, -2.81], [1.60, -0.20, -2.75], [2.60, 1.20, -2.80], [3.65, 2.05, -2.85]], 0.105));
+  g.add(tube([[3.80, 3.10, -2.85], [2.60, 1.90, -2.10], [0.90, 0.60, -0.90], [0.00, 0.60, -0.50], [-0.15, 0.55, -0.15]], 0.095));
+  g.add(tube([[0.85, -1.30, -2.81], [0.30, -0.90, -2.00], [0.05, -0.30, -0.70], [-0.15, 0.05, -0.25]], 0.080));
   var cable = metal(0x2B3644, 0.65, 0.3);
-  g.add(tube([[-2.80, 0.55, -3.40], [-2.30, 0.10, -2.30], [-1.70, 0.15, -1.00], [-1.20, 0.45, -0.55]], 0.085));
-  g.add(tube([[-2.55, 0.45, -3.45], [-2.05, -0.05, -2.40], [-1.45, 0.00, -1.10], [-0.95, 0.30, -0.60]], 0.070));
+  g.add(tube([[-2.80, 0.55, -3.40], [-2.20, 0.10, -2.30], [-1.20, 0.15, -1.30], [-0.20, 0.45, -1.25]], 0.115));
+  g.add(tube([[-2.55, 0.45, -3.45], [-1.95, -0.05, -2.40], [-0.90, 0.00, -1.40], [0.05, 0.30, -1.30]], 0.100));
   return g;
 })()).labelOffset.set(-4.80, -1.20, -4.60);
 
@@ -1338,7 +1344,7 @@ addPart('pressureSensor', (function () {
 })()).labelOffset.set(-0.35, -0.90, 0.35);
 
 /* === 装配定位：把推力器组整体移到推力器安装座上方 === */
-var THR_OFFSET = new THREE.Vector3(-1.20, 0.55, 0.35);
+var THR_OFFSET = new THREE.Vector3(-0.20, 0.55, -0.35);
 ['thrShell', 'thrChannel', 'thrAnode', 'thrOuterPole', 'thrInnerPole',
  'thrCoilOuter', 'thrCoilInner', 'thrMagShield', 'thrFlange', 'plume'].forEach(function (id) {
   for (var i = 0; i < PARTS.length; i++) {
