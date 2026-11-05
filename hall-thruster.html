@@ -1067,7 +1067,7 @@ addPart('hollowCathode', (function () {
   [[1, 1], [1, -1], [-1, 1], [-1, -1]].forEach(function (c) {
     g.add(cylAt(0.033, 0.30, bolt, c[0] * 0.19, -0.19, c[1] * 0.19, 'y'));
   });
-  g.position.set(1.58, 0.00, 0.05);
+  g.position.set(1.88, 0.00, 0.45);
   g.rotation.set(0.10, 0.35, 0.05);
   return g;
 })()).labelOffset.set(0.90, -1.05, 0.45);
@@ -1081,7 +1081,7 @@ addPart('hollowCathode', (function () {
 var RACK_TOP_Y = -1.36;
 var PPU = { W: 3.70, D: 3.38, H: 1.62, WALL: 0.06, BASE: 0.10, LID: 0.10 };
 var PPU_H = PPU.H - PPU.BASE - PPU.LID;
-PPU.pos = new THREE.Vector3(-3.40, RACK_TOP_Y, -2.70);
+PPU.pos = new THREE.Vector3(-2.60, RACK_TOP_Y, -2.60);
 
 var pAlu   = metal(0x93A0AC, 0.45, 0.85);
 var pAluD  = metal(0x606B77, 0.55, 0.75);
@@ -1283,7 +1283,7 @@ addPart('sysRack', (function () {
   var g = new THREE.Group();
   var plate = metal(0x5E6A75, 0.55, 0.75);
   /* 底板收到刚好包住三套组件；四周加一圈低边框，把三块框成一台设备 */
-  var PW = 11.10, PD = 5.70, PCX = 0.085, PCZ = -1.80, LIP = 0.14, LIPH = 0.30;
+  var PW = 10.20, PD = 5.60, PCX = 0.42, PCZ = -1.80, LIP = 0.14, LIPH = 0.30;
   g.add(boxAt(PW, 0.24, PD, plate, PCX, RACK_TOP - 0.12, PCZ));
   var lipM = metal(0x6E7A86, 0.5, 0.78);
   g.add(boxAt(PW, LIPH, LIP, lipM, PCX, RACK_TOP + LIPH / 2, PCZ + PD / 2 - LIP / 2));
@@ -1292,11 +1292,11 @@ addPart('sysRack', (function () {
   g.add(boxAt(LIP, LIPH, PD - LIP * 2, lipM, PCX + PW / 2 - LIP / 2, RACK_TOP + LIPH / 2, PCZ));
   var foot = metal(0x4A545E, 0.6, 0.7);
   [[1, 1], [1, -1], [-1, 1], [-1, -1]].forEach(function (c) {
-    g.add(cylAt(0.22, 0.20, foot, PCX + c[0] * 5.20, RACK_TOP - 0.32, PCZ + c[1] * 2.50, 'y'));
+    g.add(cylAt(0.22, 0.20, foot, PCX + c[0] * 4.75, RACK_TOP - 0.32, PCZ + c[1] * 2.45, 'y'));
   });
   /* 推力器安装座（随推力器一起移到中前方） */
-  g.add(boxAt(2.10, 0.60, 1.60, metal(0x6E7A86, 0.5, 0.8), -0.20, RACK_TOP + 0.30, -0.30));
-  g.add(boxAt(1.70, 0.10, 1.20, metal(0x8A9299, 0.45, 0.85), -0.20, RACK_TOP + 0.65, -0.30));
+  g.add(boxAt(2.10, 0.60, 1.60, metal(0x6E7A86, 0.5, 0.8), 0.10, RACK_TOP + 0.30, 0.05));
+  g.add(boxAt(1.70, 0.10, 1.20, metal(0x8A9299, 0.45, 0.85), 0.10, RACK_TOP + 0.65, 0.05));
   /* 走线/走管夹 */
   g.add(boxAt(0.30, 0.18, 0.30, metal(0x8A9299, 0.45, 0.85), 0.60, RACK_TOP + 0.09, -1.55));
   g.add(boxAt(0.30, 0.18, 0.30, metal(0x8A9299, 0.45, 0.85), 2.60, RACK_TOP + 0.09, -2.90));
@@ -1307,11 +1307,11 @@ addPart('sysRack', (function () {
   }
   /* 管路加粗，让"连成一体"读得出来 */
   g.add(tube([[0.85, -1.24, -2.81], [1.60, -0.20, -2.75], [2.60, 1.20, -2.80], [3.65, 2.05, -2.85]], 0.105));
-  g.add(tube([[3.80, 3.10, -2.85], [2.60, 1.90, -2.10], [0.90, 0.60, -0.90], [0.00, 0.60, -0.50], [-0.15, 0.55, -0.15]], 0.095));
-  g.add(tube([[0.85, -1.30, -2.81], [0.30, -0.90, -2.00], [0.05, -0.30, -0.70], [-0.15, 0.05, -0.25]], 0.080));
+  g.add(tube([[3.80, 3.10, -2.85], [2.60, 1.90, -2.10], [0.90, 0.60, -0.90], [0.30, 0.60, -0.10], [0.15, 0.55, 0.25]], 0.095));
+  g.add(tube([[0.85, -1.30, -2.81], [0.30, -0.90, -2.00], [0.35, -0.30, -0.30], [0.15, 0.05, 0.15]], 0.080));
   var cable = metal(0x2B3644, 0.65, 0.3);
-  g.add(tube([[-2.80, 0.55, -3.40], [-2.20, 0.10, -2.30], [-1.20, 0.15, -1.30], [-0.20, 0.45, -1.25]], 0.115));
-  g.add(tube([[-2.55, 0.45, -3.45], [-1.95, -0.05, -2.40], [-0.90, 0.00, -1.40], [0.05, 0.30, -1.30]], 0.100));
+  g.add(tube([[-2.80, 0.55, -3.40], [-2.20, 0.10, -2.30], [-1.00, 0.15, -1.20], [0.10, 0.45, -1.05]], 0.115));
+  g.add(tube([[-2.55, 0.45, -3.45], [-1.95, -0.05, -2.40], [-0.70, 0.00, -1.30], [0.35, 0.30, -1.10]], 0.100));
   return g;
 })()).labelOffset.set(-4.80, -1.20, -4.60);
 
@@ -1344,7 +1344,7 @@ addPart('pressureSensor', (function () {
 })()).labelOffset.set(-0.35, -0.90, 0.35);
 
 /* === 装配定位：把推力器组整体移到推力器安装座上方 === */
-var THR_OFFSET = new THREE.Vector3(-0.20, 0.55, -0.35);
+var THR_OFFSET = new THREE.Vector3(0.10, 0.55, 0.05);
 ['thrShell', 'thrChannel', 'thrAnode', 'thrOuterPole', 'thrInnerPole',
  'thrCoilOuter', 'thrCoilInner', 'thrMagShield', 'thrFlange', 'plume'].forEach(function (id) {
   for (var i = 0; i < PARTS.length; i++) {
