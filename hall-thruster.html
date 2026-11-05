@@ -754,7 +754,7 @@ var PARTS = [
     vec: [1.2, 1, 1.4]
   },
   {
-    id: 'sysRack', name: '机体框架、安装底板与连接线束', en: 'Module frame, base plate and interconnects',
+    id: 'sysRack', name: '系统安装底板与连接线束', en: 'System mounting plate and interconnects',
     role: '总装 / 连接', labelSpec: '工程示意',
     specs: [['作用', '承载推力器、PPU 与贮供单元，并引出供气管路与电缆'], ['底板', '约 570 × 350 mm（工程示意）'], ['来源', '按选型册系统组成「1 台推力器 + 1 套 PPU + 1 套贮供单元」补齐总装关系'], ['说明', '选型册未给出系统总装结构与安装底板尺寸，底板与管路走向均为装配示意']],
     desc: '把三套组件装到同一块底板上，并补出供气管路与 PPU 到推力器的电缆，便于看清整机装配关系。底板尺寸与管路走向均为工程示意，不是选型册图纸数据。',
@@ -1283,7 +1283,7 @@ addPart('sysRack', (function () {
   var g = new THREE.Group();
   var plate = metal(0x5E6A75, 0.55, 0.75);
   /* 底板收到刚好包住三套组件；四周加一圈低边框，把三块框成一台设备 */
-  var PW = 10.20, PD = 5.80, PCX = 0.42, PCZ = -1.90, LIP = 0.14, LIPH = 0.30;
+  var PW = 10.20, PD = 5.60, PCX = 0.42, PCZ = -1.80, LIP = 0.14, LIPH = 0.30;
   g.add(boxAt(PW, 0.24, PD, plate, PCX, RACK_TOP - 0.12, PCZ));
   var lipM = metal(0x6E7A86, 0.5, 0.78);
   g.add(boxAt(PW, LIPH, LIP, lipM, PCX, RACK_TOP + LIPH / 2, PCZ + PD / 2 - LIP / 2));
@@ -1294,22 +1294,6 @@ addPart('sysRack', (function () {
   [[1, 1], [1, -1], [-1, 1], [-1, -1]].forEach(function (c) {
     g.add(cylAt(0.22, 0.20, foot, PCX + c[0] * 4.75, RACK_TOP - 0.32, PCZ + c[1] * 2.45, 'y'));
   });
-  /* === 一体化机体框架：4 根立柱 + 顶部 4 根横梁，把三套组件框成同一台模块 === */
-  var frame = metal(0x7E8A96, 0.45, 0.82);
-  var TOPY = 3.90, COLH = TOPY - RACK_TOP;
-  var PX = 5.00, PZ = 2.72;                       /* 立柱相对 PCX/PCZ 的偏移 */
-  var posts = [[-1, -1], [1, -1], [-1, 1], [1, 1]];
-  posts.forEach(function (c) {
-    g.add(boxAt(0.20, COLH, 0.20, frame, PCX + c[0] * PX, RACK_TOP + COLH / 2, PCZ + c[1] * PZ));
-    g.add(boxAt(0.34, 0.10, 0.34, frame, PCX + c[0] * PX, RACK_TOP + 0.05, PCZ + c[1] * PZ));
-  });
-  /* 顶部横梁 */
-  g.add(boxAt(PX * 2 + 0.20, 0.20, 0.20, frame, PCX, TOPY - 0.10, PCZ - PZ));
-  g.add(boxAt(PX * 2 + 0.20, 0.20, 0.20, frame, PCX, TOPY - 0.10, PCZ + PZ));
-  g.add(boxAt(0.20, 0.20, PZ * 2 + 0.20, frame, PCX - PX, TOPY - 0.10, PCZ));
-  g.add(boxAt(0.20, 0.20, PZ * 2 + 0.20, frame, PCX + PX, TOPY - 0.10, PCZ));
-  /* 前脸横梁（推力器从它下方伸出） */
-  g.add(boxAt(PX * 2 + 0.20, 0.22, 0.20, frame, PCX, RACK_TOP + 1.95, PCZ + PZ));
   /* 推力器安装座（随推力器一起移到中前方） */
   g.add(boxAt(2.10, 0.60, 1.60, metal(0x6E7A86, 0.5, 0.8), 0.10, RACK_TOP + 0.30, 0.05));
   g.add(boxAt(1.70, 0.10, 1.20, metal(0x8A9299, 0.45, 0.85), 0.10, RACK_TOP + 0.65, 0.05));
