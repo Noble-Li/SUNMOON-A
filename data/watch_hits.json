@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-05 15:47:00",
+  "updated_at": "2026-11-06 15:46:58",
   "hits": [
     {
       "found_at": "2026-10-29",
@@ -288,16 +288,79 @@
       "keyword": "中央-公开招标",
       "source": "ccgp-list",
       "status": "pending"
+    },
+    {
+      "found_at": "2026-11-06",
+      "title": "清华大学超高真空扫描电势显微镜购置项目公开招标公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/gkzb/202611/t20261106_27634160.htm",
+      "date": "2026-11-06",
+      "keyword": "中央-公开招标",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-11-06",
+      "title": "ZYCGR24041501超高真空磁控溅射设备采购项目中标公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/zbgg/202611/t20261106_27632480.htm",
+      "date": "2026-11-06",
+      "keyword": "中央-中标公告",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-11-06",
+      "title": "西北工业大学气动悬浮实验平台及配套真空腔室系统项目（二次）中标公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/zbgg/202611/t20261105_27630960.htm",
+      "date": "2026-11-05",
+      "keyword": "中央-中标公告",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-11-06",
+      "title": "江南大学微波合成与真空分析设备更正公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/gzgg/202611/t20261106_27632049.htm",
+      "date": "2026-11-06",
+      "keyword": "中央-更正公告",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-11-06",
+      "title": "北京大学磁控溅射-刻蚀自动化真空系统采购项目（第三次）废标公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/qtgg/202611/t20261106_27634070.htm",
+      "date": "2026-11-06",
+      "keyword": "中央-其他公告",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-11-06",
+      "title": "安阳职业技术学院职业教育国际化推进项目-公开招标公告",
+      "url": "http://www.ccgp.gov.cn/cggg/dfgg/gkzb/202611/t20261106_27635278.htm",
+      "date": "2026-11-06",
+      "keyword": "地方-公开招标",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-11-06",
+      "title": "富宁县2026年部级甘蔗单产提升整建制推进示范县项目（药肥采购）更正公告",
+      "url": "http://www.ccgp.gov.cn/cggg/dfgg/gzgg/202611/t20261106_27635155.htm",
+      "date": "2026-11-06",
+      "keyword": "地方-更正公告",
+      "source": "ccgp-list",
+      "status": "pending"
     }
   ],
   "last_run": {
-    "date": "2026-11-05",
+    "date": "2026-11-06",
     "sources": [
       "ccgp-list"
     ],
     "ccgp_blocked": false,
-    "raw": 7,
-    "added": 5,
+    "raw": 8,
+    "added": 7,
     "stale_days": 0
   }
 }
