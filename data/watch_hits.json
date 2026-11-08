@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-07 14:53:35",
+  "updated_at": "2026-11-08 15:00:34",
   "hits": [
     {
       "found_at": "2026-10-29",
@@ -351,16 +351,34 @@
       "keyword": "地方-更正公告",
       "source": "ccgp-list",
       "status": "pending"
+    },
+    {
+      "found_at": "2026-11-08",
+      "title": "中国科学院物理研究所束线四真空位移台采购项目公开招标公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/gkzb/202611/t20261106_27639886.htm",
+      "date": "2026-11-06",
+      "keyword": "中央-公开招标",
+      "source": "ccgp-list",
+      "status": "pending"
+    },
+    {
+      "found_at": "2026-11-08",
+      "title": "武汉大学国产自主化真空互联半导体材料创新测试平台项目(2026年第二批)（二）公开招标公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/gkzb/202611/t20261106_27639173.htm",
+      "date": "2026-11-06",
+      "keyword": "中央-公开招标",
+      "source": "ccgp-list",
+      "status": "pending"
     }
   ],
   "last_run": {
-    "date": "2026-11-07",
+    "date": "2026-11-08",
     "sources": [
-      "bing"
+      "ccgp-list"
     ],
-    "ccgp_blocked": true,
-    "raw": 50,
-    "added": 0,
+    "ccgp_blocked": false,
+    "raw": 5,
+    "added": 2,
     "stale_days": 0
   }
 }
