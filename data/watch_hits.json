@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-08 15:00:34",
+  "updated_at": "2026-11-09 15:44:28",
   "hits": [
     {
       "found_at": "2026-10-29",
@@ -369,16 +369,25 @@
       "keyword": "中央-公开招标",
       "source": "ccgp-list",
       "status": "pending"
+    },
+    {
+      "found_at": "2026-11-09",
+      "title": "中国科学院空天信息创新研究院太赫兹真空电子器件热测系统测试电源采购项目公开招标公告",
+      "url": "http://www.ccgp.gov.cn/cggg/zygg/gkzb/202611/t20261109_27644312.htm",
+      "date": "2026-11-09",
+      "keyword": "中央-公开招标",
+      "source": "ccgp-list",
+      "status": "pending"
     }
   ],
   "last_run": {
-    "date": "2026-11-08",
+    "date": "2026-11-09",
     "sources": [
       "ccgp-list"
     ],
     "ccgp_blocked": false,
-    "raw": 5,
-    "added": 2,
+    "raw": 3,
+    "added": 1,
     "stale_days": 0
   }
 }
