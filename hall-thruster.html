@@ -4,854 +4,232 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SMH-20K 霍尔电推进系统 · 3D 拆解</title>
-<meta name="description" content="日月科技 SMH-20K 霍尔电推进系统三维拆解：推力 20 mN、比冲 ≥1300 s、功率 600 W、一次母线 28 V；点击部件拆解、自由旋转缩放,参数来自《日月科技电推进系统选型册》。">
-<link rel="icon" type="image/png" href="data:image/png;base64,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0qdO6VOndH29PnVKnzqlT53Sp07pU6f0qVP61Cl96pQ+dUqfOqVPndKnTulTp/SpU/rUKX3qlD51Sp86pU+d0qdO6VOndHW1PnVKnzqlT53Sp07pU6f0qVP61Cl96pQ+dUqfOqVPndKnTulTp/SpU/rUqULNhg2F1LNn61On9KlT+tQpfeqUPnVKnzqlT53Sp07pU6f0qVP61Cl96pQ+dUqfOqVPndKnTulTp/SpU7q+Xp86pU+d0qdO6VOndH29PnVKV1frU6f0qVP61Cl96pQ+dUqfOqVPndKnTulTp/SpU/rUKX3qlD51Sp86pU+d0qdO6VOndH29PnVKnzqlT53S1dW6ulpXV+vqal1draurC6mrq3V1ta6u1tXVurpaV1fr6mpdXa2rq3V1ta6u1tXVurpaV1fr6mpdXa2rq3V1ta6u1tXVurpaV1fr6mpdXa2rq3V1ta6u1tXVurpaV1cX0KhBiXV1ta6u1tXVurpaV1fr6mpdXa2rq3V1ta6u1tXVurpaV1fr6mpdXa2rq3V1ta6u1tXVurq6kLq6Wlc/e0Hj6mpdXa2rq3V1ta6u1tXVurpaV1fr6mpdXa2rq3V1ta6u1tXVhT/+ASVz8cCv8XLgAAAAAElFTkSuQmCC">
+<meta name="description" content="日月科技 SMH-20K 霍尔电推进系统三维拆解:推力 20 mN、比冲 ≥1300 s、功率 600 W、一次母线 28 V;点击部件拆解、自由旋转缩放,参数来自《日月科技电推进系统选型册》。">
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAIaklEQVR4nG1WC3CVxRX+zv7/f+/NzU0MhpAAgTyABDQWLAgBkdgZeYiKKKU61ZniY3SU6VirpVNqdZw6lvHR2o4COhamPpk6ClOrpVXqk1BRAgooRhiBSNKQ5D6Sm9x7/3/3nM7evJC6c+Z/7J79zu7Zc76zJCL4dhOBMXBdzv+pY0mcbEX6RH+mI+lqP1ChSEVJrKpwUh2mlkLBqhmjlAIR/r/RWQaMgePY9/EuZ/t2dL2xf1LL67XtH07kozEkQwgCeH0oOYUpRysWnph1Renlc1Zei/pKDbjDc89e72jTWkT49Gl953pZNv7D57A8ARLAioKEhsXN9wBJ4EUsWzL2/Zt+LifatAjnEb7VcBb6y9v0zLnysLs+O4gLaCtKgwwwIpqcgNwRhT+pe2Y1BJuf0SLmLBtDLtIariv33ad3vuu+oG+c3v0Sr6w3UU+9fgrnhujzXnRlaVUlPIKrpD1Db3UC4NqYNJU7vqaC1DfFP/rxx082XCAbn3KNUSO+sgYGfXf/ev+dQ6Fd9feGXng89/aVXl2YRNCRk6gjt36i/vFfnLwCYQWHpLUPi96ljOF19erhBnTkdGWxd/ubKLjhquSTk8L+xqdDo+cxuKNXX8k1NHJ2X7MB/E1zuPtqfUOVuXy8+dtC7r/G/KLeumVxhTm8lFuXmSNLzdSY7dlykTlxBR9frjfNDkojGpDP3p+/mJ/emBv2uYBZkkkztSZ78ITI9Vf5IN67xHyxVIccBnSRZw4tNW9cYgAudnn/Yv3WIj69Qi+psAbe/4F+exH3rDA3TmYgAPHKZd+kpLYq29ZmmMUYUUR44g9m0dJQQ2WH/9q/HRLp96nEwyuNvGICZYzcdUBaEjbEoy5cwr6kAFQXw4QCxBx8moKnrBAcJcEb702MnLpuTfih32oiMENpLW/+ne9aR7LvS+X3k0D+1YkiT80qURu/j3eaMDlKvzlkA1oLQgqtfejOYXqRNJZSIsDxfnswLDaeXMcJMrLn0J0/w+4PJJ0W14U6cEA8FxfUQNoSdjuk8LsvzFPHhACHqDqq/jhTHmyw8UCwBjqyaE3jvGJZWi6HU5QK4CqbLHkNRWTak5UlGFfGH31ke1VLCyonEwlMNGZZIubggfPpsVZZ2cxbjku3j96ArqvksWFkDDxF6UBaEqgrUovL8Z+EXfgIQ9i8EFNQKIJpdc6BA3kDySSKiq0HZVodvJBopttrsXaKakmoXx+Ua/fwkTSd46nyiGUdi0U42EsFChGFz5IUUkM2FEEb8TyaPoMIRcVOqtdqK8+DNkqEqbZK5s1DhrG/V91abS4ps2Bfp3GkDyGShI8BnU9cxsdxCQTxAIdSYsQuLhB7DIDMnk11tQBrJtdmOtTUqdLRwUTsEPCrdXafnVmMCakX5/ITs/D7merGybyzE51ZeahBFHBvnY2fbh/H0jKvFD+pwukcbqmRReXCgl+uU4oAaWvj2po8Gzc2UlcXEnFHCdPyK2XZKtn/Ne84jeYedWs13VzN73Xhnk+p0KVrJ1KPT5eUoSKCw72yL6FmFNH3SnBygGaPRWVOFq9QK69Rwr6vjh3DxRfnD0dEVq3yN2/Oc6FvONUbLGuyjOZ5ZuYYM6PYphhgXDLnhrg8wuPCxlN8jmcKXRNxzPgCnhjjQgRN8zmR1IFh5u3bdVOTL8LG5Nm0uVmfd35gDAc+W0ZN9uofrh7EZYAdhx019H2mkLKSJ9fgyqtNPCkiQc4izJ0b7NhhiUJrGeKiNWuCu+8ORCSXzdsQ0Vu36umWgkYRlbKWzjBm2aJumv7zsybPzLmsfW/YoFessFDGDHOR1pLJmFmz/GeesQN+jlnbQR7oN9u26dWrTXW18dxRXNc1VVV61Srz0kvcn7aahv382l97TU+frltb/XWry8t1U5NuatJr1ujW1kLNhg0F6+rVhZo1a3RLi544Ub/0km5p0U1NumZNAauurpC6pkY3Nemmpv9DU1Mh9bnnCqkbNujGxv9H09pa+H5dnZ4+XS9YoKdN06dO6YaGwvebb9YTJ+pJk/SECbq+Xtc36SlTdE2Nrq7WkyYV0GjSJF1dradO1bW1urZWz5ypZ80qoL5ez5mj587Vc+YUUs+bV0g9f76eP1/X1ekFC/SCBQVMmqRra3V9va6r03V1urZWT5yo6+sL6OvTkybpSZP0hAl6woRC6tmzdW2trqnRM2boCRP0zJm6pkbPmKFnztQzZujp0/X06Xr69ELq6dMLqWtr9ezZurZWT5+uZ8zQs2bpmTMLNdXV+tQpPXWqPnVKnzqlT53Sp07pU6f0qVP61Cl96pQ+dUqfOqVPndKnTulTp/SpU/rUKX3qlD51Sp86pU+d0qdO6VOndH29PnVKnzqlT53Sp07pU6f0qVP61Cl96pQ+dUqfOqVPndKnTulTp/SpU/rUKX3qlD51Sp86pU+d0qdO6VOndHW1PnVKnzqlT53Sp07pU6f0qVP61Cl96pQ+dUqfOqVPndKnTulTp/SpU/rUqULNhg2F1LNn61On9KlT+tQpfeqUPnVKnzqlT53Sp07pU6f0qVP61Cl96pQ+dUqfOqVPndKnTulTp/SpU7q+Xp86pU+d0qdO6VOndH29PnVKV1frU6f0qVP61Cl96pQ+dUqfOqVPndKnTulTp/SpU/rUKX3qlD51Sp86pU+d0qdO6VOndH29PnVKnzqlT53S1dW6ulpXV+vqal1draurC6mrq3V1ta6u1tXVurpaV1fr6mpdXa2rq3V1ta6u1tXVurpaV1fr6mpdXa2rq3V1ta6u1tXVurpaV1fr6mpdXa2rq3V1ta6u1tXVhT/+ASVz8cCv8XLgAAAAAElFTkSuQmCC">
 <link rel="canonical" href="https://noble-li.github.io/SUNMOON-A/hall-thruster.html">
-<meta name="theme-color" content="#05070C">
+<meta name="theme-color" content="#000000">
 <meta property="og:type" content="website">
 <meta property="og:title" content="SMH-20K 霍尔电推进系统 · 3D 拆解">
-<meta property="og:description" content="点击部件拆解、旋转缩放、部件清单与参数；PPU 包络 185 × 169 × 81 mm、贮供单元 307 × 256.81 × 112.07 mm,数据来自《日月科技电推进系统选型册》。">
+<meta property="og:description" content="点击部件拆解、旋转缩放、部件清单与参数;PPU 包络 185 × 169 × 81 mm、贮供单元 307 × 256.81 × 112.07 mm,数据来自《日月科技电推进系统选型册》。">
 <meta property="og:url" content="https://noble-li.github.io/SUNMOON-A/hall-thruster.html">
 <style>
-  /* === 现代化UI设计系统 - 大胆优化版 === */
   :root {
-    --bg: #02040A;
+    --bg: #000000;
     --surface: #0A0E16;
-    --surface-2: #0F1621;
-    --surface-glow: rgba(56, 189, 248, 0.03);
-    --line: #1A2332;
+    --surface-2: #111822;
+    --line: #1E2532;
     --line-bright: #2A3544;
     --ink: #F0F4F8;
     --ink-2: #A8B8CC;
     --ink-3: #6B7C92;
     --accent: #38BDF8;
     --accent-bright: #7DD3FC;
-    --accent-dim: #0EA5E9;
-    --accent-glow: rgba(56, 189, 248, 0.18);
-    --accent-tint: rgba(56, 189, 248, 0.08);
-    --accent-2: #FBBF24;
-    --warn: #FB7185;
     --success: #34D399;
-    
-    /* 增强的动画曲线 */
     --ease: cubic-bezier(0.22, 1, 0.36, 1);
-    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
-    
-    /* 统一的间距系统 */
     --s25: 2px; --s50: 4px; --s75: 8px; --s100: 12px;
-    --s200: 16px; --s300: 24px; --s400: 32px; --s500: 40px;
-    --s600: 48px; --s700: 64px;
-    
-    /* 统一的圆角系统 */
-    --r-sm: 6px; --r-md: 8px; --r-lg: 10px; --r-xl: 14px; --r-2xl: 18px; --r-full: 9999px;
+    --s200: 16px; --s300: 24px; --s400: 32px;
+    --r-sm: 6px; --r-md: 8px; --r-lg: 10px; --r-xl: 14px; --r-full: 9999px;
   }
-  
   *, *::before, *::after { box-sizing: border-box; }
   html, body { margin: 0; height: 100%; }
   body {
     background: var(--bg);
     color: var(--ink);
-    font-family: "PingFang SC", "HarmonyOS Sans SC", "Microsoft YaHei", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
     font-size: 16px;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
   }
-  
   h1, h2, h3 { margin: 0; font-weight: 600; line-height: 1.3; }
   p { margin: 0; }
-  a { color: var(--accent-bright); text-decoration: none; transition: color 200ms var(--ease); }
-  a:hover { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
-  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--r-sm); }
-  
-  .mono { 
-    font-family: "SF Mono", "Cascadia Code", "Fira Code", "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace; 
-    font-variant-numeric: tabular-nums;
-    letter-spacing: -0.01em;
-  }
+  a { color: var(--accent-bright); text-decoration: none; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .mono { font-family: "SF Mono", ui-monospace, Consolas, monospace; font-variant-numeric: tabular-nums; }
   .ico { width: 16px; height: 16px; flex: none; }
-  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-
-  /* === 呼吸灯动画 === */
-  @keyframes breathe {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
-  }
-  @keyframes glow-pulse {
-    0%, 100% { box-shadow: 0 0 8px rgba(56, 189, 248, 0.3); }
-    50% { box-shadow: 0 0 16px rgba(56, 189, 248, 0.6); }
-  }
-  @keyframes slide-in {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* === 外壳布局 === */
-  .app { 
-    display: flex; 
-    flex-direction: column; 
-    height: 100vh;
-    background: radial-gradient(ellipse at top, rgba(56, 189, 248, 0.04) 0%, transparent 60%);
-  }
   
+  @keyframes breathe { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+  @keyframes slide-in { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+  
+  .app { display: flex; flex-direction: column; height: 100vh; }
   .topbar {
-    display: flex; 
-    align-items: center; 
-    gap: var(--s100);
+    display: flex; align-items: center; gap: var(--s100);
     padding: var(--s200) var(--s300);
     border-bottom: 1px solid var(--line);
-    background: linear-gradient(to bottom, rgba(10, 14, 22, 0.95), rgba(10, 14, 22, 0.98));
-    backdrop-filter: blur(12px);
-    flex: 0 0 auto;
+    background: rgba(10, 14, 22, 0.95);
+    backdrop-filter: blur(16px);
     animation: slide-in 600ms var(--ease);
   }
-  
   .back {
-    display: inline-flex; 
-    align-items: center; 
-    gap: var(--s75);
-    padding: var(--s75) var(--s200); 
-    border-radius: var(--r-lg);
-    border: 1px solid var(--line); 
-    background: var(--surface);
-    color: var(--ink-2);
-    font-size: 14px; 
-    font-weight: 600;
+    display: inline-flex; align-items: center; gap: var(--s75);
+    padding: var(--s75) var(--s200); border-radius: var(--r-lg);
+    border: 1px solid var(--line); background: var(--surface);
+    color: var(--ink-2); font-size: 14px; font-weight: 600;
     transition: all 300ms var(--ease);
   }
-  .back:hover { 
-    color: var(--ink); 
-    border-color: var(--line-bright); 
-    background: var(--surface-2);
-    text-decoration: none;
-    transform: translateX(-2px);
-  }
-  
-  .topbar h1 { 
-    font-size: 19px; 
-    line-height: 28px;
-    background: linear-gradient(135deg, var(--ink) 0%, var(--ink-2) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
+  .back:hover { color: var(--ink); border-color: var(--line-bright); text-decoration: none; }
+  .topbar h1 { font-size: 19px; font-weight: 600; }
   .topbar .spacer { margin-left: auto; }
-  
   .badge-live {
-    display: inline-flex; 
-    align-items: center; 
-    gap: var(--s75);
-    padding: var(--s50) var(--s200);
-    border-radius: var(--r-full);
-    background: rgba(34, 197, 94, 0.08);
-    border: 1px solid rgba(34, 197, 94, 0.2);
-    font-size: 12px; 
-    font-weight: 600;
-    color: var(--success);
+    display: inline-flex; align-items: center; gap: var(--s75);
+    padding: var(--s50) var(--s200); border-radius: var(--r-full);
+    background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3);
+    font-size: 12px; font-weight: 600; color: var(--success);
   }
-  .badge-live .dot { 
-    width: 7px; 
-    height: 7px; 
-    border-radius: var(--r-full); 
-    background: var(--success);
-    animation: breathe 2s ease-in-out infinite;
-  }
-
+  .badge-live .dot { width: 7px; height: 7px; border-radius: var(--r-full); background: var(--success); animation: breathe 2s ease-in-out infinite; }
+  
   .layout {
-    flex: 1 1 auto; 
-    min-height: 0;
-    display: grid; 
-    grid-template-columns: 288px minmax(0, 1fr) 352px;
-    gap: var(--s300); 
-    padding: var(--s300);
+    flex: 1; min-height: 0;
+    display: grid; grid-template-columns: 280px minmax(0, 1fr) 340px;
+    gap: var(--s300); padding: var(--s300);
   }
-  
-  .col { 
-    min-height: 0; 
-    display: flex; 
-    flex-direction: column; 
-    gap: var(--s300); 
-    overflow: auto;
-  }
-  
-  /* === 现代化面板设计 === */
+  .col { min-height: 0; display: flex; flex-direction: column; gap: var(--s300); }
   .panel {
-    background: linear-gradient(135deg, var(--surface) 0%, rgba(10, 14, 22, 0.8) 100%);
-    border: 1px solid var(--line);
-    border-radius: var(--r-xl);
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-xl);
     padding: var(--s300);
-    position: relative;
-    overflow: hidden;
-    transition: border-color 400ms var(--ease);
   }
-  .panel::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent 0%, var(--accent-glow) 50%, transparent 100%);
-    opacity: 0;
-    transition: opacity 400ms var(--ease);
-  }
-  .panel:hover::before { opacity: 1; }
-  .panel:hover { border-color: var(--line-bright); }
+  .panel-head { display: flex; align-items: center; gap: var(--s100); margin-bottom: var(--s200); padding-bottom: var(--s200); border-bottom: 1px solid var(--line); }
+  .panel-head h2 { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-bright); font-weight: 700; }
+  .panel-note { font-size: 12px; line-height: 18px; color: var(--ink-3); margin-top: var(--s200); }
   
-  .panel-head { 
-    display: flex; 
-    align-items: center; 
-    gap: var(--s100); 
-    margin-bottom: var(--s200);
-    padding-bottom: var(--s100);
-    border-bottom: 1px solid var(--line);
-  }
-  .panel-head h2 { 
-    font-size: 13px; 
-    line-height: 20px; 
-    letter-spacing: 0.08em; 
-    text-transform: uppercase;
-    color: var(--accent-bright);
-    font-weight: 700;
-  }
-  .panel-head .ico { color: var(--accent); }
-  
-  .panel-note { 
-    font-size: 12px; 
-    line-height: 18px; 
-    color: var(--ink-3); 
-    margin-top: var(--s200);
-    padding: var(--s200);
-    border-radius: var(--r-md);
-    background: var(--surface-glow);
-    border: 1px solid rgba(56, 189, 248, 0.05);
-  }
-
-  /* === 舞台增强 === */
-  .stage {
-    position: relative; 
-    min-height: 0; 
-    height: 100%;
-    border: 1px solid var(--line-bright);
-    border-radius: var(--r-xl);
-    background: var(--bg); 
-    overflow: hidden;
-    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.02);
-  }
+  .stage { position: relative; height: 100%; border: 1px solid var(--line-bright); border-radius: var(--r-xl); overflow: hidden; }
   .stage canvas { display: block; width: 100%; height: 100%; }
+  .stage .vig { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at center, rgba(0,0,0,0) 20%, rgba(0,0,0,0.5) 100%); }
+  .stage.is-loading::after { content: "正在生成模型"; position: absolute; inset: 0; display: grid; place-items: center; color: var(--accent); font-size: 13px; font-weight: 600; animation: breathe 1.5s infinite; }
   
-  .stage .vig {
-    position: absolute; 
-    inset: 0; 
-    pointer-events: none;
-    background: radial-gradient(125% 95% at 50% 46%, rgba(0,0,0,0) 46%, rgba(0,0,0,.35) 100%);
-  }
-  
-  .stage.is-loading::after {
-    content: "正在生成模型";
-    position: absolute; 
-    inset: 0; 
-    display: grid; 
-    place-items: center;
-    color: var(--accent);
-    font-size: 13px; 
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    animation: breathe 1.5s ease-in-out infinite;
-  }
-  
-  /* === 标注优化 === */
-  .labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .labels { position: absolute; inset: 0; pointer-events: none; }
   .lbl {
-    position: absolute; 
-    transform: translate(-50%, -50%);
-    display: flex; 
-    align-items: center; 
-    gap: var(--s75);
-    padding: var(--s50) var(--s200);
-    background: rgba(15, 22, 33, 0.92);
-    backdrop-filter: blur(8px);
-    border: 1px solid var(--line-bright);
-    border-radius: var(--r-md);
-    white-space: nowrap;
-    font-size: 12px; 
-    line-height: 16px; 
-    color: var(--ink);
-    font-weight: 500;
-    opacity: 0; 
-    transition: all 300ms var(--ease);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    position: absolute; transform: translate(-50%, -50%);
+    display: flex; align-items: center; gap: var(--s75);
+    padding: var(--s50) var(--s200); background: rgba(17, 24, 34, 0.95); backdrop-filter: blur(12px);
+    border: 1px solid var(--line-bright); border-radius: var(--r-md);
+    font-size: 12px; color: var(--ink); opacity: 0; transition: opacity 300ms;
   }
   .lbl.is-on { opacity: 1; }
-  .lbl .dot { 
-    width: 6px; 
-    height: 6px; 
-    border-radius: var(--r-full); 
-    background: var(--accent);
-  }
-  .lbl .sp { color: var(--ink-3); }
-  .lbl.is-active { 
-    border-color: var(--accent); 
-    color: var(--accent-bright);
-    background: rgba(56, 189, 248, 0.12);
-    animation: glow-pulse 2s ease-in-out infinite;
-  }
-  .lbl.is-active .sp { color: var(--accent-bright); opacity: 0.85; }
+  .lbl .dot { width: 6px; height: 6px; border-radius: var(--r-full); background: var(--accent); }
+  .lbl.is-active { border-color: var(--accent); color: var(--accent-bright); }
   
-  .lead { 
-    position: absolute; 
-    height: 1px; 
-    width: 0; 
-    display: none; 
-    background: rgba(56, 189, 248, 0.6);
-    transform-origin: 0 50%; 
-    pointer-events: none; 
-  }
-  .lead.is-active { background: var(--accent); }
-  
-  .lead-dot { 
-    position: absolute; 
-    width: 7px; 
-    height: 7px; 
-    margin: -3.5px 0 0 -3.5px; 
-    display: none;
-    border: 1px solid var(--accent); 
-    border-radius: 50%; 
-    background: rgba(2, 4, 10, 0.95);
-    pointer-events: none; 
-  }
-  .lead-dot.is-active { 
-    border-color: var(--accent-bright); 
-    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2); 
-  }
-
-  /* === HUD控制区 === */
-  .hud {
-    position: absolute; 
-    left: var(--s200); 
-    top: var(--s200);
-    display: flex; 
-    flex-wrap: wrap; 
-    gap: var(--s75); 
-    max-width: calc(100% - 32px);
-  }
-  
+  .hud { position: absolute; left: var(--s200); top: var(--s200); display: flex; flex-wrap: wrap; gap: var(--s75); }
   .hint {
-    position: absolute; 
-    left: var(--s200); 
-    bottom: var(--s200);
-    display: flex; 
-    flex-wrap: wrap; 
-    align-items: center; 
-    gap: var(--s75) var(--s200);
-    padding: var(--s200) var(--s300);
-    background: rgba(15, 22, 33, 0.88);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--line-bright);
-    border-radius: var(--r-lg);
-    font-size: 12px; 
-    line-height: 18px; 
-    color: var(--ink-2);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    position: absolute; left: var(--s200); bottom: var(--s200);
+    display: flex; flex-wrap: wrap; gap: var(--s75) var(--s200);
+    padding: var(--s200) var(--s300); background: rgba(17, 24, 34, 0.92); backdrop-filter: blur(12px);
+    border: 1px solid var(--line-bright); border-radius: var(--r-lg);
+    font-size: 12px; color: var(--ink-2);
   }
-  .hint .k {
-    padding: var(--s25) var(--s75); 
-    border-radius: var(--r-sm);
-    border: 1px solid var(--line-bright); 
-    background: var(--surface);
-    color: var(--accent-bright);
-    font-size: 11px; 
-    font-family: "SF Mono", ui-monospace, Consolas, monospace;
-    font-weight: 600;
-  }
-
-  /* === 现代化按钮系统 === */
+  .hint .k { padding: var(--s25) var(--s75); border-radius: var(--r-sm); border: 1px solid var(--line-bright); background: var(--surface); color: var(--accent-bright); font-size: 11px; font-family: "SF Mono", monospace; font-weight: 600; }
+  
   .btn {
-    display: inline-flex; 
-    align-items: center; 
-    gap: var(--s75);
-    padding: var(--s75) var(--s200); 
-    border-radius: var(--r-md);
-    border: 1px solid var(--line-bright);
-    background: linear-gradient(135deg, var(--surface-2) 0%, var(--surface) 100%);
-    color: var(--ink-2);
-    font-family: inherit; 
-    font-size: 12px; 
-    line-height: 16px; 
-    font-weight: 600;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: all 300ms var(--ease);
+    display: inline-flex; align-items: center; gap: var(--s75);
+    padding: var(--s75) var(--s200); border-radius: var(--r-md);
+    border: 1px solid var(--line-bright); background: var(--surface-2);
+    color: var(--ink-2); font-size: 12px; font-weight: 600; cursor: pointer;
+    transition: all 250ms var(--ease);
   }
-  .btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.1), transparent);
-    transition: left 500ms var(--ease);
-  }
-  .btn:hover::before { left: 100%; }
-  .btn:hover { 
-    color: var(--ink); 
-    border-color: var(--accent);
-    background: linear-gradient(135deg, var(--surface) 0%, rgba(15, 22, 33, 0.95) 100%);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(56, 189, 248, 0.15);
-  }
-  .btn:active { 
-    transform: translateY(0) scale(0.98); 
-  }
-  .btn[aria-pressed="true"] { 
-    color: var(--accent-bright);
-    border-color: var(--accent);
-    background: linear-gradient(135deg, rgba(56, 189, 248, 0.15) 0%, rgba(56, 189, 248, 0.08) 100%);
-    box-shadow: inset 0 0 12px rgba(56, 189, 248, 0.2);
-  }
+  .btn:hover { color: var(--ink); border-color: var(--accent); }
+  .btn:active { transform: scale(0.98); }
+  .btn[aria-pressed="true"] { color: var(--accent-bright); border-color: var(--accent); background: rgba(56, 189, 248, 0.12); }
+  .btn-primary { background: linear-gradient(135deg, var(--accent-bright), #0EA5E9); border-color: var(--accent); color: #000; font-weight: 700; }
+  .btn-row { display: flex; flex-wrap: wrap; gap: var(--s75); margin-top: var(--s200); }
   
-  .btn-primary { 
-    background: linear-gradient(135deg, var(--accent-bright) 0%, var(--accent-dim) 100%);
-    border-color: var(--accent);
-    color: #04121C;
-    font-weight: 700;
-  }
-  .btn-primary:hover { 
-    background: linear-gradient(135deg, var(--accent-bright) 0%, var(--accent) 100%);
-    border-color: var(--accent-bright);
-    color: #04121C;
-    box-shadow: 0 4px 16px rgba(56, 189, 248, 0.4);
-  }
-  
-  .btn-row { 
-    display: flex; 
-    flex-wrap: wrap; 
-    gap: var(--s75); 
-    margin-top: var(--s200); 
-  }
-
-  /* === 优化的部件清单 === */
-  .parts { 
-    display: flex; 
-    flex-direction: column; 
-    gap: var(--s50); 
-    flex: 1 1 auto;
-    min-height: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
+  .parts { display: flex; flex-direction: column; gap: var(--s50); }
   .part {
-    display: flex; 
-    align-items: center; 
-    gap: var(--s100); 
-    width: 100%;
-    flex: 0 0 auto;
-    padding: var(--s200); 
-    border-radius: var(--r-lg);
-    border: 1px solid transparent;
-    background: transparent;
-    color: var(--ink-2); 
-    font-family: inherit; 
-    font-size: 14px; 
-    line-height: 22px;
-    text-align: left; 
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: all 300ms var(--ease);
+    display: flex; align-items: center; gap: var(--s100);
+    padding: var(--s200); border-radius: var(--r-lg); border: 1px solid transparent;
+    color: var(--ink-2); font-size: 14px; cursor: pointer; flex-shrink: 0;
+    transition: all 250ms;
   }
-  .part::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 2px;
-    height: 0;
-    background: var(--accent);
-    transition: height 300ms var(--ease);
-  }
-  .part:hover { 
-    color: var(--ink); 
-    background: var(--surface-glow);
-    border-color: var(--line-bright);
-  }
-  .part:hover::before { height: 60%; }
+  .part:hover { color: var(--ink); background: var(--surface-2); }
+  .part .idx { min-width: 24px; font-size: 11px; color: var(--ink-3); font-family: "SF Mono", monospace; font-weight: 700; text-align: center; flex-shrink: 0; }
+  .part .nm { flex: 1; font-weight: 500; min-width: 0; }
+  .part .en { display: block; font-size: 11px; color: var(--ink-3); font-family: "SF Mono", monospace; margin-top: 2px; }
+  .part .flag { width: 6px; height: 6px; border-radius: var(--r-full); background: var(--line-bright); flex-shrink: 0; }
+  .part[aria-current="true"] { color: var(--accent-bright); background: rgba(56, 189, 248, 0.12); border-color: var(--accent); }
   
-  .part .idx {
-    min-width: 24px; 
-    font-size: 11px; 
-    line-height: 16px; 
-    color: var(--ink-3);
-    font-family: "SF Mono", ui-monospace, Consolas, monospace;
-    font-weight: 700;
-    text-align: center;
-  }
-  .part .nm { flex: 1; font-weight: 500; }
-  .part .en { 
-    display: block; 
-    font-size: 11px; 
-    line-height: 16px; 
-    color: var(--ink-3);
-    font-family: "SF Mono", ui-monospace, Consolas, monospace;
-    margin-top: 2px;
-  }
-  .part .flag { 
-    width: 6px; 
-    height: 6px; 
-    border-radius: var(--r-full); 
-    background: var(--line-bright);
-    transition: all 300ms var(--ease);
-  }
-  .part[aria-current="true"] { 
-    color: var(--accent-bright);
-    background: linear-gradient(135deg, rgba(56, 189, 248, 0.12) 0%, rgba(56, 189, 248, 0.06) 100%);
-    border-color: var(--accent);
-    box-shadow: inset 0 0 12px rgba(56, 189, 248, 0.15);
-  }
-  .part[aria-current="true"]::before { height: 100%; }
-  .part[aria-current="true"] .flag { 
-    background: var(--accent-bright);
-    box-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
-  }
-
-  /* === 左栏优化 === */
   .col-left { overflow: hidden; }
-  .col-left .panel { 
-    display: flex; 
-    flex-direction: column; 
-    min-height: 0; 
-    flex: 1 1 auto; 
-  }
-  .col-left .parts { 
-    flex: 1 1 auto; 
-    min-height: 0; 
-    overflow: auto;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(56, 189, 248, 0.3) transparent;
-    padding-right: var(--s50);
-  }
-  .col-left .parts::-webkit-scrollbar { width: 6px; }
-  .col-left .parts::-webkit-scrollbar-track { background: transparent; }
-  .col-left .parts::-webkit-scrollbar-thumb { 
-    background: rgba(56, 189, 248, 0.25);
-    border-radius: 3px;
-    transition: background 200ms;
-  }
-  .col-left .parts::-webkit-scrollbar-thumb:hover { 
-    background: rgba(56, 189, 248, 0.4); 
-  }
+  .col-left .panel { display: flex; flex-direction: column; min-height: 0; flex: 1; }
+  .col-left .parts { flex: 1; min-height: 0; overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(56, 189, 248, 0.3) transparent; }
   .col-left .btn-row { flex: 0 0 auto; }
-
-  /* === 增强的详情面板 === */
-  .detail-title { 
-    font-size: 22px; 
-    line-height: 32px;
-    background: linear-gradient(135deg, var(--ink) 0%, var(--ink-2) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .detail-en { 
-    margin-top: var(--s75); 
-    font-size: 12px; 
-    line-height: 18px; 
-    color: var(--ink-3);
-    font-family: "SF Mono", ui-monospace, Consolas, monospace;
-  }
-  .detail-role {
-    display: inline-block; 
-    margin-top: var(--s200);
-    padding: var(--s50) var(--s200); 
-    border-radius: var(--r-md);
-    background: linear-gradient(135deg, rgba(56, 189, 248, 0.15) 0%, rgba(56, 189, 248, 0.08) 100%);
-    border: 1px solid var(--accent);
-    color: var(--accent-bright);
-    font-size: 12px; 
-    line-height: 16px; 
-    font-weight: 700;
-    letter-spacing: 0.04em;
-  }
-  .detail-desc { 
-    margin-top: var(--s300); 
-    font-size: 14px; 
-    line-height: 24px; 
-    color: var(--ink-2);
-  }
   
-  .specs { 
-    margin: var(--s300) 0 0; 
-    display: grid; 
-    gap: var(--s200);
-  }
-  .spec { 
-    display: grid; 
-    grid-template-columns: 100px 1fr; 
-    gap: var(--s200); 
-    font-size: 14px; 
-    line-height: 24px;
-    padding: var(--s200);
-    border-radius: var(--r-md);
-    background: var(--surface-glow);
-    border: 1px solid rgba(56, 189, 248, 0.05);
-  }
-  .spec dt { 
-    color: var(--accent);
-    font-weight: 600;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-  }
-  .spec dd { 
-    margin: 0; 
-    color: var(--ink);
-    font-family: "SF Mono", ui-monospace, Consolas, monospace;
-    font-weight: 500;
-  }
-  .detail-empty { 
-    font-size: 14px; 
-    line-height: 24px; 
-    color: var(--ink-3);
-    text-align: center;
-    padding: var(--s400) var(--s200);
-  }
-
-  /* === 操作引导 === */
-  .guide {
-    flex: 0 0 auto; 
-    display: grid; 
-    grid-template-columns: repeat(4, minmax(0, 1fr)) 1.2fr;
-    gap: var(--s300); 
-    padding: var(--s300);
-    border-top: 1px solid var(--line);
-    background: linear-gradient(to top, rgba(10, 14, 22, 0.95), rgba(10, 14, 22, 0.98));
-    backdrop-filter: blur(12px);
-  }
+  .detail-title { font-size: 22px; font-weight: 600; }
+  .detail-en { margin-top: var(--s75); font-size: 12px; color: var(--ink-3); font-family: "SF Mono", monospace; }
+  .detail-role { display: inline-block; margin-top: var(--s200); padding: var(--s50) var(--s200); border-radius: var(--r-md); background: rgba(56, 189, 248, 0.12); border: 1px solid var(--accent); color: var(--accent-bright); font-size: 12px; font-weight: 700; }
+  .detail-desc { margin-top: var(--s300); font-size: 14px; line-height: 24px; color: var(--ink-2); }
+  .specs { margin: var(--s300) 0 0; display: grid; gap: var(--s200); }
+  .spec { display: grid; grid-template-columns: 96px 1fr; gap: var(--s200); padding: var(--s200); border-radius: var(--r-md); background: rgba(56, 189, 248, 0.04); }
+  .spec dt { color: var(--accent); font-weight: 600; font-size: 12px; text-transform: uppercase; }
+  .spec dd { margin: 0; color: var(--ink); font-family: "SF Mono", monospace; font-weight: 500; }
+  
+  .guide { display: grid; grid-template-columns: repeat(4, 1fr) 1.2fr; gap: var(--s300); padding: var(--s300); border-top: 1px solid var(--line); background: var(--surface); }
   .guide-item { display: flex; gap: var(--s200); }
-  .guide-item .ico { 
-    color: var(--accent);
-    margin-top: var(--s50);
-    flex-shrink: 0;
-  }
-  .guide-item h3 { 
-    font-size: 14px; 
-    line-height: 22px;
-    color: var(--ink);
-  }
-  .guide-item p { 
-    margin-top: var(--s75); 
-    font-size: 12px; 
-    line-height: 18px; 
-    color: var(--ink-3);
-  }
-  .guide-note { 
-    font-size: 12px; 
-    line-height: 18px; 
-    color: var(--ink-3);
-  }
-
-  /* === 响应式 === */
-  @media (max-width: 1080px) {
-    .app { height: auto; min-height: 100vh; }
-    .layout { grid-template-columns: minmax(0, 1fr); }
-    .col { overflow: visible; }
-    .col-stage { order: -1; }
-    .stage { height: 62vh; min-height: 400px; }
-    .guide { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
-  @media (max-width: 640px) {
-    .topbar { flex-wrap: wrap; padding: var(--s200); }
-    .guide { grid-template-columns: minmax(0, 1fr); }
-    .stage { height: 54vh; }
-    .hint { display: none; }
-    .layout { padding: var(--s200); gap: var(--s200); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { 
-      transition-duration: 1ms !important; 
-      animation-duration: 1ms !important; 
-    }
-  }
+  .guide-item .ico { color: var(--accent); margin-top: var(--s50); }
+  .guide-item h3 { font-size: 14px; color: var(--ink); }
+  .guide-item p { margin-top: var(--s75); font-size: 12px; color: var(--ink-3); }
+  
+  @media (max-width: 1080px) { .layout { grid-template-columns: 1fr; } .col-stage { order: -1; } .stage { height: 62vh; min-height: 400px; } .guide { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px) { .topbar { padding: var(--s200); } .stage { height: 54vh; } .hint { display: none; } }
 </style>
 </head>
 <body>
 <div class="app">
-
   <header class="topbar">
-    <a class="back" href="./index.html">
-      <svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M11 5l-5 5 5 5M6 10h9"/>
-      </svg>
-      返回日报
-    </a>
+    <a class="back" href="./index.html"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 5l-5 5 5 5M6 10h9"/></svg>返回日报</a>
     <h1>SMH-20K 霍尔电推进系统 · 3D 拆解</h1>
     <span class="spacer"></span>
-    <span class="badge-live">
-      <span class="dot"></span>
-      实时渲染
-    </span>
+    <span class="badge-live"><span class="dot"></span>实时渲染</span>
   </header>
-
   <main class="layout">
-
-    <!-- 左：部件清单 -->
-    <section class="col col-left" aria-label="部件清单">
+    <section class="col col-left">
       <div class="panel">
-        <div class="panel-head">
-          <svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M4 6h12M4 10h12M4 14h8"/>
-          </svg>
-          <h2>部件清单</h2>
-          <span class="mono" style="margin-left:auto;color:var(--ink-3);font-size:11px;font-weight:700" id="partCount">—</span>
-        </div>
-        <div class="parts" id="partList" role="list"></div>
+        <div class="panel-head"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h12M4 10h12M4 14h8"/></svg><h2>部件清单</h2><span class="mono" style="margin-left:auto;color:var(--ink-3);font-size:11px" id="partCount">—</span></div>
+        <div class="parts" id="partList"></div>
         <div class="btn-row">
-          <button class="btn btn-primary" id="btnExplode" type="button">
-            <svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M10 3v6M10 11v6"/>
-              <path d="M4 6l3 3M4 14l3-3M16 6l-3 3M16 14l-3-3"/>
-            </svg>
-            全部拆解
-          </button>
-          <button class="btn" id="btnReset" type="button">
-            <svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M4.5 10a5.5 5.5 0 1 1 1.9 4.2"/>
-              <path d="M4 6v4h4"/>
-            </svg>
-            复位
-          </button>
+          <button class="btn btn-primary" id="btnExplode"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 3v6M10 11v6"/><path d="M4 6l3 3M4 14l3-3M16 6l-3 3M16 14l-3-3"/></svg>全部拆解</button>
+          <button class="btn" id="btnReset"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4.5 10a5.5 5.5 0 1 1 1.9 4.2"/><path d="M4 6v4h4"/></svg>复位</button>
         </div>
         <p class="panel-note">点击清单或模型上的任一部件即可单独拆解,再次点击收起。</p>
       </div>
     </section>
-
-    <!-- 中:3D 舞台 -->
-    <section class="col col-stage" aria-label="三维视图">
+    <section class="col col-stage">
       <div class="stage is-loading" id="stage">
-        <canvas id="view" aria-label="霍尔电推进器三维拆解视图"></canvas>
+        <canvas id="view"></canvas>
         <div class="vig"></div>
         <div class="labels" id="labels"></div>
         <div class="hud">
-          <button class="btn" data-view="iso" type="button">
-            <svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M10 3l6 3.2v7.6L10 17l-6-3.2V6.2L10 3Z"/>
-              <path d="M4 6.2 10 9.5l6-3.3M10 9.5V17"/>
-            </svg>
-            等轴
-          </button>
-          <button class="btn" data-view="front" type="button">正视</button>
-          <button class="btn" data-view="side" type="button">侧视</button>
-          <button class="btn" data-view="top" type="button">俯视</button>
-          <button class="btn" data-view="back" type="button">背视</button>
-          <button class="btn" id="btnSpin" type="button" aria-pressed="false">
-            <svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M10 3v14M3 10h14"/>
-              <path d="M7.5 5.5 10 3l2.5 2.5M7.5 14.5 10 17l2.5-2.5M5.5 7.5 3 10l2.5 2.5M14.5 7.5 17 10l-2.5 2.5"/>
-            </svg>
-            自动旋转
-          </button>
-          <button class="btn" id="btnLabels" type="button" aria-pressed="true">
-            <svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M4 10.5V5h5.5l6 6-5 5-6-6Z"/>
-              <circle cx="7" cy="8" r="1"/>
-            </svg>
-            标注
-          </button>
-          <button class="btn" id="btnSection" type="button" aria-pressed="false">
-            <svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="10" cy="10" r="7"/>
-              <path d="M10 3v14"/>
-              <path d="M10 3a7 7 0 0 1 0 14"/>
-            </svg>
-            剖面
-          </button>
+          <button class="btn" data-view="iso"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 3l6 3.2v7.6L10 17l-6-3.2V6.2L10 3Z"/><path d="M4 6.2 10 9.5l6-3.3M10 9.5V17"/></svg>等轴</button>
+          <button class="btn" data-view="front">正视</button>
+          <button class="btn" data-view="side">侧视</button>
+          <button class="btn" data-view="top">俯视</button>
+          <button class="btn" data-view="back">背视</button>
+          <button class="btn" id="btnSpin" aria-pressed="false">自动旋转</button>
+          <button class="btn" id="btnLabels" aria-pressed="true">标注</button>
+          <button class="btn" id="btnSection" aria-pressed="false">剖面</button>
         </div>
         <div class="hint">
           <span><span class="k">拖拽</span> 旋转</span>
           <span><span class="k">滚轮</span> 缩放</span>
-          <span><span class="k">右键拖拽</span> 平移</span>
           <span><span class="k">单击部件</span> 拆解 / 收起</span>
-          <span><span class="k">空白处单击</span> 取消选中</span>
         </div>
       </div>
     </section>
-
-    <!-- 右:详情与参数 -->
-    <section class="col col-right" aria-label="部件详情">
+    <section class="col col-right">
       <div class="panel" id="infoPanel">
-        <div class="panel-head">
-          <svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="10" cy="10" r="7"/>
-            <path d="M10 9v4M10 6.8v.1"/>
-          </svg>
-          <h2>部件详情</h2>
-        </div>
+        <div class="panel-head"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="7"/><path d="M10 9v4M10 6.8v.1"/></svg><h2>部件详情</h2></div>
         <div id="infoBody"></div>
       </div>
       <div class="panel" id="totalPanel">
-        <div class="panel-head">
-          <svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="3.5" y="4" width="13" height="12" rx="2"/>
-            <path d="M3.5 8h13M8 8v8"/>
-          </svg>
-          <h2>整机参数</h2>
-        </div>
+        <div class="panel-head"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3.5" y="4" width="13" height="12" rx="2"/><path d="M3.5 8h13M8 8v8"/></svg><h2>整机参数</h2></div>
         <div id="totalBody"></div>
-        <p class="panel-note">PPU 与贮供单元包络取自《日月科技电推进系统选型册》图纸；推力器本体与氪气压力传感器外形为工程估算,标注见各部件详情。</p>
+        <p class="panel-note">PPU 与贮供单元包络取自《日月科技电推进系统选型册》图纸;推力器本体与氪气压力传感器外形为工程估算,标注见各部件详情。</p>
       </div>
     </section>
-
   </main>
-
   <footer class="guide">
-    <div class="guide-item">
-      <svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M10 3v14M3 10h14"/>
-        <path d="M7.5 5.5 10 3l2.5 2.5M7.5 14.5 10 17l2.5-2.5M5.5 7.5 3 10l2.5 2.5M14.5 7.5 17 10l-2.5 2.5"/>
-      </svg>
-      <div>
-        <h3>旋转视角</h3>
-        <p>按住左键拖拽,绕模型旋转；触屏单指拖动同理。</p>
-      </div>
-    </div>
-    <div class="guide-item">
-      <svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <circle cx="9" cy="9" r="5.5"/>
-        <path d="M13 13l3.5 3.5M7 9h4M9 7v4"/>
-      </svg>
-      <div>
-        <h3>缩放平移</h3>
-        <p>滚轮或双指捏合缩放；右键拖拽平移视野中心。</p>
-      </div>
-    </div>
-    <div class="guide-item">
-      <svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M7 4v9l2.4-2.2 1.8 3.6 2-1-1.9-3.5 3.1-.5L7 4Z"/>
-      </svg>
-      <div>
-        <h3>点击拆解</h3>
-        <p>单击任一部件沿轴向拆出并高亮,同时弹出名称、参数与作用。</p>
-      </div>
-    </div>
-    <div class="guide-item">
-      <svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M4.5 10a5.5 5.5 0 1 1 1.9 4.2"/>
-        <path d="M4 6v4h4"/>
-      </svg>
-      <div>
-        <h3>整体拆解</h3>
-        <p>「全部拆解」按装配顺序散开所有部件,「复位」一键还原。</p>
-      </div>
-    </div>
-    <div class="guide-note">
-      <p style="margin-top:8px">PPU 按 185 × 169 × 81 mm、贮供单元按 307 × 256.81 × 112.07 mm 建模(1 单位 = 50 mm)；推力器本体外形为工程估算。</p>
-    </div>
+    <div class="guide-item"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 3v14M3 10h14"/></svg><div><h3>旋转视角</h3><p>按住左键拖拽,绕模型旋转。</p></div></div>
+    <div class="guide-item"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="9" r="5.5"/><path d="M13 13l3.5 3.5M7 9h4M9 7v4"/></svg><div><h3>缩放平移</h3><p>滚轮或双指捏合缩放。</p></div></div>
+    <div class="guide-item"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 4v9l2.4-2.2 1.8 3.6 2-1-1.9-3.5 3.1-.5L7 4Z"/></svg><div><h3>点击拆解</h3><p>单击部件沿轴向拆出并高亮。</p></div></div>
+    <div class="guide-item"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4.5 10a5.5 5.5 0 1 1 1.9 4.2"/><path d="M4 6v4h4"/></svg><div><h3>整体拆解</h3><p>按装配顺序散开所有部件。</p></div></div>
+    <div class="guide-note"><p style="margin-top:8px">PPU 按 185 × 169 × 81 mm、贮供单元按 307 × 256.81 × 112.07 mm 建模(1 单位 = 50 mm)。</p></div>
   </footer>
-
 </div>
 
 <script type="module">
@@ -913,28 +291,193 @@ var sky = new THREE.Group();
 scene.add(sky);
 var twinkles = [];
 var dialMesh = null;
-(function environment() {
-  return; // 关闭环境装饰，聚焦主体模型
-  // 天空：从近黑夜空过渡到地平线暖色
-  (function skyGradient() {
-    var cv = document.createElement('canvas');
-    cv.width = 64; cv.height = 512;
-    var g = cv.getContext('2d');
-    var grd = g.createLinearGradient(0, 0, 0, 512);
-    grd.addColorStop(0.00, '#04060a');
-    grd.addColorStop(0.34, '#070c12');
-    grd.addColorStop(0.455, '#0e1a22');
-    grd.addColorStop(0.492, '#1e2b31');
-        grd.addColorStop(0.503, '#7d4620');
-    grd.addColorStop(0.60, '#170f08');
-    grd.addColorStop(1.00, '#0a0705');
-    g.fillStyle = grd;
-    g.fillRect(0, 0, 64, 512);
-    var tex = new THREE.CanvasTexture(cv);
-    if (THREE.EquirectangularReflectionMapping) tex.mapping = THREE.EquirectangularReflectionMapping;
-    if ('colorSpace' in tex) tex.colorSpace = THREE.SRGBColorSpace;
-    scene.background = tex;
-  })();
+// === 增强科技背景 (国际顶级审美) ===
+scene.background = new THREE.Color(0x000000);
+scene.fog = new THREE.FogExp2(0x000000, 0.002);
+
+// 动态六边形网格地面
+(function techGrid() {
+  var canvas = document.createElement('canvas');
+  canvas.width = canvas.height = 1024;
+  var ctx = canvas.getContext('2d');
+  
+  // 深色基底
+  ctx.fillStyle = '#000000';
+  ctx.fillRect(0, 0, 1024, 1024);
+  
+  // 六边形网格
+  var hexSize = 32;
+  var cols = Math.ceil(1024 / (hexSize * 1.5));
+  var rows = Math.ceil(1024 / (hexSize * Math.sqrt(3)));
+  
+  ctx.strokeStyle = '#0A1628';
+  ctx.lineWidth = 1.5;
+  
+  for (var row = 0; row < rows; row++) {
+    for (var col = 0; col < cols; col++) {
+      var x = col * hexSize * 1.5 + 512;
+      var y = row * hexSize * Math.sqrt(3) + (col % 2 ? hexSize * Math.sqrt(3) / 2 : 0) + 512;
+      
+      ctx.beginPath();
+      for (var i = 0; i < 6; i++) {
+        var angle = Math.PI / 3 * i;
+        var hx = x + hexSize * Math.cos(angle);
+        var hy = y + hexSize * Math.sin(angle);
+        if (i === 0) ctx.moveTo(hx, hy);
+        else ctx.lineTo(hx, hy);
+      }
+      ctx.closePath();
+      ctx.stroke();
+      
+      // 随机高亮网格节点
+      if (Math.random() > 0.92) {
+        ctx.fillStyle = 'rgba(56, 189, 248, 0.4)';
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+  }
+  
+  // 径向渐变叠加
+  var gradient = ctx.createRadialGradient(512, 512, 0, 512, 512, 512);
+  gradient.addColorStop(0, 'rgba(56, 189, 248, 0.05)');
+  gradient.addColorStop(0.5, 'rgba(0, 0, 0, 0)');
+  gradient.addColorStop(1, 'rgba(0, 0, 0, 0.8)');
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, 1024, 1024);
+  
+  var texture = new THREE.CanvasTexture(canvas);
+  if ('colorSpace' in texture) texture.colorSpace = THREE.SRGBColorSpace;
+  
+  var ground = new THREE.Mesh(
+    new THREE.CircleGeometry(50, 128),
+    new THREE.MeshBasicMaterial({ map: texture, transparent: true, opacity: 0.6 })
+  );
+  ground.rotation.x = -Math.PI / 2;
+  ground.position.y = -3;
+  scene.add(ground);
+})();
+
+// 扫描线效果
+(function scanLines() {
+  var canvas = document.createElement('canvas');
+  canvas.width = 4;
+  canvas.height = 256;
+  var ctx = canvas.getContext('2d');
+  
+  var gradient = ctx.createLinearGradient(0, 0, 0, 256);
+  for (var i = 0; i < 256; i += 4) {
+    var alpha = i % 8 < 2 ? 0.15 : 0;
+    gradient.addColorStop(i / 256, 'rgba(56, 189, 248, ' + alpha + ')');
+  }
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, 4, 256);
+  
+  var texture = new THREE.CanvasTexture(canvas);
+  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set(200, 1);
+  if ('colorSpace' in texture) texture.colorSpace = THREE.SRGBColorSpace;
+  
+  var scanPlane = new THREE.Mesh(
+    new THREE.PlaneGeometry(100, 100),
+    new THREE.MeshBasicMaterial({ 
+      map: texture, 
+      transparent: true, 
+      opacity: 0.3,
+      blending: THREE.AdditiveBlending
+    })
+  );
+  scanPlane.rotation.x = -Math.PI / 2;
+  scanPlane.position.y = -2.9;
+  scene.add(scanPlane);
+})();
+
+// 动态粒子场
+(function particleField() {
+  var count = 300;
+  var positions = new Float32Array(count * 3);
+  var velocities = [];
+  
+  for (var i = 0; i < count; i++) {
+    var theta = Math.random() * Math.PI * 2;
+    var phi = Math.acos(2 * Math.random() - 1);
+    var r = 20 + Math.random() * 60;
+    
+    positions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+    positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta) - 20;
+    positions[i * 3 + 2] = r * Math.cos(phi);
+    
+    velocities.push({
+      x: (Math.random() - 0.5) * 0.02,
+      y: Math.random() * 0.03,
+      z: (Math.random() - 0.5) * 0.02
+    });
+  }
+  
+  var geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  
+  var material = new THREE.PointsMaterial({
+    color: 0x38BDF8,
+    size: 0.5,
+    transparent: true,
+    opacity: 0.6,
+    blending: THREE.AdditiveBlending
+  });
+  
+  var particles = new THREE.Points(geometry, material);
+  scene.add(particles);
+  
+  // 粒子动画
+  var particlePositions = particles.geometry.attributes.position.array;
+  setInterval(function() {
+    for (var i = 0; i < count; i++) {
+      particlePositions[i * 3] += velocities[i].x;
+      particlePositions[i * 3 + 1] += velocities[i].y;
+      particlePositions[i * 3 + 2] += velocities[i].z;
+      
+      // 边界重置
+      if (particlePositions[i * 3 + 1] > 40) {
+        particlePositions[i * 3 + 1] = -20;
+      }
+      if (Math.abs(particlePositions[i * 3]) > 80 || Math.abs(particlePositions[i * 3 + 2]) > 80) {
+        var theta = Math.random() * Math.PI * 2;
+        var r = 20 + Math.random() * 20;
+        particlePositions[i * 3] = r * Math.cos(theta);
+        particlePositions[i * 3 + 2] = r * Math.sin(theta);
+      }
+    }
+    particles.geometry.attributes.position.needsUpdate = true;
+  }, 50);
+})();
+
+// 环绕光环
+(function orbitRings() {
+  var ringGeo = new THREE.TorusGeometry(25, 0.08, 8, 64);
+  var ringMat = new THREE.MeshBasicMaterial({ 
+    color: 0x38BDF8, 
+    transparent: true, 
+    opacity: 0.3 
+  });
+  
+  var ring1 = new THREE.Mesh(ringGeo, ringMat);
+  ring1.rotation.x = Math.PI / 2;
+  ring1.position.y = -2;
+  scene.add(ring1);
+  
+  var ring2 = ring1.clone();
+  ring2.scale.set(1.2, 1.2, 1.2);
+  ring2.material = ringMat.clone();
+  ring2.material.opacity = 0.2;
+  scene.add(ring2);
+  
+  // 旋转动画
+  setInterval(function() {
+    ring1.rotation.z += 0.002;
+    ring2.rotation.z -= 0.001;
+  }, 30);
+})();
 
   // 地面：暖色沙地，远处淡入与地平线同色的雾
   (function ground() {
