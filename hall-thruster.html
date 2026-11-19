@@ -134,11 +134,14 @@
   .parts { display: flex; flex-direction: column; gap: var(--s50); }
   .part {
     display: flex; align-items: center; gap: var(--s100);
-    padding: var(--s200); border-radius: var(--r-lg); border: 1px solid transparent;
+    padding: var(--s200); border-radius: var(--r-lg);
+    background: rgba(13, 19, 29, 0.86); border: 1px solid var(--line);
     color: var(--ink-2); font-size: 14px; cursor: pointer; flex-shrink: 0;
+    width: 100%; text-align: left;
+    -webkit-appearance: none; appearance: none;
     transition: all 250ms;
   }
-  .part:hover { color: var(--ink); background: var(--surface-2); }
+  .part:hover { color: var(--ink); background: #16202E; border-color: var(--line-bright); }
   .part .idx { min-width: 24px; font-size: 11px; color: var(--ink-3); font-family: "SF Mono", monospace; font-weight: 700; text-align: center; flex-shrink: 0; }
   .part .nm { flex: 1; font-weight: 500; min-width: 0; }
   .part .en { display: block; font-size: 11px; color: var(--ink-3); font-family: "SF Mono", monospace; margin-top: 2px; }
@@ -258,7 +261,7 @@ try {
 renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 renderer.setClearColor(0x05070C, 1);
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.34;
+renderer.toneMappingExposure = 1.16;
 if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
 
 var scene = new THREE.Scene();
@@ -266,20 +269,20 @@ scene.fog = new THREE.Fog(0x23150d, 16, 48);
 var camera = new THREE.PerspectiveCamera(42, 1, 0.1, 200);
 
 /* === 灯光：主光 + 冷补光 + 轮廓光 === */
-scene.add(new THREE.HemisphereLight(0x3A4150, 0x150D08, 0.6));
-var key = new THREE.DirectionalLight(0xFFC98A, 3.6);
+scene.add(new THREE.HemisphereLight(0x2F3B4E, 0x0B0F16, 0.55));
+var key = new THREE.DirectionalLight(0xFFEFDC, 3.05);
 key.position.set(5.5, 6.5, 6.5);
 scene.add(key);
-var fill = new THREE.DirectionalLight(0x4FA6CC, 0.9);
+var fill = new THREE.DirectionalLight(0x5CB4E0, 1.15);
 fill.position.set(-6.5, -2.5, -4);
 scene.add(fill);
-var front = new THREE.DirectionalLight(0xFFD7AE, 0.7);
+var front = new THREE.DirectionalLight(0xFFE6CC, 0.5);
 front.position.set(7, 3.5, 9);
 scene.add(front);
-var rim = new THREE.DirectionalLight(0x8FE4FF, 1.7);
+var rim = new THREE.DirectionalLight(0x9FE8FF, 2.05);
 rim.position.set(-1.5, 4.5, -7);
 scene.add(rim);
-var bounce = new THREE.PointLight(0xFF9040, 2.4, 28, 2);
+var bounce = new THREE.PointLight(0xFFA45C, 0.85, 28, 2);
 bounce.position.set(1.5, -1.6, 5.5);
 scene.add(bounce);
 var plumeLight = new THREE.PointLight(0x38BDF8, 0.8, 12, 2);
@@ -316,25 +319,26 @@ scene.fog = new THREE.FogExp2(DEEP, 0.0016);
   g.save();
   g.translate(W * 0.5, H * 0.56);
   g.rotate(-0.30);
-  var bandH = H * 0.19;
+  var bandH = H * 0.27;
   var bandGrad = g.createLinearGradient(0, -bandH, 0, bandH);
-  bandGrad.addColorStop(0.00, 'rgba(38,50,88,0)');
-  bandGrad.addColorStop(0.30, 'rgba(58,74,118,0.10)');
-  bandGrad.addColorStop(0.50, 'rgba(104,120,172,0.150)');
-  bandGrad.addColorStop(0.68, 'rgba(64,78,124,0.09)');
-  bandGrad.addColorStop(1.00, 'rgba(38,50,88,0)');
+  bandGrad.addColorStop(0.00, 'rgba(44,58,102,0)');
+  bandGrad.addColorStop(0.22, 'rgba(74,94,146,0.16)');
+  bandGrad.addColorStop(0.46, 'rgba(140,160,214,0.34)');
+  bandGrad.addColorStop(0.58, 'rgba(126,142,196,0.30)');
+  bandGrad.addColorStop(0.80, 'rgba(70,86,134,0.13)');
+  bandGrad.addColorStop(1.00, 'rgba(44,58,102,0)');
   g.fillStyle = bandGrad;
   g.fillRect(-W, -bandH, W * 2, bandH * 2);
 
   /* 带内的星云团块：冷蓝为主，少量暖尘 */
-  for (var k = 0; k < 54; k++) {
+  for (var k = 0; k < 120; k++) {
     var bx = (Math.random() - 0.5) * W * 1.7;
     var by = (Math.random() - 0.5) * bandH * 1.2;
     var r = 26 + Math.random() * 96;
     var col = Math.random() > 0.68 ? '232,176,132' : '92,140,208';
     var gg = g.createRadialGradient(bx, by, 0, bx, by, r);
-    gg.addColorStop(0.00, 'rgba(' + col + ',0.030)');
-    gg.addColorStop(0.45, 'rgba(' + col + ',0.010)');
+    gg.addColorStop(0.00, 'rgba(' + col + ',0.062)');
+    gg.addColorStop(0.45, 'rgba(' + col + ',0.022)');
     gg.addColorStop(1.00, 'rgba(' + col + ',0)');
     g.fillStyle = gg;
     g.beginPath();
@@ -344,15 +348,15 @@ scene.fog = new THREE.FogExp2(DEEP, 0.0016);
   g.restore();
 
   /* 散落星云：整片天空的低频雾，避免背景"一片死黑" */
-  for (var nb = 0; nb < 9; nb++) {
+  for (var nb = 0; nb < 15; nb++) {
     var nx = Math.random() * W;
     var ny = Math.random() * H;
     var nr = 120 + Math.random() * 320;
     var cool = Math.random() > 0.28;
     var nc = cool ? '88,132,206' : '214,168,128';
     var ng = g.createRadialGradient(nx, ny, 0, nx, ny, nr);
-    ng.addColorStop(0.00, 'rgba(' + nc + ',0.040)');
-    ng.addColorStop(0.40, 'rgba(' + nc + ',0.016)');
+    ng.addColorStop(0.00, 'rgba(' + nc + ',0.075)');
+    ng.addColorStop(0.40, 'rgba(' + nc + ',0.030)');
     ng.addColorStop(1.00, 'rgba(' + nc + ',0)');
     g.fillStyle = ng;
     g.beginPath();
@@ -620,7 +624,7 @@ starLayer({ count: 260, sizeMin: 1.50, sizeMax: 3.00, alphaMin: 0.90, alphaMax: 
   cube.needsUpdate = true;
 
   scene.environment = cube;
-  if ('environmentIntensity' in scene) scene.environmentIntensity = 0.62;
+  if ('environmentIntensity' in scene) scene.environmentIntensity = 0.78;
 })();
 
 /* ---------- 4) 模型下方：极淡冷色地雾，替代橙色沙地 ---------- */
@@ -1347,21 +1351,21 @@ addPart('supFlow', (function () {
 var RACK_TOP = -1.36;
 addPart('sysRack', (function () {
   var g = new THREE.Group();
-  var plate = metal(0x5E6A75, 0.55, 0.75);
+  var plate = metal(0x353D47, 0.92, 0.12);
   /* 底板收到刚好包住三套组件；四周加一圈低边框，把三块框成一台设备 */
   var PW = 10.20, PD = 5.60, PCX = 0.42, PCZ = -1.80, LIP = 0.14, LIPH = 0.30;
   g.add(boxAt(PW, 0.24, PD, plate, PCX, RACK_TOP - 0.12, PCZ));
-  var lipM = metal(0x6E7A86, 0.5, 0.78);
+  var lipM = metal(0x4C5661, 0.62, 0.42);
   g.add(boxAt(PW, LIPH, LIP, lipM, PCX, RACK_TOP + LIPH / 2, PCZ + PD / 2 - LIP / 2));
   g.add(boxAt(PW, LIPH, LIP, lipM, PCX, RACK_TOP + LIPH / 2, PCZ - PD / 2 + LIP / 2));
   g.add(boxAt(LIP, LIPH, PD - LIP * 2, lipM, PCX - PW / 2 + LIP / 2, RACK_TOP + LIPH / 2, PCZ));
   g.add(boxAt(LIP, LIPH, PD - LIP * 2, lipM, PCX + PW / 2 - LIP / 2, RACK_TOP + LIPH / 2, PCZ));
-  var foot = metal(0x4A545E, 0.6, 0.7);
+  var foot = metal(0x333B45, 0.7, 0.35);
   [[1, 1], [1, -1], [-1, 1], [-1, -1]].forEach(function (c) {
     g.add(cylAt(0.22, 0.20, foot, PCX + c[0] * 4.75, RACK_TOP - 0.32, PCZ + c[1] * 2.45, 'y'));
   });
   /* 推力器安装座（随推力器一起移到中前方） */
-  g.add(boxAt(2.10, 0.60, 1.60, metal(0x6E7A86, 0.5, 0.8), 0.10, RACK_TOP + 0.30, 0.05));
+  g.add(boxAt(2.10, 0.60, 1.60, metal(0x505A66, 0.58, 0.55), 0.10, RACK_TOP + 0.30, 0.05));
   g.add(boxAt(1.70, 0.10, 1.20, metal(0x8A9299, 0.45, 0.85), 0.10, RACK_TOP + 0.65, 0.05));
   /* 走线/走管夹 */
   g.add(boxAt(0.30, 0.18, 0.30, metal(0x8A9299, 0.45, 0.85), 0.60, RACK_TOP + 0.09, -1.55));
