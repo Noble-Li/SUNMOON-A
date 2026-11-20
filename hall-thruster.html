@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -7,178 +7,349 @@
 <meta name="description" content="日月科技 SMH-20K 霍尔电推进系统三维拆解:推力 20 mN、比冲 ≥1300 s、功率 600 W、一次母线 28 V;点击部件拆解、自由旋转缩放,参数来自《日月科技电推进系统选型册》。">
 <link rel="icon" type="image/png" href="data:image/png;base64,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">
 <link rel="canonical" href="https://noble-li.github.io/SUNMOON-A/hall-thruster.html">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#0B0C0E">
 <meta property="og:type" content="website">
 <meta property="og:title" content="SMH-20K 霍尔电推进系统 · 3D 拆解">
 <meta property="og:description" content="点击部件拆解、旋转缩放、部件清单与参数;PPU 包络 185 × 169 × 81 mm、贮供单元 307 × 256.81 × 112.07 mm,数据来自《日月科技电推进系统选型册》。">
 <meta property="og:url" content="https://noble-li.github.io/SUNMOON-A/hall-thruster.html">
 <style>
+  /* 装配图纸面：石墨灰而不是纯黑。纯黑会把图框、投影和金属高光一起吃掉，
+     看起来像产品陈列的展台；石墨灰才有"图纸"的底子。 */
   :root {
-    --bg: #000000;
-    --surface: #0A0E16;
-    --surface-2: #111822;
-    --line: #1E2532;
-    --line-bright: #2A3544;
-    --ink: #F0F4F8;
-    --ink-2: #A8B8CC;
-    --ink-3: #6B7C92;
-    --accent: #38BDF8;
-    --accent-bright: #7DD3FC;
-    --success: #34D399;
+    --bg: #0B0C0E;
+    --sheet: #0F1114;
+    --surface: #121419;
+    --surface-2: #171A20;
+    --line: #1F2329;
+    --line-bright: #323840;
+    --ink: #ECEEF1;
+    --ink-2: #98A1AC;
+    --ink-3: #616974;
+    --mark: #E0A85C;                        /* 全站唯一彩色：选中态、引线锚点、图号 */
+    --mark-dim: rgba(224, 168, 92, 0.40);
     --ease: cubic-bezier(0.22, 1, 0.36, 1);
     --s25: 2px; --s50: 4px; --s75: 8px; --s100: 12px;
     --s200: 16px; --s300: 24px; --s400: 32px;
-    --r-sm: 6px; --r-md: 8px; --r-lg: 10px; --r-xl: 14px; --r-full: 9999px;
+    --r: 3px;
+    --mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
   }
   *, *::before, *::after { box-sizing: border-box; }
   html, body { margin: 0; height: 100%; }
   body {
     background: var(--bg);
     color: var(--ink);
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+    font-feature-settings: "tnum" 1;
   }
-  h1, h2, h3 { margin: 0; font-weight: 600; line-height: 1.3; }
+  h1, h2, h3 { margin: 0; font-weight: 600; line-height: 1.35; }
   p { margin: 0; }
-  a { color: var(--accent-bright); text-decoration: none; }
-  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-  .mono { font-family: "SF Mono", ui-monospace, Consolas, monospace; font-variant-numeric: tabular-nums; }
-  .ico { width: 16px; height: 16px; flex: none; }
-  
-  @keyframes breathe { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
-  @keyframes slide-in { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-  
+  a { color: var(--ink); text-decoration: none; }
+  :focus-visible { outline: 1px solid var(--mark); outline-offset: 2px; }
+  .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .ico { width: 15px; height: 15px; flex: none; }
+
+  @keyframes breathe { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
+
   .app { display: flex; flex-direction: column; height: 100vh; }
+
+  /* 顶栏做成图纸的标题栏横条：一条细线分隔，不加阴影不加毛玻璃 */
   .topbar {
     display: flex; align-items: center; gap: var(--s100);
-    padding: var(--s200) var(--s300);
+    padding: var(--s100) var(--s300);
     border-bottom: 1px solid var(--line);
-    background: rgba(10, 14, 22, 0.95);
-    backdrop-filter: blur(16px);
-    animation: slide-in 600ms var(--ease);
+    background: var(--bg);
   }
   .back {
-    display: inline-flex; align-items: center; gap: var(--s75);
-    padding: var(--s75) var(--s200); border-radius: var(--r-lg);
-    border: 1px solid var(--line); background: var(--surface);
-    color: var(--ink-2); font-size: 14px; font-weight: 600;
-    transition: all 300ms var(--ease);
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 10px;
+    border: 1px solid var(--line-bright); border-radius: var(--r);
+    color: var(--ink-2); font-size: 12px; font-weight: 600;
+    transition: color 180ms var(--ease), border-color 180ms var(--ease), background 180ms var(--ease);
   }
-  .back:hover { color: var(--ink); border-color: var(--line-bright); text-decoration: none; }
-  .topbar h1 { font-size: 19px; font-weight: 600; }
+  .back:hover { color: var(--ink); border-color: var(--ink-3); background: var(--surface); }
+  .topbar h1 { font-size: 14px; font-weight: 600; letter-spacing: 0.01em; }
+  .topbar h1 .sub { color: var(--ink-3); font-weight: 400; margin-left: 8px; }
   .topbar .spacer { margin-left: auto; }
-  .badge-live {
-    display: inline-flex; align-items: center; gap: var(--s75);
-    padding: var(--s50) var(--s200); border-radius: var(--r-full);
-    background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3);
-    font-size: 12px; font-weight: 600; color: var(--success);
+  /* 把"实时渲染"假状态改成图纸上的比例与图号戳记 */
+  .stamp {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 4px 10px;
+    border: 1px solid var(--line-bright); border-radius: var(--r);
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.06em;
+    color: var(--ink-3); text-transform: uppercase;
   }
-  .badge-live .dot { width: 7px; height: 7px; border-radius: var(--r-full); background: var(--success); animation: breathe 2s ease-in-out infinite; }
-  
+  .stamp b { color: var(--mark); font-weight: 600; letter-spacing: 0.08em; }
+
   .layout {
     flex: 1; min-height: 0;
-    display: grid; grid-template-columns: 280px minmax(0, 1fr) 340px;
-    gap: var(--s300); padding: var(--s300);
+    display: grid; grid-template-columns: 252px minmax(0, 1fr) 332px;
+    gap: 1px;
+    background: var(--line);
+    border-bottom: 1px solid var(--line);
   }
-  .col { min-height: 0; display: flex; flex-direction: column; gap: var(--s300); }
+  /* 三栏共用一条发丝分隔线，不各自画框——这是图纸分栏，不是仪表盘卡片 */
+  .col {
+    min-height: 0; display: flex; flex-direction: column;
+    gap: 1px; background: var(--line);
+  }
   .panel {
-    background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-xl);
-    padding: var(--s300);
+    background: var(--bg);
+    padding: var(--s200);
+    display: flex; flex-direction: column; min-height: 0;
   }
-  .panel-head { display: flex; align-items: center; gap: var(--s100); margin-bottom: var(--s200); padding-bottom: var(--s200); border-bottom: 1px solid var(--line); }
-  .panel-head h2 { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-bright); font-weight: 700; }
-  .panel-note { font-size: 12px; line-height: 18px; color: var(--ink-3); margin-top: var(--s200); }
-  
-  .stage { position: relative; height: 100%; border: 1px solid var(--line-bright); border-radius: var(--r-xl); overflow: hidden; }
+  .panel-head {
+    display: flex; align-items: baseline; gap: var(--s75);
+    margin-bottom: var(--s100); padding-bottom: var(--s75);
+    border-bottom: 1px solid var(--line);
+  }
+  .panel-head .ico { color: var(--ink-3); align-self: center; }
+  .panel-head h2 { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: var(--ink-2); }
+  .panel-note { font-size: 11px; line-height: 17px; color: var(--ink-3); margin-top: var(--s100); }
+
+  /* 舞台：图框 + 角标 + 右下标题栏 */
+  .stage {
+    position: relative; flex: 1; min-height: 0; overflow: hidden;
+    background: #000;
+  }
   .stage canvas { display: block; width: 100%; height: 100%; }
-  .stage .vig { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at center, rgba(0,0,0,0) 20%, rgba(0,0,0,0.5) 100%); }
-  .stage.is-loading::after { content: "正在生成模型"; position: absolute; inset: 0; display: grid; place-items: center; color: var(--accent); font-size: 13px; font-weight: 600; animation: breathe 1.5s infinite; }
-  
+  .stage .vig { position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse at 50% 46%, rgba(0,0,0,0) 42%, rgba(0,0,0,0.42) 100%); }
+  /* 图框：1px 细线 + 四角 L 形角标，四个角各两笔，共 8 层背景 */
+  .stage .frame {
+    position: absolute; inset: 10px; pointer-events: none;
+    border: 1px solid rgba(236, 238, 241, 0.10);
+    background:
+      linear-gradient(var(--line-bright), var(--line-bright)) 0 0 / 14px 1px no-repeat,
+      linear-gradient(var(--line-bright), var(--line-bright)) 0 0 / 1px 14px no-repeat,
+      linear-gradient(var(--line-bright), var(--line-bright)) 100% 0 / 14px 1px no-repeat,
+      linear-gradient(var(--line-bright), var(--line-bright)) 100% 0 / 1px 14px no-repeat,
+      linear-gradient(var(--line-bright), var(--line-bright)) 0 100% / 14px 1px no-repeat,
+      linear-gradient(var(--line-bright), var(--line-bright)) 0 100% / 1px 14px no-repeat,
+      linear-gradient(var(--line-bright), var(--line-bright)) 100% 100% / 14px 1px no-repeat,
+      linear-gradient(var(--line-bright), var(--line-bright)) 100% 100% / 1px 14px no-repeat;
+  }
+  .stage.is-loading::after {
+    content: "正在生成模型"; position: absolute; inset: 0; display: grid; place-items: center;
+    color: var(--ink-3); font-size: 12px; letter-spacing: 0.08em; animation: breathe 1.6s infinite;
+  }
+
+  /* 右下角标题栏：图名 / 图号 / 比例 / 单位。装配图靠这一块立住身份。 */
+  .titleblock {
+    position: absolute; right: 22px; bottom: 22px; pointer-events: none;
+    display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto;
+    border: 1px solid var(--line-bright);
+    background: rgba(11, 12, 14, 0.78);
+    font-size: 10.5px; line-height: 1.35; color: var(--ink-2);
+  }
+  .titleblock > * { padding: 4px 8px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .titleblock > *:last-child { border-right: 0; }
+  .titleblock .tb-l { color: var(--ink-3); font-size: 9.5px; letter-spacing: 0.08em; background: rgba(255,255,255,0.02); }
+  .titleblock .tb-v { font-family: var(--mono); letter-spacing: 0.02em; white-space: nowrap; }
+  .titleblock .tb-name { grid-column: span 3; font-weight: 600; color: var(--ink); font-size: 11px; letter-spacing: 0.02em; }
+  .titleblock .tb-no { color: var(--mark); }
+
   .labels { position: absolute; inset: 0; pointer-events: none; }
+  /* 标注退成图纸注释：直角小牌 + 左侧一道标记色，不再是发光的玻璃药丸 */
+  /* 标注：平时是图上的序号气泡（明细栏按同号对应），选中或悬停才展开成文字牌。
+     这样零件再密，画面上也不会糊满贴纸。 */
   .lbl {
     position: absolute; transform: translate(-50%, -50%);
-    display: flex; align-items: center; gap: var(--s75);
-    padding: var(--s50) var(--s200); background: rgba(17, 24, 34, 0.95); backdrop-filter: blur(12px);
-    border: 1px solid var(--line-bright); border-radius: var(--r-md);
-    font-size: 12px; color: var(--ink); opacity: 0; transition: opacity 300ms;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    width: 22px; height: 22px; padding: 0;
+    background: rgba(9, 10, 12, 0.86);
+    border: 1px solid rgba(224, 168, 92, 0.62); border-radius: 50%;
+    font-size: 11px; line-height: 15px; color: var(--ink);
+    white-space: nowrap; opacity: 0;
+    transition: opacity 260ms var(--ease), border-color 160ms var(--ease), background-color 160ms var(--ease);
   }
   .lbl.is-on { opacity: 1; }
-  .lbl .dot { width: 6px; height: 6px; border-radius: var(--r-full); background: var(--accent); }
-  .lbl.is-active { border-color: var(--accent); color: var(--accent-bright); }
-  
-  .hud { position: absolute; left: var(--s200); top: var(--s200); display: flex; flex-wrap: wrap; gap: var(--s75); }
+  .lbl .dot { display: none; }
+  .lbl .idx { font-family: var(--mono); font-size: 10px; color: var(--ink); }
+  .lbl .nm, .lbl .sp { display: none; }
+  .lbl.is-text {
+    width: auto; height: auto; justify-content: flex-start;
+    padding: 2px 7px 2px 6px; border-radius: 2px;
+    border-color: var(--line-bright); border-left: 2px solid var(--mark);
+    background: rgba(9, 10, 12, 0.92);
+  }
+  .lbl.is-text .idx { color: var(--mark); }
+  .lbl.is-text .nm { display: inline; font-weight: 600; }
+  .lbl.is-text .sp { display: inline; color: var(--ink-3); font-family: var(--mono); font-size: 10px; }
+  .lbl.is-active { border-color: var(--mark); background: rgba(24, 18, 10, 0.94); }
+  .lbl.is-active .sp { color: var(--mark); }
+  .lbl.is-active .idx { color: var(--mark); }
+  /* 引线：从部件锚点拉到标签边框的 1px 细线（原版完全没写样式，引线是不可见的） */
+  .lead {
+    position: absolute; left: 0; top: 0; height: 0;
+    display: none; pointer-events: none;
+    transform-origin: 0 0;
+    border-top: 1px solid var(--mark-dim);
+  }
+  .lead.is-active { border-top-color: var(--mark); }
+  .lead-dot {
+    position: absolute; display: none; pointer-events: none;
+    width: 5px; height: 5px; margin: -2.5px 0 0 -2.5px; border-radius: 50%;
+    background: var(--ink-2); box-shadow: 0 0 0 1.5px rgba(0, 0, 0, 0.85);
+  }
+  .lead-dot.is-active { background: var(--mark); }
+
+  .hud { position: absolute; left: 22px; top: 22px; display: flex; flex-wrap: wrap; gap: 1px; }
   .hint {
-    position: absolute; left: var(--s200); bottom: var(--s200);
+    position: absolute; left: 22px; bottom: 22px;
     display: flex; flex-wrap: wrap; gap: var(--s75) var(--s200);
-    padding: var(--s200) var(--s300); background: rgba(17, 24, 34, 0.92); backdrop-filter: blur(12px);
-    border: 1px solid var(--line-bright); border-radius: var(--r-lg);
-    font-size: 12px; color: var(--ink-2);
+    font-size: 11px; color: var(--ink-3);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
   }
-  .hint .k { padding: var(--s25) var(--s75); border-radius: var(--r-sm); border: 1px solid var(--line-bright); background: var(--surface); color: var(--accent-bright); font-size: 11px; font-family: "SF Mono", monospace; font-weight: 600; }
-  
+  .hint .k {
+    padding: 1px 5px; border: 1px solid var(--line); border-radius: 2px;
+    background: rgba(9, 10, 12, 0.6); color: var(--ink-2);
+    font-family: var(--mono); font-size: 10px;
+  }
+
   .btn {
-    display: inline-flex; align-items: center; gap: var(--s75);
-    padding: var(--s75) var(--s200); border-radius: var(--r-md);
-    border: 1px solid var(--line-bright); background: var(--surface-2);
-    color: var(--ink-2); font-size: 12px; font-weight: 600; cursor: pointer;
-    transition: all 250ms var(--ease);
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 10px;
+    border: 1px solid var(--line-bright); border-radius: var(--r);
+    background: rgba(15, 17, 20, 0.92);
+    color: var(--ink-2); font-size: 11.5px; font-weight: 500; font-family: inherit;
+    cursor: pointer; white-space: nowrap;
+    transition: color 160ms var(--ease), border-color 160ms var(--ease), background 160ms var(--ease);
   }
-  .btn:hover { color: var(--ink); border-color: var(--accent); }
-  .btn:active { transform: scale(0.98); }
-  .btn[aria-pressed="true"] { color: var(--accent-bright); border-color: var(--accent); background: rgba(56, 189, 248, 0.12); }
-  .btn-primary { background: linear-gradient(135deg, var(--accent-bright), #0EA5E9); border-color: var(--accent); color: #000; font-weight: 700; }
-  .btn-row { display: flex; flex-wrap: wrap; gap: var(--s75); margin-top: var(--s200); }
-  
-  .parts { display: flex; flex-direction: column; gap: var(--s50); }
+  .btn:hover { color: var(--ink); border-color: var(--ink-3); background: var(--surface-2); }
+  .btn:active { transform: scale(0.985); }
+  .btn[aria-pressed="true"] { color: var(--mark); border-color: var(--mark-dim); background: rgba(224, 168, 92, 0.08); }
+  .btn-primary {
+    background: var(--ink); border-color: var(--ink); color: #0B0C0E; font-weight: 600;
+  }
+  .btn-primary:hover { background: #fff; border-color: #fff; color: #0B0C0E; }
+  .btn-row { display: flex; flex-wrap: wrap; gap: var(--s75); margin-top: var(--s100); }
+
+  /* 部件清单做成 BOM 表：发丝分隔 + 序号列，行与行之间不再是卡片 */
+  .parts { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow-y: auto;
+    scrollbar-width: thin; scrollbar-color: var(--line-bright) transparent; }
+  .col-left, .col-right { overflow: hidden; }
+  .col-left .panel { flex: 1; min-height: 0; }
   .part {
-    display: flex; align-items: center; gap: var(--s100);
-    padding: var(--s200); border-radius: var(--r-lg);
-    background: rgba(13, 19, 29, 0.86); border: 1px solid var(--line);
-    color: var(--ink-2); font-size: 14px; cursor: pointer; flex-shrink: 0;
-    width: 100%; text-align: left;
+    display: flex; align-items: baseline; gap: var(--s75);
+    padding: 7px 8px 7px 10px;
+    border: 0; border-bottom: 1px solid var(--line);
+    background: none; color: var(--ink-2);
+    font-size: 12.5px; font-family: inherit; text-align: left; width: 100%;
+    cursor: pointer; flex-shrink: 0;
     -webkit-appearance: none; appearance: none;
-    transition: all 250ms;
+    transition: background 160ms var(--ease), color 160ms var(--ease), box-shadow 160ms var(--ease);
   }
-  .part:hover { color: var(--ink); background: #16202E; border-color: var(--line-bright); }
-  .part .idx { min-width: 24px; font-size: 11px; color: var(--ink-3); font-family: "SF Mono", monospace; font-weight: 700; text-align: center; flex-shrink: 0; }
-  .part .nm { flex: 1; font-weight: 500; min-width: 0; }
-  .part .en { display: block; font-size: 11px; color: var(--ink-3); font-family: "SF Mono", monospace; margin-top: 2px; }
-  .part .flag { width: 6px; height: 6px; border-radius: var(--r-full); background: var(--line-bright); flex-shrink: 0; }
-  .part[aria-current="true"] { color: var(--accent-bright); background: rgba(56, 189, 248, 0.12); border-color: var(--accent); }
-  
-  .col-left { overflow: hidden; }
-  .col-left .panel { display: flex; flex-direction: column; min-height: 0; flex: 1; }
-  .col-left .parts { flex: 1; min-height: 0; overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(56, 189, 248, 0.3) transparent; }
-  .col-left .btn-row { flex: 0 0 auto; }
-  
-  .detail-title { font-size: 22px; font-weight: 600; }
-  .detail-en { margin-top: var(--s75); font-size: 12px; color: var(--ink-3); font-family: "SF Mono", monospace; }
-  .detail-role { display: inline-block; margin-top: var(--s200); padding: var(--s50) var(--s200); border-radius: var(--r-md); background: rgba(56, 189, 248, 0.12); border: 1px solid var(--accent); color: var(--accent-bright); font-size: 12px; font-weight: 700; }
-  .detail-desc { margin-top: var(--s300); font-size: 14px; line-height: 24px; color: var(--ink-2); }
-  .specs { margin: var(--s300) 0 0; display: grid; gap: var(--s200); }
-  .spec { display: grid; grid-template-columns: 96px 1fr; gap: var(--s200); padding: var(--s200); border-radius: var(--r-md); background: rgba(56, 189, 248, 0.04); }
-  .spec dt { color: var(--accent); font-weight: 600; font-size: 12px; text-transform: uppercase; }
-  .spec dd { margin: 0; color: var(--ink); font-family: "SF Mono", monospace; font-weight: 500; }
-  
-  .guide { display: grid; grid-template-columns: repeat(4, 1fr) 1.2fr; gap: var(--s300); padding: var(--s300); border-top: 1px solid var(--line); background: var(--surface); }
-  .guide-item { display: flex; gap: var(--s200); }
-  .guide-item .ico { color: var(--accent); margin-top: var(--s50); }
-  .guide-item h3 { font-size: 14px; color: var(--ink); }
-  .guide-item p { margin-top: var(--s75); font-size: 12px; color: var(--ink-3); }
-  
-  @media (max-width: 1080px) { .layout { grid-template-columns: 1fr; } .col-stage { order: -1; } .stage { height: 62vh; min-height: 400px; } .guide { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 640px) { .topbar { padding: var(--s200); } .stage { height: 54vh; } .hint { display: none; } }
+  .part:hover { background: var(--surface); color: var(--ink); }
+  .part .idx { min-width: 15px; font-family: var(--mono); font-size: 10px; color: var(--ink-3);
+    text-align: left; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+  .part .nm { flex: 1; min-width: 0; font-weight: 500; }
+  .part .en { display: none; }
+  .part .flag { width: 4px; height: 4px; border-radius: 50%; background: var(--line-bright); flex-shrink: 0; align-self: center; }
+  .part[aria-current="true"] {
+    color: var(--ink); background: var(--surface-2);
+    box-shadow: inset 2px 0 0 var(--mark);
+  }
+  .part[aria-current="true"] .idx { color: var(--mark); }
+  .part[aria-current="true"] .flag { background: var(--mark); }
+
+  .detail-title { font-size: 16px; font-weight: 600; letter-spacing: 0.01em; }
+  .detail-en { margin-top: 3px; font-size: 10.5px; color: var(--ink-3); font-family: var(--mono); letter-spacing: 0.02em; }
+  .detail-role {
+    display: inline-block; margin-top: var(--s100); padding: 2px 8px;
+    border: 1px solid var(--mark-dim); border-radius: 2px;
+    color: var(--mark); font-size: 10.5px; font-weight: 600; letter-spacing: 0.04em;
+  }
+  .detail-desc { margin-top: var(--s100); font-size: 12.5px; line-height: 21px; color: var(--ink-2); }
+  .detail-empty { font-size: 12.5px; line-height: 21px; color: var(--ink-3); }
+  .specs { margin: var(--s100) 0 0; display: grid; gap: 0; }
+  .spec { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: var(--s100);
+    padding: 5px 0; border-bottom: 1px solid var(--line); }
+  .spec:last-child { border-bottom: 0; }
+  .spec dt { color: var(--ink-3); font-weight: 500; font-size: 11px; }
+  .spec dd { margin: 0; color: var(--ink); font-family: var(--mono); font-size: 11.5px; text-align: right; }
+  /* 部件详情里的说明文字是整句，右对齐会把句子拆成一堆对齐的碎片 */
+  #infoBody .spec dd { text-align: left; font-family: inherit; font-size: 12px; line-height: 18px; }
+  #infoBody .spec dt { font-size: 11px; line-height: 18px; }
+
+  /* 整机参数压成两列规格表，把右栏高度让给部件详情 */
+  #totalBody .specs { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 18px; }
+  #totalBody .spec { grid-template-columns: minmax(0, 1fr); padding: 4px 0; }
+  #totalBody .spec dt { font-size: 10px; }
+  #totalBody .spec dd { text-align: left; font-size: 10.5px; line-height: 15px; color: var(--ink-2); }
+
+  /* 右栏整列一起滚：两块面板各自滚会在一行中间切断，看着像渲染坏了 */
+  .col-right { overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--line-bright) transparent; }
+  .col-right #infoPanel { flex: 0 0 auto; }
+  .col-right #totalPanel { flex: 0 0 auto; }
+
+  .guide {
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)) 1.15fr;
+    gap: var(--s300); padding: var(--s200) var(--s300) var(--s300);
+    background: var(--bg);
+  }
+  .guide-item { display: flex; gap: var(--s75); }
+  .guide-item .ico { color: var(--ink-3); margin-top: 2px; }
+  .guide-item h3 { font-size: 11.5px; color: var(--ink-2); font-weight: 600; letter-spacing: 0.02em; }
+  .guide-item p { margin-top: 3px; font-size: 11px; line-height: 16px; color: var(--ink-3); }
+  .guide-note p { margin: 0; font-size: 11px; line-height: 16px; color: var(--ink-3); font-family: var(--mono); }
+
+  /* 纯净出图模式：?clean=1 只留渲染画面，用于生成首页插图与分享图 */
+  body.is-clean .topbar,
+  body.is-clean .col-left,
+  body.is-clean .col-right,
+  body.is-clean .guide,
+  body.is-clean .hud,
+  body.is-clean .hint,
+  body.is-clean .titleblock,
+  body.is-clean .frame,
+  body.is-clean .labels { display: none; }
+  body.is-clean .app { height: 100vh; }
+  body.is-clean .layout { grid-template-columns: minmax(0, 1fr); padding: 0; gap: 0; border: 0; background: #000; }
+  body.is-clean .col-stage { order: 0; }
+  body.is-clean .stage { height: 100vh; }
+  @media (max-width: 1180px) {
+    .layout { grid-template-columns: 220px minmax(0, 1fr); }
+    .col-right { grid-column: 1 / -1; flex-direction: row; }
+  .col-right #infoPanel, .col-right #totalPanel { flex: 1 1 50%; }
+    .col-right .panel { flex: 1 1 50%; }
+    .guide { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .guide-note { grid-column: 1 / -1; }
+  }
+  @media (max-width: 900px) {
+    .app { height: auto; min-height: 100%; }
+    .layout { grid-template-columns: minmax(0, 1fr); }
+    .col-stage { order: -1; }
+    .stage { height: 62vh; min-height: 380px; }
+    .col-right { flex-direction: column; }
+    .col-left .panel { max-height: 46vh; }
+    .titleblock { display: none; }
+    .hint { display: none; }
+  }
+  @media (max-width: 600px) {
+    .topbar { padding: var(--s100) var(--s200); gap: var(--s75); }
+    .topbar h1 { font-size: 12.5px; }
+    .topbar h1 .sub { display: none; }
+    .stamp { display: none; }
+    .stage { height: 54vh; }
+    .hud { left: 12px; top: 12px; gap: 4px; }
+    .btn { padding: 4px 8px; font-size: 11px; }
+    .guide { grid-template-columns: minmax(0, 1fr); gap: var(--s200); padding: var(--s200); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
 </style>
 </head>
 <body>
 <div class="app">
   <header class="topbar">
     <a class="back" href="./index.html"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 5l-5 5 5 5M6 10h9"/></svg>返回日报</a>
-    <h1>SMH-20K 霍尔电推进系统 · 3D 拆解</h1>
+    <h1>SMH-20K 霍尔电推进系统<span class="sub">三维拆解 · 装配示意</span></h1>
     <span class="spacer"></span>
-    <span class="badge-live"><span class="dot"></span>实时渲染</span>
+    <span class="stamp">图号 <b>SMH-20K-00</b> 比例 1:50</span>
   </header>
   <main class="layout">
     <section class="col col-left">
@@ -196,6 +367,7 @@
       <div class="stage is-loading" id="stage">
         <canvas id="view"></canvas>
         <div class="vig"></div>
+        <div class="frame" aria-hidden="true"></div>
         <div class="labels" id="labels"></div>
         <div class="hud">
           <button class="btn" data-view="iso"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 3l6 3.2v7.6L10 17l-6-3.2V6.2L10 3Z"/><path d="M4 6.2 10 9.5l6-3.3M10 9.5V17"/></svg>等轴</button>
@@ -211,6 +383,13 @@
           <span><span class="k">拖拽</span> 旋转</span>
           <span><span class="k">滚轮</span> 缩放</span>
           <span><span class="k">单击部件</span> 拆解 / 收起</span>
+        </div>
+        <div class="titleblock" aria-hidden="true">
+          <span class="tb-l">图名</span><span class="tb-name">SMH-20K 霍尔推力器 · 装配示意</span>
+          <span class="tb-l">图号</span><span class="tb-v tb-no">SMH-20K-00</span>
+          <span class="tb-l">比例</span><span class="tb-v">1:50</span>
+          <span class="tb-l">单位</span><span class="tb-v">mm</span>
+          <span class="tb-l">投影</span><span class="tb-v">第一角法</span>
         </div>
       </div>
     </section>
@@ -261,7 +440,7 @@ try {
 renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 renderer.setClearColor(0x05070C, 1);
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.16;
+renderer.toneMappingExposure = 1.3;
 if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
 
 var scene = new THREE.Scene();
@@ -270,22 +449,22 @@ var camera = new THREE.PerspectiveCamera(42, 1, 0.1, 200);
 
 /* === 灯光：主光 + 冷补光 + 轮廓光 === */
 scene.add(new THREE.HemisphereLight(0x2F3B4E, 0x0B0F16, 0.55));
-var key = new THREE.DirectionalLight(0xFFEFDC, 3.05);
+var key = new THREE.DirectionalLight(0xFFEFDC, 2.55);
 key.position.set(5.5, 6.5, 6.5);
 scene.add(key);
-var fill = new THREE.DirectionalLight(0x5CB4E0, 1.15);
+var fill = new THREE.DirectionalLight(0x7E94AE, 1.05);
 fill.position.set(-6.5, -2.5, -4);
 scene.add(fill);
 var front = new THREE.DirectionalLight(0xFFE6CC, 0.5);
 front.position.set(7, 3.5, 9);
 scene.add(front);
-var rim = new THREE.DirectionalLight(0x9FE8FF, 2.05);
+var rim = new THREE.DirectionalLight(0xD8E2EE, 1.6);
 rim.position.set(-1.5, 4.5, -7);
 scene.add(rim);
 var bounce = new THREE.PointLight(0xFFA45C, 0.85, 28, 2);
 bounce.position.set(1.5, -1.6, 5.5);
 scene.add(bounce);
-var plumeLight = new THREE.PointLight(0x38BDF8, 0.8, 12, 2);
+var plumeLight = new THREE.PointLight(0xE0A85C, 0.55, 12, 2);
 plumeLight.position.set(0, 0, 3.2);
 scene.add(plumeLight);
 
@@ -1568,94 +1747,100 @@ addPart('sysRack', (function () {
   return g;
 })()).labelOffset.set(-4.80, -1.20, -4.60);
 
-/* === 底座回转刻度盘：环绕底座的刻度环，缓慢自转 === */
-(function baseDial() {
-  var CW2 = 1024, cc = CW2 / 2, R = 500;
-  var cv = document.createElement('canvas'); cv.width = cv.height = CW2;
+/* === 基准面 A：装配图的地面基准 ===
+   原来这里是一圈 360° 回转刻度盘加冷光池 —— 那是"产品转台"的语言，
+   模型放上去就成了展品。换成制图的基准网格 + 线性标尺 + 基准符号：
+   一样有刻度、数字和几何，但读起来是图纸，不是展台。网格不转动、不发霓虹光。 */
+(function baseGrid() {
+  var CW = 1024;
+  var cv = document.createElement('canvas');
+  cv.width = cv.height = CW;
   var x = cv.getContext('2d');
-  var CY = 'rgba(126,208,244,';
+  var C = 'rgba(170, 184, 200,';          // 中性灰蓝，不是霓虹青
+  var STEP = 31.25;                       // 1 单位 = 50 mm → 一格 = 25 mm
+  var mmPerPx = 820 / CW;
 
-  function ring(r, wdt, a) {
-    x.lineWidth = wdt; x.strokeStyle = CY + a + ')';
-    x.beginPath(); x.arc(cc, cc, r, 0, Math.PI * 2); x.stroke();
+  /* 网格：每 4 格加粗，接近硫酸纸上的坐标纸 */
+  for (var i = 0; i * STEP <= CW + 1; i++) {
+    var p = i * STEP + 0.5;
+    var major = i % 4 === 0;
+    x.lineWidth = major ? 1.2 : 1;
+    x.strokeStyle = C + (major ? 0.17 : 0.065) + ')';
+    x.beginPath(); x.moveTo(p, 0); x.lineTo(p, CW); x.stroke();
+    x.beginPath(); x.moveTo(0, p); x.lineTo(CW, p); x.stroke();
   }
-  ring(R, 3.5, 0.62);
-  ring(R * 0.94, 2, 0.40);
-  ring(R * 0.76, 1.8, 0.34);
-  ring(R * 0.58, 1.8, 0.24);
 
-  for (var d = 0; d < 360; d += 1) {
-    var a1 = (d - 90) * Math.PI / 180;
-    var r1 = R, r2 = R - (d % 30 === 0 ? 62 : (d % 10 === 0 ? 40 : (d % 5 === 0 ? 26 : 12)));
-    x.lineWidth = (d % 30 === 0) ? 3.4 : (d % 10 === 0 ? 2.4 : 1.2);
-    x.strokeStyle = CY + ((d % 30 === 0) ? 0.92 : (d % 10 === 0 ? 0.62 : 0.26)) + ')';
+  /* 中心基准十字 + 基准符号 A */
+  x.strokeStyle = C + '0.50)';
+  x.lineWidth = 2;
+  x.beginPath(); x.moveTo(CW / 2 - 22, CW / 2); x.lineTo(CW / 2 + 22, CW / 2); x.stroke();
+  x.beginPath(); x.moveTo(CW / 2, CW / 2 - 22); x.lineTo(CW / 2, CW / 2 + 22); x.stroke();
+  x.beginPath();
+  x.moveTo(CW / 2, CW / 2 - 30);
+  x.lineTo(CW / 2 - 10, CW / 2 - 48);
+  x.lineTo(CW / 2 + 10, CW / 2 - 48);
+  x.closePath();
+  x.strokeStyle = C + '0.62)';
+  x.stroke();
+  x.fillStyle = C + '0.72)';
+  x.font = '600 26px "Cascadia Mono", Consolas, monospace';
+  x.textAlign = 'center';
+  x.textBaseline = 'bottom';
+  x.fillText('A', CW / 2, CW / 2 - 56);
+
+  /* 上下两条线性标尺：0 / 200 / 400 / 600 mm，两端加尺寸界线 */
+  x.font = '500 20px "Cascadia Mono", Consolas, monospace';
+  x.textBaseline = 'middle';
+  x.strokeStyle = C + '0.45)';
+  x.lineWidth = 1.4;
+  var y0 = 58, y1 = CW - 58;
+  x.beginPath(); x.moveTo(70, y0); x.lineTo(CW - 70, y0); x.stroke();
+  x.beginPath(); x.moveTo(70, y1); x.lineTo(CW - 70, y1); x.stroke();
+  for (var m = 0; m <= 600; m += 50) {
+    var px = 70 + (m / mmPerPx) * 0 + (m / 820) * (CW - 140) ;
+    var tall = m % 200 === 0;
     x.beginPath();
-    x.moveTo(cc + Math.cos(a1) * r1, cc + Math.sin(a1) * r1);
-    x.lineTo(cc + Math.cos(a1) * r2, cc + Math.sin(a1) * r2);
+    x.moveTo(px, y0 - (tall ? 13 : 7));
+    x.lineTo(px, y0 + (tall ? 13 : 7));
     x.stroke();
-  }
-
-  x.fillStyle = CY + '0.92)';
-  x.font = '700 36px "Microsoft YaHei", "PingFang SC", sans-serif';
-  x.textAlign = 'center'; x.textBaseline = 'middle';
-  for (var dd = 0; dd < 360; dd += 30) {
-    var a3 = (dd - 90) * Math.PI / 180;
-    var rr = R - 118;
-    x.save();
-    x.translate(cc + Math.cos(a3) * rr, cc + Math.sin(a3) * rr);
-    x.fillText(String(dd), 0, 0);
-    x.restore();
-  }
-
-  x.fillStyle = CY + '0.95)';
-  x.font = '700 30px "Microsoft YaHei", "PingFang SC", sans-serif';
-  [[0, 'REF 0°'], [180, '180°']].forEach(function (it) {
-    var a4 = (it[0] - 90) * Math.PI / 180;
-    x.save();
-    x.translate(cc + Math.cos(a4) * (R - 196), cc + Math.sin(a4) * (R - 196));
-    x.fillText(it[1], 0, 0);
-    x.restore();
-  });
-
-  for (var s = 0; s < 8; s++) {
-    var a5 = s * Math.PI / 4;
-    x.strokeStyle = CY + '0.34)'; x.lineWidth = 2;
     x.beginPath();
-    x.arc(cc, cc, R * 0.50, a5 + 0.06, a5 + Math.PI / 4 - 0.06);
+    x.moveTo(px, y1 - (tall ? 13 : 7));
+    x.lineTo(px, y1 + (tall ? 13 : 7));
     x.stroke();
+    if (tall) {
+      x.fillStyle = C + '0.52)';
+      x.textAlign = 'center';
+      x.fillText(String(m), px, y0 - 26);
+    }
   }
 
-  var tex2 = new THREE.CanvasTexture(cv);
-  tex2.colorSpace = THREE.SRGBColorSpace;
-  tex2.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
-  var D2 = 16.4;
+  /* 边缘用径向遮罩淡出：基准面是一块渐隐的地面，不是一块硬边方板 */
+  x.globalCompositeOperation = 'destination-in';
+  var mask = x.createRadialGradient(CW / 2, CW / 2, CW * 0.05, CW / 2, CW / 2, CW * 0.52);
+  mask.addColorStop(0.00, 'rgba(0,0,0,1)');
+  mask.addColorStop(0.62, 'rgba(0,0,0,0.92)');
+  mask.addColorStop(1.00, 'rgba(0,0,0,0)');
+  x.fillStyle = mask;
+  x.fillRect(0, 0, CW, CW);
+  x.globalCompositeOperation = 'source-over';
+  /* 左下角图注 */
+  x.textAlign = 'left';
+  x.textBaseline = 'bottom';
+  x.fillStyle = C + '0.40)';
+  x.font = '500 19px "Cascadia Mono", Consolas, monospace';
+  x.fillText('基准面 A  ·  网格 25 mm  ·  1 单位 = 50 mm', 76, CW - 22);
+
+  var tex = new THREE.CanvasTexture(cv);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+  var D2 = 17.0;
   dialMesh = new THREE.Mesh(
     new THREE.PlaneGeometry(D2, D2),
-    new THREE.MeshBasicMaterial({ map: tex2, transparent: true, depthWrite: false, fog: false, opacity: 0.86, toneMapped: false })
+    new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false, fog: false, opacity: 0.85, toneMapped: false })
   );
   dialMesh.rotation.x = -Math.PI / 2;
-  dialMesh.position.set(0.42, -2.63, -1.80);
+  dialMesh.position.set(0.42, -2.78, -1.80);
   scene.add(dialMesh);
-
-  /* 底座下的冷光池，让刻度盘从地雾里“亮”出来 */
-  (function glowPool() {
-    var gc = document.createElement('canvas'); gc.width = gc.height = 512;
-    var g2 = gc.getContext('2d');
-    var rg = g2.createRadialGradient(256, 256, 0, 256, 256, 256);
-    rg.addColorStop(0, 'rgba(96,186,236,0.26)');
-    rg.addColorStop(0.42, 'rgba(60,140,200,0.13)');
-    rg.addColorStop(1, 'rgba(20,60,110,0)');
-    g2.fillStyle = rg; g2.fillRect(0, 0, 512, 512);
-    var gt = new THREE.CanvasTexture(gc);
-    gt.colorSpace = THREE.SRGBColorSpace;
-    var pool = new THREE.Mesh(
-      new THREE.PlaneGeometry(21, 21),
-      new THREE.MeshBasicMaterial({ map: gt, transparent: true, depthWrite: false, fog: false, opacity: 0.6, toneMapped: false })
-    );
-    pool.rotation.x = -Math.PI / 2;
-    pool.position.set(0.42, -2.65, -1.80);
-    scene.add(pool);
-  })();
 })();
 
 /* =====================================================================
@@ -1832,7 +2017,7 @@ function fitDistFor(yaw, pitch) { return fitDistForBox(yaw, pitch, currentBox())
 function fitDistForBox(yaw, pitch, box) {
   if (box.isEmpty()) return HOME.dist || 13;
   var fov = camera.fov * Math.PI / 180;
-  var tanV = Math.tan(fov / 2) * 0.84;
+  var tanV = Math.tan(fov / 2) * 0.78;
   var tanH = tanV * Math.max(0.55, camera.aspect);
   var dir = new THREE.Vector3(Math.cos(pitch) * Math.sin(yaw), Math.sin(pitch), Math.cos(pitch) * Math.cos(yaw)).normalize();
   var right = new THREE.Vector3().crossVectors(new THREE.Vector3(0, 1, 0), dir).normalize();
@@ -1844,7 +2029,7 @@ function fitDistForBox(yaw, pitch, box) {
     var xp = Math.abs(v.dot(right)), yp = Math.abs(v.dot(up)), zp = v.dot(dir);
     need = Math.max(need, zp + xp / tanH, zp + yp / tanV);
   }
-  return Math.max(need * 0.82, 2.5);
+  return Math.max(need * 0.94, 2.5);
 }
 var userZoomed = false;
 var fittedOnce = false;
@@ -2012,8 +2197,15 @@ function clearSelection() {
 function togglePart(id) {
   var p = partById(id);
   if (!p) return;
-  p.target = p.target > 0.5 ? 0 : 1;
-  if (p.target > 0.5) selectPart(id); else if (selectedId === id) clearSelection();
+  if (p.selected) {
+    /* 再点一次：收起并取消选中 */
+    if (p.target > 0.5) p.target = 0;
+    clearSelection();
+  } else {
+    /* 第一次点：无论当前是否已拆开，都选中并展开，避免"点一下反而收起来"的困惑 */
+    if (p.target < 0.5) p.target = 1;
+    selectPart(id);
+  }
   syncExplodeButton();
 }
 
@@ -2138,10 +2330,10 @@ function renderTotal() {
 /* === 标注：投影到屏幕 + 垂直避让 + 引线 === */
 var labelsEl = document.getElementById('labels');
 
-PARTS.forEach(function (p) {
+PARTS.forEach(function (p, pi) {
   var el = document.createElement('div');
   el.className = 'lbl';
-  el.innerHTML = '<span class="dot"></span><span class="nm">' + p.name + '</span><span class="sp">' + p.labelSpec + '</span>';
+  el.innerHTML = '<span class="idx">' + ('0' + (pi + 1)).slice(-2) + '</span><span class="nm">' + p.name + '</span><span class="sp">' + p.labelSpec + '</span>';
   labelsEl.appendChild(el);
   p.labelEl = el;
   var dot = document.createElement('div');
@@ -2185,58 +2377,94 @@ function updateLabels() {
     });
     p.dot.style.display = 'none';
     p.labelEl.classList.add('is-on');
-    p.labelEl.classList.toggle('is-active', p.selected);
+    var emph = !!(p.selected || p.hover);
+    p.labelEl.classList.toggle('is-active', emph);
+    p.labelEl.classList.toggle('is-text', emph);
   });
 
   // 同屏最多 12 个标签：选中/悬停优先，其余按离镜头远近取，避免 26 个部件全拆时糊成一片
-  if (live.length > 12) {
+  if (live.length > 26) {
     live.sort(function (m, n) {
       var pa = m.p.selected ? 0 : (m.p.hover ? 1 : 2);
       var pb = n.p.selected ? 0 : (n.p.hover ? 1 : 2);
       if (pa !== pb) return pa - pb;
       return m.dist - n.dist;
     });
-    live.slice(12).forEach(function (item) {
+    live.slice(26).forEach(function (item) {
       item.p.labelEl.classList.remove('is-on');
       item.p.leader.style.display = 'none';
       item.p.dot.style.display = 'none';
     });
-    live = live.slice(0, 12);
+    live = live.slice(0, 26);
   }
 
-  // 锚点从上到下依次处理，每个标签向下让位到不与已放置标签重叠的位置；
-  // 顶到画布底部就换到右侧重新排，避免把标签推出视野。
-  live.sort(function (m, n) { return m.ay - n.ay; });
-  var placed = [];
+  // 装配图的引出线标注：标签不压在零件上，而是被推到零件两侧，
+  // 左半边的零件往左引、右半边往右引，再从锚点拉一条细引线过去。
+  // 这样零件挤在中间时标签也不会互相盖住——原版是逐个向下顶，12 个标签会叠成一堆。
+  // 模型在当前视角下占用的屏幕范围（含上下），用于确定外推方向。
+  var mb = (function () {
+    var box = currentBox();
+    var L = Infinity, R = -Infinity, T = Infinity, B = -Infinity;
+    var v = new THREE.Vector3();
+    if (!box.isEmpty()) {
+      for (var c = 0; c < 8; c++) {
+        v.set(c & 1 ? box.max.x : box.min.x, c & 2 ? box.max.y : box.min.y, c & 4 ? box.max.z : box.min.z);
+        v.project(camera);
+        var sx = (v.x * 0.5 + 0.5) * rect.width;
+        var sy = (-v.y * 0.5 + 0.5) * rect.height;
+        if (sx < L) L = sx; if (sx > R) R = sx;
+        if (sy < T) T = sy; if (sy > B) B = sy;
+      }
+    }
+    if (!isFinite(L)) { L = rect.width * 0.34; R = rect.width * 0.66; T = rect.height * 0.34; B = rect.height * 0.66; }
+    return {
+      l: Math.max(L, 8), r: Math.min(R, rect.width - 8),
+      t: Math.max(T, 8), b: Math.min(B, rect.height - 8)
+    };
+  })();
+
+  // 气泡：从锚点沿「背离画面中心」的方向外推一小段，引线短且互不交叉。
+  // 装配图上的标注就该贴着零件，而不是在图纸两端拉一张蛛网。
+  var cx = (mb.l + mb.r) * 0.5;
+  var cy = (mb.t + mb.b) * 0.5;
+  var taken = [];
+  var ANGLES = [0, -0.42, 0.42, -0.85, 0.85, -1.35, 1.35, -1.9, 1.9];
   live.forEach(function (item) {
     var el = item.p.labelEl;
-    var w = el.offsetWidth || 140;
+    var isText = el.classList.contains('is-text');
+    var w = el.offsetWidth || (isText ? 140 : 22);
     var hh = el.offsetHeight || 22;
-    var padX = w / 2 + 8;
-    var padY = hh / 2 + 8;
-    var x = clamp(item.ax, padX, rect.width - padX);
-    var bottomPad = Math.max(padY, 56);
-    var y = clamp(item.ay, padY, rect.height - bottomPad);
-    var guard = 0;
-    for (;;) {
-      var hit = null;
-      for (var i = 0; i < placed.length; i++) {
-        var q = placed[i];
-        if (Math.abs(q.x - x) < (q.w + w) / 2 + 6 && Math.abs(q.y - y) < (q.h + hh) / 2 + 4) { hit = q; break; }
+    var dx = item.ax - cx;
+    var dy = item.ay - cy;
+    var len = Math.sqrt(dx * dx + dy * dy) || 1;
+    var dir = Math.atan2(dy / len, dx / len);
+    var padTop = hh / 2 + 54;
+    var padBot = rect.height - hh / 2 - 56;
+    var bases = isText ? [26, 44] : [30, 48, 66, 84];
+    var best = null;
+    for (var b = 0; b < bases.length && !best; b++) {
+      for (var a = 0; a < ANGLES.length; a++) {
+        var ang = dir + ANGLES[a];
+        var px = clamp(item.ax + Math.cos(ang) * bases[b], w / 2 + 8, rect.width - w / 2 - 8);
+        var py = clamp(item.ay + Math.sin(ang) * bases[b], padTop, padBot);
+        var free = true;
+        for (var i = 0; i < taken.length; i++) {
+          var q = taken[i];
+          if (Math.abs(q.x - px) < (q.w + w) / 2 + 4 && Math.abs(q.y - py) < (q.h + hh) / 2 + 4) { free = false; break; }
+        }
+        if (free) { best = { x: px, y: py }; break; }
       }
-      if (!hit) break;
-      y = hit.y + (hit.h + hh) / 2 + 5;
-      if (y > rect.height - bottomPad) {
-        y = clamp(item.ay, padY, rect.height - bottomPad);
-        x = x + w + 12;
-        if (x > rect.width - padX) x = clamp(item.ax - w - 12, padX, rect.width - padX);
-      }
-      if (++guard > 40) break;
     }
-    item.x = x; item.y = y; item.w = w; item.h = hh;
-    placed.push({ x: x, y: y, w: w, h: hh });
-    el.style.left = x.toFixed(1) + 'px';
-    el.style.top = y.toFixed(1) + 'px';
+    if (!best) {
+      best = {
+        x: clamp(item.ax + dx * 28, w / 2 + 8, rect.width - w / 2 - 8),
+        y: clamp(item.ay + dy * 28, padTop, padBot)
+      };
+    }
+    taken.push({ x: best.x, y: best.y, w: w, h: hh });
+    item.x = best.x; item.y = best.y; item.w = w; item.h = hh;
+    el.style.left = best.x.toFixed(1) + 'px';
+    el.style.top = best.y.toFixed(1) + 'px';
   });
 
   // 引线：标签被推开时，从部件锚点拉一条细线，止于标签边框（不再穿到标签底下）
@@ -2324,7 +2552,7 @@ function frame() {
 
   // 深空：星空极缓慢自转 + 亮星闪烁
   if (typeof sky !== 'undefined') {
-    if (dialMesh) dialMesh.rotation.z += dt * 0.035;
+    /* 基准网格是图纸的一部分，不随视角自转 */
     sky.rotation.y += dt * 0.007;
     sky.rotation.z = Math.sin(now * 0.00004) * 0.05;
     for (var ti = 0; ti < twinkles.length; ti++) {
@@ -2381,6 +2609,8 @@ function frame() {
 }
 
 /* === 启动 === */
+if (location.search.indexOf('clean=1') >= 0) document.body.classList.add('is-clean');
+
 function boot() {
   renderList();
   var pt = null;
@@ -2470,3 +2700,9 @@ boot();
 </script>
 </body>
 </html>
+
+
+
+
+
+
