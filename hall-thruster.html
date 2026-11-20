@@ -34,7 +34,7 @@
     --mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
   }
   *, *::before, *::after { box-sizing: border-box; }
-  html, body { margin: 0; height: 100%; }
+  html, body { margin: 0; height: 100%; overscroll-behavior: none; }
   body {
     background: var(--bg);
     color: var(--ink);
@@ -113,8 +113,9 @@
   .stage {
     position: relative; flex: 1; min-height: 0; overflow: hidden;
     background: #000;
+    touch-action: none; user-select: none; -webkit-user-select: none;
   }
-  .stage canvas { display: block; width: 100%; height: 100%; }
+  .stage canvas { display: block; width: 100%; height: 100%; touch-action: none; }
   .stage .vig { position: absolute; inset: 0; pointer-events: none;
     background: radial-gradient(ellipse at 50% 46%, rgba(0,0,0,0) 42%, rgba(0,0,0,0.42) 100%); }
   /* 图框：1px 细线 + 四角 L 形角标，四个角各两笔，共 8 层背景 */
@@ -239,21 +240,22 @@
   .col-left, .col-right { overflow: hidden; }
   .col-left .panel { flex: 1; min-height: 0; }
   .part {
-    display: flex; align-items: baseline; gap: var(--s75);
-    padding: 7px 9px 7px 11px;
+    display: flex; align-items: flex-start; gap: var(--s75);
+    padding: 8px 9px 8px 11px;
     border: 0; border-bottom: 1px solid var(--line);
     background: none; color: var(--ink-2);
-    font-size: 13.5px; font-family: inherit; text-align: left; width: 100%;
+    font-size: 13.5px; line-height: 19px; font-family: inherit; text-align: left; width: 100%;
     cursor: pointer; flex-shrink: 0;
     -webkit-appearance: none; appearance: none;
     transition: background 160ms var(--ease), color 160ms var(--ease), box-shadow 160ms var(--ease);
   }
   .part:hover { background: var(--surface); color: var(--ink); }
-  .part .idx { min-width: 17px; font-family: var(--mono); font-size: 11px; color: var(--ink-3);
+  .part .idx { min-width: 17px; font-family: var(--mono); font-size: 11px; line-height: 19px; color: var(--ink-3);
     text-align: left; flex-shrink: 0; font-variant-numeric: tabular-nums; }
   .part .nm { flex: 1; min-width: 0; font-weight: 500; }
-  .part .en { display: none; }
-  .part .flag { width: 4px; height: 4px; border-radius: 50%; background: var(--line-bright); flex-shrink: 0; align-self: center; }
+  .part .en { display: block; font-size: 11.5px; line-height: 15px; font-weight: 400;
+    color: var(--ink-3); margin-top: 1px; }
+  .part .flag { width: 4px; height: 4px; margin-top: 8px; border-radius: 50%; background: var(--line-bright); flex-shrink: 0; }
   .part[aria-current="true"] {
     color: var(--ink); background: var(--surface-2);
     box-shadow: inset 2px 0 0 var(--mark);
@@ -456,23 +458,23 @@ scene.fog = new THREE.Fog(0x23150d, 16, 48);
 var camera = new THREE.PerspectiveCamera(42, 1, 0.1, 200);
 
 /* === 灯光：主光 + 冷补光 + 轮廓光 === */
-scene.add(new THREE.HemisphereLight(0x2F3B4E, 0x0B0F16, 0.55));
-var key = new THREE.DirectionalLight(0xFFEFDC, 2.55);
+scene.add(new THREE.HemisphereLight(0x3A4150, 0x150D08, 0.6));
+var key = new THREE.DirectionalLight(0xFFC98A, 3.6);
 key.position.set(5.5, 6.5, 6.5);
 scene.add(key);
-var fill = new THREE.DirectionalLight(0x7E94AE, 1.05);
+var fill = new THREE.DirectionalLight(0x4FA6CC, 0.9);
 fill.position.set(-6.5, -2.5, -4);
 scene.add(fill);
-var front = new THREE.DirectionalLight(0xFFE6CC, 0.5);
+var front = new THREE.DirectionalLight(0xFFD7AE, 0.7);
 front.position.set(7, 3.5, 9);
 scene.add(front);
-var rim = new THREE.DirectionalLight(0xD8E2EE, 1.6);
+var rim = new THREE.DirectionalLight(0x8FE4FF, 1.7);
 rim.position.set(-1.5, 4.5, -7);
 scene.add(rim);
-var bounce = new THREE.PointLight(0xFFA45C, 0.85, 28, 2);
+var bounce = new THREE.PointLight(0xFF9040, 2.4, 28, 2);
 bounce.position.set(1.5, -1.6, 5.5);
 scene.add(bounce);
-var plumeLight = new THREE.PointLight(0xE0A85C, 0.55, 12, 2);
+var plumeLight = new THREE.PointLight(0x38BDF8, 0.8, 12, 2);
 plumeLight.position.set(0, 0, 3.2);
 scene.add(plumeLight);
 
@@ -495,12 +497,24 @@ scene.fog = new THREE.FogExp2(DEEP, 0.0016);
 
   var bg = g.createLinearGradient(0, 0, 0, H);
   bg.addColorStop(0.00, '#010206');
-  bg.addColorStop(0.30, '#04060f');
-  bg.addColorStop(0.52, '#070a16');
-  bg.addColorStop(0.74, '#05080f');
-  bg.addColorStop(1.00, '#020308');
+  bg.addColorStop(0.28, '#04060f');
+  bg.addColorStop(0.50, '#070a14');
+  bg.addColorStop(0.66, '#0b0a0d');
+  bg.addColorStop(0.80, '#140d08');
+  bg.addColorStop(1.00, '#1b1207');
   g.fillStyle = bg;
   g.fillRect(0, 0, W, H);
+
+  /* 地平线暖光带：下方一圈暗琥珀光，让模型下缘有反射色，像真空舱里的背景灯 */
+  (function horizon() {
+    var hg = g.createRadialGradient(W * 0.5, H * 1.02, 0, W * 0.5, H * 1.02, H * 0.62);
+    hg.addColorStop(0.00, 'rgba(255,150,64,0.30)');
+    hg.addColorStop(0.26, 'rgba(226,120,52,0.16)');
+    hg.addColorStop(0.58, 'rgba(150,78,38,0.07)');
+    hg.addColorStop(1.00, 'rgba(120,60,30,0)');
+    g.fillStyle = hg;
+    g.fillRect(0, H * 0.42, W, H * 0.58);
+  })();
 
   /* 银河带：斜向柔和亮雾，冷暖两层叠加，避免一片死灰 */
   g.save();
@@ -1456,8 +1470,25 @@ function sGroup() { var g = new THREE.Group(); g.position.copy(SUP.pos); return 
 /* 17 贮供单元安装面板与支耳 */
 addPart('supPlate', (function () {
   var g = sGroup();
-  var m = metal(0x78848F, 0.5, 0.8);
+  var m = metal(0x5C6672, 0.52, 0.78);
   g.add(boxAt(SUP.W, SUP.D, 0.22, m, 0, 0, -1.01));
+  /* 面板上的浅窗格：把一整块平板读成机加结构，而不是一块背板 */
+  var bayM = metal(0x4A535E, 0.62, 0.55);
+  var BW = 1.02, BH = 0.62;
+  for (var row = 0; row < 5; row++) {
+    for (var col = 0; col < 4; col++) {
+      var bx = -2.10 + col * 1.42;
+      var by = -1.55 + row * 0.86;
+      if (by < -1.30) continue;              /* 下缘留给气瓶鞍座 */
+      g.add(boxAt(BW, BH, 0.03, bayM, bx, by, -0.885));
+    }
+  }
+  /* 面板四周一圈窄边框，读作钣金折边 */
+  var trim = metal(0x6B7683, 0.46, 0.85);
+  g.add(boxAt(SUP.W, 0.09, 0.09, trim, 0, SUP.D / 2 - 0.045, -0.885));
+  g.add(boxAt(SUP.W, 0.09, 0.09, trim, 0, -SUP.D / 2 + 0.045, -0.885));
+  g.add(boxAt(0.09, SUP.D, 0.09, trim, -SUP.W / 2 + 0.045, 0, -0.885));
+  g.add(boxAt(0.09, SUP.D, 0.09, trim, SUP.W / 2 - 0.045, 0, -0.885));
   var lug = metal(0x6E7A86, 0.5, 0.8);
   var hole = metal(0x39424C, 0.6, 0.5);
   [[1, 1], [1, -1], [-1, 1], [-1, -1]].forEach(function (c) {
@@ -1471,42 +1502,49 @@ addPart('supPlate', (function () {
   return g;
 })()).labelOffset.set(-3.00, -2.10, -1.00);
 
-/* 18 氪气贮箱（钟形，竖立，带 4 道卡箍） */
+/* 18 氪气贮箱（横卧，两道箍带，坐落在贮供单元面板前方 —— 与选型册图纸一致） */
 addPart('supTank', (function () {
   var g = sGroup();
   var m = metal(0xA9B4C0, 0.28, 0.95);
+  /* 轮廓沿局部 Y 轴生成，随后整体转 90° 让轴向指向 X（横卧） */
   var body = latheBody([
-    [0.00, -2.45], [0.20, -2.45], [0.20, -2.28], [0.36, -2.24], [0.36, -2.14],
-    [1.05, -1.45], [1.05, 1.50], [0.90, 1.95], [0.48, 2.28], [0.00, 2.45]
+    [0.00, -1.90], [0.26, -1.90], [0.26, -1.74], [0.62, -1.62],
+    [0.95, -1.28], [1.00, -0.96], [1.00, 0.96], [0.95, 1.28],
+    [0.62, 1.62], [0.26, 1.74], [0.26, 1.90], [0.00, 1.90]
   ], m, 64);
-  body.position.set(-1.50, 0.10, 0.20);
+  body.rotation.z = Math.PI / 2;
+  body.position.set(-0.85, -1.57, 0.35);
   g.add(body);
+  /* 两道箍带 + 鞍座：把气瓶压在面板上 */
   var strap = metal(0x6E7A86, 0.5, 0.8);
-  [-1.42, -0.50, 0.45, 1.32].forEach(function (dy) {
-    var t = new THREE.Mesh(new THREE.TorusGeometry(1.07, 0.055, 10, 48), strap);
-    t.rotation.x = Math.PI / 2;
-    t.position.set(-1.50, 0.10 + dy, 0.20);
+  [-0.95, 0.45].forEach(function (dx) {
+    var t = new THREE.Mesh(new THREE.TorusGeometry(1.045, 0.055, 10, 48), strap);
+    t.rotation.y = Math.PI / 2;
+    t.position.set(-0.85 + dx, -1.57, 0.35);
     g.add(t);
+    g.add(boxAt(0.34, 0.34, 0.98, metal(0x5E6A75, 0.55, 0.75), -0.85 + dx, -2.40, 0.35));
   });
-  g.add(cylAt(0.30, 0.34, metal(0x8A95A1, 0.35, 0.9), -1.50, 2.62, 0.20, 'y'));
-  g.add(cylAt(0.16, 0.26, metal(0xC08447, 0.32, 0.9), -1.50, 2.86, 0.20, 'y'));
-  g.add(cylAt(0.22, 0.24, metal(0x8A95A1, 0.35, 0.9), -1.50, -2.55, 0.20, 'y'));
+  /* 瓶口（右端减压接头）与瓶底（左端半球封头凸台） */
+  g.add(cylAt(0.26, 0.34, metal(0x8A95A1, 0.35, 0.9), 1.10, -1.57, 0.35, 'x'));
+  g.add(hexAt(0.32, 0.16, metal(0xC08447, 0.32, 0.9), 1.30, -1.57, 0.35, 'x'));
+  g.add(cylAt(0.14, 0.26, metal(0x9AA7B8, 0.3, 0.95), 1.50, -1.57, 0.35, 'x'));
+  g.add(cylAt(0.22, 0.24, metal(0x8A95A1, 0.35, 0.9), -2.86, -1.57, 0.35, 'x'));
   return g;
-})()).labelOffset.set(-1.60, 0.10, 0.50);
+})()).labelOffset.set(-0.90, -1.30, 0.70);
 
 /* 19 压力调节模块（面板右侧两个圆筒件 + 连接管路） */
 addPart('supRegulator', (function () {
   var g = sGroup();
   var body = metal(0x8E99A5, 0.4, 0.85);
   var pipe = metal(0x9AA7B8, 0.3, 0.95);
-  [[1.30, 0.90], [1.30, -0.35]].forEach(function (c) {
+  [[1.55, 1.00], [1.55, 0.05]].forEach(function (c) {
     g.add(cylAt(0.475, 0.80, body, c[0], c[1], 0.55, 'z'));
     g.add(cylAt(0.52, 0.10, metal(0xC08447, 0.32, 0.9), c[0], c[1], 0.92, 'z'));
     g.add(cylAt(0.30, 0.14, metal(0x6E7A86, 0.5, 0.8), c[0], c[1], 1.02, 'z'));
   });
-  g.add(cylAt(0.07, 1.35, pipe, 1.30, 0.28, 0.55, 'y'));
-  g.add(cylAt(0.07, 1.20, pipe, 1.30, -1.15, 0.55, 'y'));
-  g.add(cylAt(0.07, 2.95, pipe, 0.05, -1.60, 0.55, 'x'));
+  g.add(cylAt(0.07, 1.35, pipe, 1.55, 0.28, 0.55, 'y'));
+  g.add(cylAt(0.07, 1.20, pipe, 1.55, -1.15, 0.55, 'y'));
+  g.add(cylAt(0.07, 2.95, pipe, 0.05, -0.55, 0.55, 'x'));
   return g;
 })()).labelOffset.set(1.35, 1.10, 1.15);
 
@@ -2025,7 +2063,7 @@ function fitDistFor(yaw, pitch) { return fitDistForBox(yaw, pitch, currentBox())
 function fitDistForBox(yaw, pitch, box) {
   if (box.isEmpty()) return HOME.dist || 13;
   var fov = camera.fov * Math.PI / 180;
-  var tanV = Math.tan(fov / 2) * 0.78;
+  var tanV = Math.tan(fov / 2) * 0.94;
   var tanH = tanV * Math.max(0.55, camera.aspect);
   var dir = new THREE.Vector3(Math.cos(pitch) * Math.sin(yaw), Math.sin(pitch), Math.cos(pitch) * Math.cos(yaw)).normalize();
   var right = new THREE.Vector3().crossVectors(new THREE.Vector3(0, 1, 0), dir).normalize();
@@ -2037,11 +2075,11 @@ function fitDistForBox(yaw, pitch, box) {
     var xp = Math.abs(v.dot(right)), yp = Math.abs(v.dot(up)), zp = v.dot(dir);
     need = Math.max(need, zp + xp / tanH, zp + yp / tanV);
   }
-  return Math.max(need * 0.94, 2.5);
+  return Math.max(need * 0.80, 2.5);
 }
 var userZoomed = false;
 var fittedOnce = false;
-var cam = { yaw: 0.45, pitch: 0.26, dist: 13.4, target: HOME.target.clone() };
+var cam = { yaw: 0.62, pitch: 0.24, dist: 10.5, target: HOME.target.clone() };
 var want = { yaw: cam.yaw, pitch: cam.pitch, dist: cam.dist, target: cam.target.clone() };
 var spin = false;
 var showLabels = true;
@@ -2148,7 +2186,14 @@ canvas.addEventListener('pointermove', onPointerMove);
 canvas.addEventListener('pointerup', onPointerUp);
 canvas.addEventListener('pointercancel', onPointerUp);
 canvas.addEventListener('wheel', onWheel, { passive: false });
-canvas.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+/* 右键在本页只做"拖拽平移"：整个舞台（含 HUD、标注牌）都吃掉右键菜单，
+   否则 Edge 会在菜单里给出"后退 / 前进"，右键一拖就弹出来 */
+stage.addEventListener('contextmenu', function (e) { e.preventDefault(); e.stopPropagation(); });
+canvas.addEventListener('dragstart', function (e) { e.preventDefault(); });
+/* 阻止触摸板/触屏的横向滑动触发浏览器"后退 / 前进" */
+stage.addEventListener('pointerdown', function (e) {
+  if (e.pointerType !== 'mouse') e.preventDefault();
+}, { passive: false });
 canvas.style.cursor = 'grab';
 
 /* === 拾取 === */
@@ -2213,6 +2258,13 @@ function togglePart(id) {
     /* 第一次点：无论当前是否已拆开，都选中并展开，避免"点一下反而收起来"的困惑 */
     if (p.target < 0.5) p.target = 1;
     selectPart(id);
+    /* 只拆一个部件时也重新框一次：沿轴向抽出的距离不小，构图收紧后会被裁到画外 */
+    var eb = explodedBox();
+    if (!eb.isEmpty()) {
+      want.target.copy(eb.getCenter(new THREE.Vector3()));
+      want.dist = Math.max(fitDistForBox(want.yaw, want.pitch, eb) * 1.10, want.dist * 0.94);
+      userZoomed = false;
+    }
   }
   syncExplodeButton();
 }

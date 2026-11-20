@@ -94,8 +94,7 @@
   @media (max-width: 640px) { .page { padding: 76px var(--s200) var(--s600); } }
 
   /* === Hero：左文右图，图是这台设备的真实渲染 === */
-  .hero { display: grid; grid-template-columns: minmax(0, 1fr) 460px;
-    gap: var(--s600); align-items: center; padding: var(--s300) 0 var(--s400); }
+  .hero { padding: var(--s300) 0 var(--s400); }
   .hero-brand { display: flex; align-items: center; gap: var(--s150) 14px; }
   .hero-logo { height: 48px; width: 48px; border-radius: var(--r-full); background: var(--surface);
     box-shadow: 0 0 0 1px var(--line); flex: none; }
@@ -107,16 +106,6 @@
   .hero-lede { margin: var(--s250) 0 0; font-size: 17px; line-height: 28px; color: var(--ink-2);
     max-width: 32em; text-wrap: pretty; }
   .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s100); margin-top: var(--s400); }
-  .hero-figure { margin: 0; position: relative; border: 1px solid var(--line); background: #0B0C0E;
-    aspect-ratio: 1 / 1.02; overflow: hidden; }
-  .hero-figure img { display: block; width: 100%; height: 100%; object-fit: cover; }
-  .hero-figure-link { position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: center;
-    justify-content: space-between; gap: var(--s100); padding: 10px 12px;
-    font-size: 13px; line-height: 18px; font-weight: 600; color: #ECEEF1; text-decoration: none;
-    background: rgba(11, 12, 14, 0.74); border-top: 1px solid rgba(255, 255, 255, 0.10);
-    transition: background-color 200ms var(--ease); }
-  .hero-figure-link:hover { background: rgba(11, 12, 14, 0.9); text-decoration: none; }
-  .hero-figure-link .ico { width: 16px; height: 16px; }
 
   .btn { display: inline-flex; align-items: center; gap: var(--s75);
     padding: var(--s75) var(--s100); border-radius: var(--r-md); border: 1px solid transparent;
@@ -134,8 +123,7 @@
   .stat-v { margin: var(--s25) 0 0; font-size: 24px; line-height: 32px; font-weight: 600; color: var(--ink); }
 
   @media (max-width: 960px) {
-    .hero { grid-template-columns: minmax(0, 1fr); gap: var(--s400); }
-    .hero-figure { aspect-ratio: 16 / 10; }
+    .hero { gap: var(--s400); }
   }
   @media (max-width: 640px) {
     .hero { padding: var(--s400) 0 var(--s300); }
@@ -330,6 +318,13 @@
   .footer-links { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s75); margin-top: var(--s200); }
   .footer-links a { color: var(--ink-2); font-weight: 600; }
 
+  /* === 检索受限说明：页脚之前的一条窄注记，不占正文视觉重量 === */
+  .limits { margin-top: var(--s500); padding-top: var(--s250); border-top: 1px solid var(--line-2); }
+  .limits-title { margin: 0 0 var(--s50); font-size: 13px; line-height: 18px; font-weight: 600;
+    color: var(--ink-3); letter-spacing: 0.01em; }
+  .limits p { margin: 0; font-size: 13px; line-height: 21px; color: var(--ink-3); max-width: 88ch;
+    text-wrap: pretty; }
+
   /* === 滚动进入：轻量淡入，一屏以上的长区块只淡化不位移 === */
   .reveal { opacity: 0; transform: translateY(var(--s300));
     transition: opacity 520ms var(--ease), transform 520ms var(--ease); }
@@ -414,7 +409,7 @@
   <a href="#archive">历史归档</a>
   <a href="#tracked">跟踪项目</a>
   <a href="#about">关于</a>
-  <a href="./hall-thruster.html?v=13">3D 拆解</a>
+  <a href="./hall-thruster.html?v=14">3D 拆解</a>
 </nav>
 
 <div class="page">
@@ -436,13 +431,6 @@
         <a class="btn btn-quiet" href="#archive">浏览历史归档</a>
       </div>
     </div>
-    <figure class="hero-figure">
-      <img src="./assets/hall-thruster.jpg" alt="SMH-20K 霍尔电推进系统整机三维渲染" width="720" height="700">
-      <a class="hero-figure-link" href="./hall-thruster.html?v=13">
-        <span>打开三维拆解 · 22 个可点部件</span>
-        <svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h11M11 6l4 4-4 4"/></svg>
-      </a>
-    </figure>
   </header>
 
   <dl class="stats">
@@ -465,8 +453,6 @@
     <div id="todayNew"><div class="skeleton"><div class="skel wide"></div><div class="skel"></div><div class="skel"></div></div></div>
     <h3 class="sub-head"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4.5" width="13" height="12" rx="2"/><path d="M3.5 8.5h13M7 3v3M13 3v3"/></svg>近期值得关注的时间节点</h3>
     <ul class="timeline" id="todayUpcoming"><li class="empty-line">正在载入时间节点。</li></ul>
-    <h3 class="sub-head"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3.5 2.8 16h14.4L10 3.5Z"/><path d="M10 8v3.5M10 13.7v.1"/></svg>检索受限说明</h3>
-    <p class="empty-line" id="todayConstraints">—</p>
   </section>
 
   <!-- 每日知识卡（按日期自动轮换，云端每天 08:00 记录一次） -->
@@ -572,6 +558,12 @@
     </div>
   </section>
 
+  <!-- 检索受限说明：放在页面最末，只在这期确实有覆盖不到的平台时才显示 -->
+  <section class="limits" id="limits">
+    <h2 class="limits-title">检索受限说明</h2>
+    <p id="todayConstraints">—</p>
+  </section>
+
 </main>
 
 <footer class="site-footer">
@@ -579,7 +571,7 @@
   <p>本日报为公开信息整理，仅供参考；正式投标请以招标文件与官方公告为准。</p>
   <p class="footer-links">
     <a href="#about">关于这份日报</a><span aria-hidden="true">·</span>
-    <a href="./hall-thruster.html?v=13">霍尔电推进系统 3D 拆解</a><span aria-hidden="true">·</span>
+    <a href="./hall-thruster.html?v=14">霍尔电推进系统 3D 拆解</a><span aria-hidden="true">·</span>
     <a href="https://github.com/Noble-Li/SUNMOON-A">仓库与更新日志</a><span aria-hidden="true">·</span>
     <a href="#top">返回顶部</a>
   </p>
@@ -774,7 +766,14 @@ function render() {
   var ups = (today.upcoming || []).map(upcomingHtml).join("");
   document.getElementById("todayUpcoming").innerHTML = ups || '<li class="empty-line">近期没有需要盯的时间节点。</li>';
 
-  document.getElementById("todayConstraints").textContent = today.constraints || "无";
+  var limitsEl = document.getElementById("limits");
+  var consText = (today.constraints || "").trim();
+  if (consText && consText !== "无") {
+    document.getElementById("todayConstraints").textContent = consText;
+    limitsEl.hidden = false;
+  } else {
+    limitsEl.hidden = true;
+  }
   document.getElementById("today").setAttribute("aria-busy", "false");
 
   // 数据滞后提醒：只在真的滞后时出现，不滞后就彻底不占位
