@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>国内霍尔电推进招标采购日报</title>
-<meta name="description" content="每日跟踪国内霍尔电推进相关招标、采购、中标、成交公告。每天 08:00 自动更新，附每日知识卡、本周汇总与 P01~P35 跟踪台账。">
+<meta name="description" content="每日跟踪国内霍尔电推进相关招标、采购、中标、成交公告。每天 08:00 自动更新，附每日知识卡、本周汇总与跟踪项目台账。">
 <link rel="canonical" href="https://noble-li.github.io/SUNMOON-A/">
 <meta name="theme-color" content="#ffffff">
 <meta property="og:type" content="website">
@@ -414,7 +414,7 @@
   <a href="#archive">历史归档</a>
   <a href="#tracked">跟踪项目</a>
   <a href="#about">关于</a>
-  <a href="./hall-thruster.html?v=11">3D 拆解</a>
+  <a href="./hall-thruster.html?v=12">3D 拆解</a>
 </nav>
 
 <div class="page">
@@ -438,7 +438,7 @@
     </div>
     <figure class="hero-figure">
       <img src="./assets/hall-thruster.jpg" alt="SMH-20K 霍尔电推进系统整机三维渲染" width="720" height="700">
-      <a class="hero-figure-link" href="./hall-thruster.html?v=11">
+      <a class="hero-figure-link" href="./hall-thruster.html?v=12">
         <span>打开三维拆解 · 22 个可点部件</span>
         <svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h11M11 6l4 4-4 4"/></svg>
       </a>
@@ -528,12 +528,12 @@
   <section class="card" id="tracked">
     <div class="section-head">
       <span class="section-tag"><svg class="ico" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4" width="13" height="12" rx="1.5"/><path d="M3.5 8h13M3.5 12h13M8 8v8"/></svg>跟踪项目</span>
-      <h2 class="section-title">P01 到 P35 完整状态</h2>
+      <h2 class="section-title" id="trackedTitle">跟踪项目全表</h2>
       <span class="section-meta">含每个项目的下一关键节点</span>
     </div>
     <div class="table-wrap">
       <table class="tracked-table" id="trackedTable">
-        <caption class="sr-only">P01 到 P35 跟踪项目表：编号、项目名称、采购人、金额、下一关键节点</caption>
+        <caption class="sr-only" id="trackedCaption">跟踪项目表：编号、项目名称、采购人、金额、下一关键节点</caption>
         <thead>
           <colgroup>
               <col style="width: 6%"><col style="width: 31%"><col style="width: 17%">
@@ -579,7 +579,7 @@
   <p>本日报为公开信息整理，仅供参考；正式投标请以招标文件与官方公告为准。</p>
   <p class="footer-links">
     <a href="#about">关于这份日报</a><span aria-hidden="true">·</span>
-    <a href="./hall-thruster.html?v=11">霍尔电推进系统 3D 拆解</a><span aria-hidden="true">·</span>
+    <a href="./hall-thruster.html?v=12">霍尔电推进系统 3D 拆解</a><span aria-hidden="true">·</span>
     <a href="https://github.com/Noble-Li/SUNMOON-A">仓库与更新日志</a><span aria-hidden="true">·</span>
     <a href="#top">返回顶部</a>
   </p>
@@ -819,7 +819,16 @@ function render() {
 
   // 跟踪项目全表
   var tbody = document.querySelector("#trackedTable tbody");
-  tbody.innerHTML = (s.tracked_projects || []).map(function (p) {
+  var tracked = s.tracked_projects || [];
+  // 项目从 P01 连续编号，标题按实际条数生成，改数据后不会还写着旧的范围
+  if (tracked.length) {
+    var tRange = "P01 到 P" + String(tracked.length).padStart(2, "0");
+    var tTitle = document.getElementById("trackedTitle");
+    if (tTitle) tTitle.textContent = tRange + " 完整状态";
+    var tCap = document.getElementById("trackedCaption");
+    if (tCap) tCap.textContent = tRange + " 跟踪项目表：编号、项目名称、采购人、金额、下一关键节点";
+  }
+  tbody.innerHTML = tracked.map(function (p) {
     return '<tr><td class="tracked-id">' + escapeHtml(p.id) + '</td>' +
       '<td>' + escapeHtml(p.name) + '</td>' +
       '<td>' + escapeHtml(p.buyer) + '</td>' +
