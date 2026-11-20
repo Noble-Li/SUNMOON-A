@@ -39,7 +39,7 @@
     background: var(--bg);
     color: var(--ink);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
-    font-size: 14px;
+    font-size: 15px;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     font-feature-settings: "tnum" 1;
@@ -64,13 +64,13 @@
   }
   .back {
     display: inline-flex; align-items: center; gap: 6px;
-    padding: 5px 10px;
+    padding: 6px 11px;
     border: 1px solid var(--line-bright); border-radius: var(--r);
-    color: var(--ink-2); font-size: 12px; font-weight: 600;
+    color: var(--ink-2); font-size: 13px; font-weight: 600;
     transition: color 180ms var(--ease), border-color 180ms var(--ease), background 180ms var(--ease);
   }
   .back:hover { color: var(--ink); border-color: var(--ink-3); background: var(--surface); }
-  .topbar h1 { font-size: 14px; font-weight: 600; letter-spacing: 0.01em; }
+  .topbar h1 { font-size: 15.5px; font-weight: 600; letter-spacing: 0.01em; }
   .topbar h1 .sub { color: var(--ink-3); font-weight: 400; margin-left: 8px; }
   .topbar .spacer { margin-left: auto; }
   /* 把"实时渲染"假状态改成图纸上的比例与图号戳记 */
@@ -78,14 +78,14 @@
     display: inline-flex; align-items: center; gap: 10px;
     padding: 4px 10px;
     border: 1px solid var(--line-bright); border-radius: var(--r);
-    font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.06em;
+    font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.06em;
     color: var(--ink-3); text-transform: uppercase;
   }
   .stamp b { color: var(--mark); font-weight: 600; letter-spacing: 0.08em; }
 
   .layout {
     flex: 1; min-height: 0;
-    display: grid; grid-template-columns: 252px minmax(0, 1fr) 332px;
+    display: grid; grid-template-columns: 268px minmax(0, 1fr) 352px;
     gap: 1px;
     background: var(--line);
     border-bottom: 1px solid var(--line);
@@ -106,8 +106,8 @@
     border-bottom: 1px solid var(--line);
   }
   .panel-head .ico { color: var(--ink-3); align-self: center; }
-  .panel-head h2 { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: var(--ink-2); }
-  .panel-note { font-size: 11px; line-height: 17px; color: var(--ink-3); margin-top: var(--s100); }
+  .panel-head h2 { font-size: 13px; font-weight: 600; letter-spacing: 0.04em; color: var(--ink-2); }
+  .panel-note { font-size: 12.5px; line-height: 19px; color: var(--ink-3); margin-top: var(--s100); }
 
   /* 舞台：图框 + 角标 + 右下标题栏 */
   .stage {
@@ -133,22 +133,27 @@
   }
   .stage.is-loading::after {
     content: "正在生成模型"; position: absolute; inset: 0; display: grid; place-items: center;
-    color: var(--ink-3); font-size: 12px; letter-spacing: 0.08em; animation: breathe 1.6s infinite;
+    color: var(--ink-3); font-size: 13px; letter-spacing: 0.08em; animation: breathe 1.6s infinite;
   }
 
-  /* 右下角标题栏：图名 / 图号 / 比例 / 单位。装配图靠这一块立住身份。 */
+  /* 右下角标题栏：图名一行，下面图号 / 比例 / 单位 / 投影两行。
+     宽度写死，图名再长也在格子里折行，不会顶出边框。 */
   .titleblock {
     position: absolute; right: 22px; bottom: 22px; pointer-events: none;
-    display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto;
+    width: 404px; max-width: calc(100% - 44px);
     border: 1px solid var(--line-bright);
-    background: rgba(11, 12, 14, 0.78);
-    font-size: 10.5px; line-height: 1.35; color: var(--ink-2);
+    background: rgba(11, 12, 14, 0.90);
+    font-size: 12px; line-height: 1.4; color: var(--ink-2);
   }
-  .titleblock > * { padding: 4px 8px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-  .titleblock > *:last-child { border-right: 0; }
-  .titleblock .tb-l { color: var(--ink-3); font-size: 9.5px; letter-spacing: 0.08em; background: rgba(255,255,255,0.02); }
+  .titleblock .tb-name {
+    padding: 5px 9px; border-bottom: 1px solid var(--line);
+    font-weight: 600; color: var(--ink); font-size: 12.5px; letter-spacing: 0.02em;
+  }
+  .titleblock .tb-name .tb-l { margin-right: 8px; font-weight: 400; letter-spacing: 0.08em; }
+  .titleblock .tb-grid { display: grid; grid-template-columns: 46px minmax(0, 1fr) 44px minmax(0, 1fr); gap: 1px; background: var(--line); }
+  .titleblock .tb-grid > * { background: rgba(11, 12, 14, 0.90); padding: 4px 9px; }
+  .titleblock .tb-l { color: var(--ink-3); font-size: 10.5px; letter-spacing: 0.08em; }
   .titleblock .tb-v { font-family: var(--mono); letter-spacing: 0.02em; white-space: nowrap; }
-  .titleblock .tb-name { grid-column: span 3; font-weight: 600; color: var(--ink); font-size: 11px; letter-spacing: 0.02em; }
   .titleblock .tb-no { color: var(--mark); }
 
   .labels { position: absolute; inset: 0; pointer-events: none; }
@@ -158,16 +163,16 @@
   .lbl {
     position: absolute; transform: translate(-50%, -50%);
     display: flex; align-items: center; justify-content: center; gap: 6px;
-    width: 22px; height: 22px; padding: 0;
+    width: 24px; height: 24px; padding: 0;
     background: rgba(9, 10, 12, 0.86);
     border: 1px solid rgba(224, 168, 92, 0.62); border-radius: 50%;
-    font-size: 11px; line-height: 15px; color: var(--ink);
+    font-size: 12px; line-height: 16px; color: var(--ink);
     white-space: nowrap; opacity: 0;
     transition: opacity 260ms var(--ease), border-color 160ms var(--ease), background-color 160ms var(--ease);
   }
   .lbl.is-on { opacity: 1; }
   .lbl .dot { display: none; }
-  .lbl .idx { font-family: var(--mono); font-size: 10px; color: var(--ink); }
+  .lbl .idx { font-family: var(--mono); font-size: 11px; color: var(--ink); }
   .lbl .nm, .lbl .sp { display: none; }
   .lbl.is-text {
     width: auto; height: auto; justify-content: flex-start;
@@ -177,7 +182,7 @@
   }
   .lbl.is-text .idx { color: var(--mark); }
   .lbl.is-text .nm { display: inline; font-weight: 600; }
-  .lbl.is-text .sp { display: inline; color: var(--ink-3); font-family: var(--mono); font-size: 10px; }
+  .lbl.is-text .sp { display: inline; color: var(--ink-3); font-family: var(--mono); font-size: 11px; }
   .lbl.is-active { border-color: var(--mark); background: rgba(24, 18, 10, 0.94); }
   .lbl.is-active .sp { color: var(--mark); }
   .lbl.is-active .idx { color: var(--mark); }
@@ -200,21 +205,21 @@
   .hint {
     position: absolute; left: 22px; bottom: 22px;
     display: flex; flex-wrap: wrap; gap: var(--s75) var(--s200);
-    font-size: 11px; color: var(--ink-3);
+    font-size: 12.5px; color: var(--ink-3);
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
   }
   .hint .k {
     padding: 1px 5px; border: 1px solid var(--line); border-radius: 2px;
     background: rgba(9, 10, 12, 0.6); color: var(--ink-2);
-    font-family: var(--mono); font-size: 10px;
+    font-family: var(--mono); font-size: 11px;
   }
 
   .btn {
     display: inline-flex; align-items: center; gap: 6px;
-    padding: 5px 10px;
+    padding: 6px 11px;
     border: 1px solid var(--line-bright); border-radius: var(--r);
     background: rgba(15, 17, 20, 0.92);
-    color: var(--ink-2); font-size: 11.5px; font-weight: 500; font-family: inherit;
+    color: var(--ink-2); font-size: 12.5px; font-weight: 500; font-family: inherit;
     cursor: pointer; white-space: nowrap;
     transition: color 160ms var(--ease), border-color 160ms var(--ease), background 160ms var(--ease);
   }
@@ -225,7 +230,8 @@
     background: var(--ink); border-color: var(--ink); color: #0B0C0E; font-weight: 600;
   }
   .btn-primary:hover { background: #fff; border-color: #fff; color: #0B0C0E; }
-  .btn-row { display: flex; flex-wrap: wrap; gap: var(--s75); margin-top: var(--s100); }
+  .btn-row { display: flex; flex-wrap: wrap; gap: var(--s75); margin-top: var(--s100);
+    padding-top: var(--s100); border-top: 1px solid var(--line); }
 
   /* 部件清单做成 BOM 表：发丝分隔 + 序号列，行与行之间不再是卡片 */
   .parts { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow-y: auto;
@@ -234,16 +240,16 @@
   .col-left .panel { flex: 1; min-height: 0; }
   .part {
     display: flex; align-items: baseline; gap: var(--s75);
-    padding: 7px 8px 7px 10px;
+    padding: 7px 9px 7px 11px;
     border: 0; border-bottom: 1px solid var(--line);
     background: none; color: var(--ink-2);
-    font-size: 12.5px; font-family: inherit; text-align: left; width: 100%;
+    font-size: 13.5px; font-family: inherit; text-align: left; width: 100%;
     cursor: pointer; flex-shrink: 0;
     -webkit-appearance: none; appearance: none;
     transition: background 160ms var(--ease), color 160ms var(--ease), box-shadow 160ms var(--ease);
   }
   .part:hover { background: var(--surface); color: var(--ink); }
-  .part .idx { min-width: 15px; font-family: var(--mono); font-size: 10px; color: var(--ink-3);
+  .part .idx { min-width: 17px; font-family: var(--mono); font-size: 11px; color: var(--ink-3);
     text-align: left; flex-shrink: 0; font-variant-numeric: tabular-nums; }
   .part .nm { flex: 1; min-width: 0; font-weight: 500; }
   .part .en { display: none; }
@@ -255,30 +261,30 @@
   .part[aria-current="true"] .idx { color: var(--mark); }
   .part[aria-current="true"] .flag { background: var(--mark); }
 
-  .detail-title { font-size: 16px; font-weight: 600; letter-spacing: 0.01em; }
-  .detail-en { margin-top: 3px; font-size: 10.5px; color: var(--ink-3); font-family: var(--mono); letter-spacing: 0.02em; }
+  .detail-title { font-size: 18px; font-weight: 600; letter-spacing: 0.01em; }
+  .detail-en { margin-top: 3px; font-size: 11.5px; color: var(--ink-3); font-family: var(--mono); letter-spacing: 0.02em; }
   .detail-role {
     display: inline-block; margin-top: var(--s100); padding: 2px 8px;
     border: 1px solid var(--mark-dim); border-radius: 2px;
-    color: var(--mark); font-size: 10.5px; font-weight: 600; letter-spacing: 0.04em;
+    color: var(--mark); font-size: 11.5px; font-weight: 600; letter-spacing: 0.04em;
   }
-  .detail-desc { margin-top: var(--s100); font-size: 12.5px; line-height: 21px; color: var(--ink-2); }
-  .detail-empty { font-size: 12.5px; line-height: 21px; color: var(--ink-3); }
+  .detail-desc { margin-top: var(--s100); font-size: 13.5px; line-height: 22px; color: var(--ink-2); }
+  .detail-empty { font-size: 13.5px; line-height: 22px; color: var(--ink-3); }
   .specs { margin: var(--s100) 0 0; display: grid; gap: 0; }
-  .spec { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: var(--s100);
+  .spec { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: var(--s100);
     padding: 5px 0; border-bottom: 1px solid var(--line); }
   .spec:last-child { border-bottom: 0; }
-  .spec dt { color: var(--ink-3); font-weight: 500; font-size: 11px; }
-  .spec dd { margin: 0; color: var(--ink); font-family: var(--mono); font-size: 11.5px; text-align: right; }
+  .spec dt { color: var(--ink-3); font-weight: 500; font-size: 12px; }
+  .spec dd { margin: 0; color: var(--ink); font-family: var(--mono); font-size: 12.5px; text-align: right; }
   /* 部件详情里的说明文字是整句，右对齐会把句子拆成一堆对齐的碎片 */
-  #infoBody .spec dd { text-align: left; font-family: inherit; font-size: 12px; line-height: 18px; }
-  #infoBody .spec dt { font-size: 11px; line-height: 18px; }
+  #infoBody .spec dd { text-align: left; font-family: inherit; font-size: 13px; line-height: 20px; }
+  #infoBody .spec dt { font-size: 12px; line-height: 19px; }
 
   /* 整机参数压成两列规格表，把右栏高度让给部件详情 */
   #totalBody .specs { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 18px; }
   #totalBody .spec { grid-template-columns: minmax(0, 1fr); padding: 4px 0; }
-  #totalBody .spec dt { font-size: 10px; }
-  #totalBody .spec dd { text-align: left; font-size: 10.5px; line-height: 15px; color: var(--ink-2); }
+  #totalBody .spec dt { font-size: 11px; }
+  #totalBody .spec dd { text-align: left; font-size: 11.5px; line-height: 16px; color: var(--ink-2); }
 
   /* 右栏整列一起滚：两块面板各自滚会在一行中间切断，看着像渲染坏了 */
   .col-right { overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--line-bright) transparent; }
@@ -292,9 +298,9 @@
   }
   .guide-item { display: flex; gap: var(--s75); }
   .guide-item .ico { color: var(--ink-3); margin-top: 2px; }
-  .guide-item h3 { font-size: 11.5px; color: var(--ink-2); font-weight: 600; letter-spacing: 0.02em; }
-  .guide-item p { margin-top: 3px; font-size: 11px; line-height: 16px; color: var(--ink-3); }
-  .guide-note p { margin: 0; font-size: 11px; line-height: 16px; color: var(--ink-3); font-family: var(--mono); }
+  .guide-item h3 { font-size: 13px; color: var(--ink-2); font-weight: 600; letter-spacing: 0.02em; }
+  .guide-item p { margin-top: 3px; font-size: 12px; line-height: 17.5px; color: var(--ink-3); }
+  .guide-note p { margin: 0; font-size: 12px; line-height: 17.5px; color: var(--ink-3); font-family: var(--mono); }
 
   /* 纯净出图模式：?clean=1 只留渲染画面，用于生成首页插图与分享图 */
   body.is-clean .topbar,
@@ -311,7 +317,7 @@
   body.is-clean .col-stage { order: 0; }
   body.is-clean .stage { height: 100vh; }
   @media (max-width: 1180px) {
-    .layout { grid-template-columns: 220px minmax(0, 1fr); }
+    .layout { grid-template-columns: 236px minmax(0, 1fr); }
     .col-right { grid-column: 1 / -1; flex-direction: row; }
   .col-right #infoPanel, .col-right #totalPanel { flex: 1 1 50%; }
     .col-right .panel { flex: 1 1 50%; }
@@ -335,7 +341,7 @@
     .stamp { display: none; }
     .stage { height: 54vh; }
     .hud { left: 12px; top: 12px; gap: 4px; }
-    .btn { padding: 4px 8px; font-size: 11px; }
+    .btn { padding: 5px 9px; font-size: 12px; }
     .guide { grid-template-columns: minmax(0, 1fr); gap: var(--s200); padding: var(--s200); }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -385,11 +391,13 @@
           <span><span class="k">单击部件</span> 拆解 / 收起</span>
         </div>
         <div class="titleblock" aria-hidden="true">
-          <span class="tb-l">图名</span><span class="tb-name">SMH-20K 霍尔电推进系统 · 装配示意</span>
-          <span class="tb-l">图号</span><span class="tb-v tb-no">SMH-20K-00</span>
-          <span class="tb-l">比例</span><span class="tb-v">1:50</span>
-          <span class="tb-l">单位</span><span class="tb-v">mm</span>
-          <span class="tb-l">投影</span><span class="tb-v">第一角法</span>
+          <div class="tb-name"><span class="tb-l">图名</span>SMH-20K 霍尔电推进系统 · 装配示意</div>
+          <div class="tb-grid">
+            <span class="tb-l">图号</span><span class="tb-v tb-no">SMH-20K-00</span>
+            <span class="tb-l">比例</span><span class="tb-v">1:50</span>
+            <span class="tb-l">单位</span><span class="tb-v">mm</span>
+            <span class="tb-l">投影</span><span class="tb-v">第一角法</span>
+          </div>
         </div>
       </div>
     </section>
