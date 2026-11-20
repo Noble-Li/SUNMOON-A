@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -1355,7 +1355,7 @@ addPart('sysRack', (function () {
   /* 底板收到刚好包住三套组件；四周加一圈低边框，把三块框成一台设备 */
   var PW = 10.20, PD = 5.60, PCX = 0.42, PCZ = -1.80, LIP = 0.14, LIPH = 0.30;
   g.add(boxAt(PW, 0.24, PD, plate, PCX, RACK_TOP - 0.12, PCZ));
-  var lipM = metal(0x4C5661, 0.62, 0.42);
+  var lipM = metal(0x373F4A, 0.42, 0.58);
   g.add(boxAt(PW, LIPH, LIP, lipM, PCX, RACK_TOP + LIPH / 2, PCZ + PD / 2 - LIP / 2));
   g.add(boxAt(PW, LIPH, LIP, lipM, PCX, RACK_TOP + LIPH / 2, PCZ - PD / 2 + LIP / 2));
   g.add(boxAt(LIP, LIPH, PD - LIP * 2, lipM, PCX - PW / 2 + LIP / 2, RACK_TOP + LIPH / 2, PCZ));
@@ -1370,6 +1370,39 @@ addPart('sysRack', (function () {
   /* 走线/走管夹 */
   g.add(boxAt(0.30, 0.18, 0.30, metal(0x8A9299, 0.45, 0.85), 0.60, RACK_TOP + 0.09, -1.55));
   g.add(boxAt(0.30, 0.18, 0.30, metal(0x8A9299, 0.45, 0.85), 2.60, RACK_TOP + 0.09, -2.90));
+  /* 边光：底板四周的冷光导边（仪表台质感的关键一层） */
+  (function edgeLight() {
+    var core = new THREE.MeshBasicMaterial({ color: 0xD2F2FF, transparent: true, opacity: 0.95, toneMapped: false, fog: false, blending: THREE.AdditiveBlending });
+    var glow = new THREE.MeshBasicMaterial({ color: 0x46AEDC, transparent: true, opacity: 0.32, toneMapped: false, fog: false, blending: THREE.AdditiveBlending });
+    var ey = RACK_TOP + LIPH + 0.008;
+    [1, -1].forEach(function (s) {
+      var z = PCZ + s * (PD / 2 - LIP / 2);
+      g.add(boxAt(PW - 0.34, 0.012, 0.010, core, PCX, ey, z));
+      g.add(boxAt(PW - 0.34, 0.006, 0.060, glow, PCX, ey, z));
+    });
+    [1, -1].forEach(function (s) {
+      var x2 = PCX + s * (PW / 2 - LIP / 2);
+      g.add(boxAt(0.010, 0.012, PD - 0.34, core, x2, ey, PCZ));
+      g.add(boxAt(0.060, 0.006, PD - 0.34, glow, x2, ey, PCZ));
+    });
+    [[-1, -1], [-1, 1], [1, -1], [1, 1]].forEach(function (c) {
+      g.add(boxAt(0.03, 0.012, 0.03, core, PCX + c[0] * (PW / 2 - LIP / 2), ey, PCZ + c[1] * (PD / 2 - LIP / 2)));
+    });
+  })();
+
+  /* 状态指示模块：底座右前角的三颗指示灯 */
+  (function statusPanel() {
+    var host = metal(0x2A3540, 0.7, 0.35);
+    g.add(boxAt(0.62, 0.10, 0.34, host, PCX + 3.55, RACK_TOP + 0.05, PCZ + 2.30));
+    var led = function (hex, dx) {
+      var m = new THREE.MeshBasicMaterial({ color: hex, toneMapped: false });
+      g.add(boxAt(0.075, 0.014, 0.075, m, PCX + 3.40 + dx, RACK_TOP + 0.10, PCZ + 2.30));
+    };
+    led(0x7CF0B0, 0);
+    led(0x63CDF0, 0.13);
+    led(0xF2C66B, 0.26);
+  })();
+
   var gas = metal(0x9AA7B8, 0.3, 0.95);
   function tube(points, r) {
     var curve = new THREE.CatmullRomCurve3(points.map(function (p) { return new THREE.Vector3(p[0], p[1], p[2]); }));
@@ -1382,8 +1415,248 @@ addPart('sysRack', (function () {
   var cable = metal(0x2B3644, 0.65, 0.3);
   g.add(tube([[-2.80, 0.55, -3.40], [-2.20, 0.10, -2.30], [-1.00, 0.15, -1.20], [0.10, 0.45, -1.05]], 0.115));
   g.add(tube([[-2.55, 0.45, -3.45], [-1.95, -0.05, -2.40], [-0.70, 0.00, -1.30], [0.35, 0.30, -1.10]], 0.100));
+
+  /* ---- 底板技术标注层：刻度尺、坐标网格、基准符号、编号 ---- */
+  (function plateDecal() {
+    var CW = 2048, CH = Math.round(CW * PD / PW), S = CW / PW;
+    var cv = document.createElement('canvas'); cv.width = CW; cv.height = CH;
+    var x = cv.getContext('2d');
+    var cx = CW / 2, cy = CH / 2;
+    var X = function (u) { return cx + u * S; };
+    var Y = function (v) { return cy + v * S; };
+    var CY = 'rgba(126,208,244,';
+    var INK = 'rgba(224,238,246,';
+
+    /* 坐标网格：0.5 单位细线，2 单位粗线 */
+    for (var u = -PW / 2 + 0.5; u < PW / 2; u += 0.5) {
+      var major = Math.abs(u % 2) < 1e-6;
+      x.lineWidth = major ? 2.6 : 1.4;
+      x.strokeStyle = CY + (major ? 0.26 : 0.13) + ')';
+      x.beginPath(); x.moveTo(X(u), 0); x.lineTo(X(u), CH); x.stroke();
+    }
+    for (var v = -PD / 2 + 0.5; v < PD / 2; v += 0.5) {
+      var major2 = Math.abs(v % 2) < 1e-6;
+      x.lineWidth = major2 ? 2.6 : 1.4;
+      x.strokeStyle = CY + (major2 ? 0.26 : 0.13) + ')';
+      x.beginPath(); x.moveTo(0, Y(v)); x.lineTo(CW, Y(v)); x.stroke();
+    }
+
+    /* 四边内嵌框线 */
+    x.strokeStyle = CY + '0.55)'; x.lineWidth = 3;
+    x.strokeRect(16, 16, CW - 32, CH - 32);
+
+    /* 边缘刻度尺：0.25 单位细、0.5 中、1 长 + 数字 */
+    for (var i2 = 0; i2 <= PW * 4; i2++) {
+      var ux = -PW / 2 + i2 * 0.25;
+      var len = (i2 % 4 === 0) ? 34 : (i2 % 2 === 0 ? 22 : 12);
+      x.lineWidth = (i2 % 4 === 0) ? 3.4 : 1.8;
+      x.strokeStyle = CY + ((i2 % 4 === 0) ? 0.80 : 0.45) + ')';
+      x.beginPath(); x.moveTo(X(ux), 16); x.lineTo(X(ux), 16 + len); x.stroke();
+      x.beginPath(); x.moveTo(X(ux), CH - 16); x.lineTo(X(ux), CH - 16 - len); x.stroke();
+      if (i2 % 4 === 0) {
+        x.fillStyle = CY + '0.92)';
+        x.font = '700 24px "Microsoft YaHei", "PingFang SC", sans-serif';
+        x.textAlign = 'center'; x.textBaseline = 'top';
+        x.fillText(String(i2 * 12.5).replace('.0', '').replace('.5', ''), X(ux), 56);
+        x.textBaseline = 'bottom';
+        x.fillText(String(i2 * 12.5).replace('.0', '').replace('.5', ''), X(ux), CH - 56);
+      }
+    }
+    for (var j2 = 0; j2 <= PD * 4; j2++) {
+      var vz = -PD / 2 + j2 * 0.25;
+      var len2 = (j2 % 4 === 0) ? 34 : (j2 % 2 === 0 ? 22 : 12);
+      x.lineWidth = (j2 % 4 === 0) ? 3.4 : 1.8;
+      x.strokeStyle = CY + ((j2 % 4 === 0) ? 0.80 : 0.45) + ')';
+      x.beginPath(); x.moveTo(16, Y(vz)); x.lineTo(16 + len2, Y(vz)); x.stroke();
+      x.beginPath(); x.moveTo(CW - 16, Y(vz)); x.lineTo(CW - 16 - len2, Y(vz)); x.stroke();
+      if (j2 % 4 === 0) {
+        x.save();
+        x.translate(52, Y(vz)); x.rotate(-Math.PI / 2);
+        x.fillStyle = CY + '0.90)';
+        x.font = '700 24px "Microsoft YaHei", "PingFang SC", sans-serif';
+        x.textAlign = 'center'; x.textBaseline = 'middle';
+        x.fillText(String(j2 * 12.5).replace('.0', '').replace('.5', ''), 0, 0);
+        x.restore();
+        x.save();
+        x.translate(CW - 52, Y(vz)); x.rotate(Math.PI / 2);
+        x.fillStyle = CY + '0.90)';
+        x.font = '700 24px "Microsoft YaHei", "PingFang SC", sans-serif';
+        x.textAlign = 'center'; x.textBaseline = 'middle';
+        x.fillText(String(j2 * 12.5).replace('.0', '').replace('.5', ''), 0, 0);
+        x.restore();
+      }
+    }
+
+    /* 四角定位角标 */
+    x.strokeStyle = CY + '0.85)'; x.lineWidth = 4;
+    var ins = 62, arm = 54;
+    [[ins, ins, 1, 1], [CW - ins, ins, -1, 1], [ins, CH - ins, 1, -1], [CW - ins, CH - ins, -1, -1]].forEach(function (c) {
+      x.beginPath(); x.moveTo(c[0] + c[2] * arm, c[1]); x.lineTo(c[0], c[1]); x.lineTo(c[0], c[1] + c[3] * arm); x.stroke();
+      x.beginPath();
+      x.moveTo(c[0] - 12, c[1]); x.lineTo(c[0] + 12, c[1]);
+      x.moveTo(c[0], c[1] - 12); x.lineTo(c[0], c[1] + 12); x.stroke();
+    });
+
+    /* 安装中心十字与虚线基准圆 */
+    var mountU = 0.10 - PCX, mountV = 0.05 - PCZ;
+    x.strokeStyle = CY + '0.80)'; x.lineWidth = 3;
+    x.beginPath(); x.moveTo(X(mountU) - 46, Y(mountV)); x.lineTo(X(mountU) + 46, Y(mountV)); x.stroke();
+    x.beginPath(); x.moveTo(X(mountU), Y(mountV) - 46); x.lineTo(X(mountU), Y(mountV) + 46); x.stroke();
+    x.setLineDash([14, 11]);
+    x.strokeStyle = CY + '0.55)'; x.lineWidth = 2.4;
+    x.beginPath(); x.arc(X(mountU), Y(mountV), 108, 0, Math.PI * 2); x.stroke();
+    x.strokeStyle = CY + '0.42)';
+    x.beginPath(); x.arc(X(mountU), Y(mountV), 198, 0, Math.PI * 2); x.stroke();
+    x.setLineDash([]);
+
+    /* 姿态三轴示意（左下角） */
+    var ax0 = X(-PW / 2 + 1.15), ay0 = Y(PD / 2 - 1.25);
+    x.strokeStyle = CY + '0.90)'; x.lineWidth = 4;
+    x.beginPath(); x.moveTo(ax0, ay0); x.lineTo(ax0 + 104, ay0); x.stroke();
+    x.beginPath(); x.moveTo(ax0, ay0); x.lineTo(ax0, ay0 - 104); x.stroke();
+    [[ax0 + 104, ay0, 1, 0], [ax0, ay0 - 104, 0, -1]].forEach(function (h) {
+      x.beginPath();
+      x.moveTo(h[0], h[1]);
+      x.lineTo(h[0] - h[2] * 17 - h[3] * 10, h[1] - h[3] * 17 - h[2] * 10);
+      x.moveTo(h[0], h[1]);
+      x.lineTo(h[0] - h[2] * 17 + h[3] * 10, h[1] - h[3] * 17 + h[2] * 10);
+      x.stroke();
+    });
+    x.fillStyle = INK + '0.92)';
+    x.font = '700 26px "Microsoft YaHei", "PingFang SC", sans-serif';
+    x.textAlign = 'left'; x.textBaseline = 'middle';
+    x.fillText('X+', ax0 + 116, ay0);
+    x.textAlign = 'center'; x.textBaseline = 'bottom';
+    x.fillText('Z⁻', ax0, ay0 - 118);
+
+    /* 技术注记 */
+    x.textAlign = 'left'; x.textBaseline = 'alphabetic';
+    x.fillStyle = INK + '0.96)';
+    x.font = '700 38px "Microsoft YaHei", "PingFang SC", sans-serif';
+    x.fillText('SMH-20K · 系统集成底板', X(-PW / 2 + 0.70), Y(PD / 2 - 2.02));
+    x.fillStyle = CY + '0.86)';
+    x.font = '600 25px "Microsoft YaHei", "PingFang SC", sans-serif';
+    x.fillText('SYSTEM INTEGRATION BASE / 基准 A', X(-PW / 2 + 0.70), Y(PD / 2 - 1.66));
+    x.fillText('平面度 0.05 · Ra 1.6 · 阳极氧化', X(-PW / 2 + 0.70), Y(PD / 2 - 1.38));
+
+    x.textAlign = 'right';
+    x.fillStyle = INK + '0.80)';
+    x.font = '700 26px "Microsoft YaHei", "PingFang SC", sans-serif';
+    x.fillText('SN 2026-1119-A', X(PW / 2 - 0.70), Y(-PD / 2 + 0.96));
+    x.fillStyle = CY + '0.78)';
+    x.font = '600 23px "Microsoft YaHei", "PingFang SC", sans-serif';
+    x.fillText('工位 03 / 装配基准 · 勿划伤', X(PW / 2 - 0.70), Y(-PD / 2 + 1.26));
+    x.fillText('TOL ±0.02 mm · B 级校准', X(PW / 2 - 0.70), Y(-PD / 2 + 1.52));
+
+    x.textAlign = 'center';
+    x.fillStyle = CY + '0.72)';
+    x.font = '600 23px "Microsoft YaHei", "PingFang SC", sans-serif';
+    x.fillText('1 单位 = 50 mm · 底板 510 × 280 mm · 刻度 12.5 mm/格', cx, CH - 74);
+
+    var tex = new THREE.CanvasTexture(cv);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+    var decal = new THREE.Mesh(
+      new THREE.PlaneGeometry(PW - 0.16, PD - 0.16),
+      new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false, opacity: 1, toneMapped: false })
+    );
+    decal.rotation.x = -Math.PI / 2;
+    decal.position.set(PCX, RACK_TOP + 0.0035, PCZ);
+    g.add(decal);
+  })();
+
   return g;
 })()).labelOffset.set(-4.80, -1.20, -4.60);
+
+/* === 底座回转刻度盘：环绕底座的刻度环，缓慢自转 === */
+(function baseDial() {
+  var CW2 = 1024, cc = CW2 / 2, R = 500;
+  var cv = document.createElement('canvas'); cv.width = cv.height = CW2;
+  var x = cv.getContext('2d');
+  var CY = 'rgba(126,208,244,';
+
+  function ring(r, wdt, a) {
+    x.lineWidth = wdt; x.strokeStyle = CY + a + ')';
+    x.beginPath(); x.arc(cc, cc, r, 0, Math.PI * 2); x.stroke();
+  }
+  ring(R, 3.5, 0.62);
+  ring(R * 0.94, 2, 0.40);
+  ring(R * 0.76, 1.8, 0.34);
+  ring(R * 0.58, 1.8, 0.24);
+
+  for (var d = 0; d < 360; d += 1) {
+    var a1 = (d - 90) * Math.PI / 180;
+    var r1 = R, r2 = R - (d % 30 === 0 ? 62 : (d % 10 === 0 ? 40 : (d % 5 === 0 ? 26 : 12)));
+    x.lineWidth = (d % 30 === 0) ? 3.4 : (d % 10 === 0 ? 2.4 : 1.2);
+    x.strokeStyle = CY + ((d % 30 === 0) ? 0.92 : (d % 10 === 0 ? 0.62 : 0.26)) + ')';
+    x.beginPath();
+    x.moveTo(cc + Math.cos(a1) * r1, cc + Math.sin(a1) * r1);
+    x.lineTo(cc + Math.cos(a1) * r2, cc + Math.sin(a1) * r2);
+    x.stroke();
+  }
+
+  x.fillStyle = CY + '0.92)';
+  x.font = '700 36px "Microsoft YaHei", "PingFang SC", sans-serif';
+  x.textAlign = 'center'; x.textBaseline = 'middle';
+  for (var dd = 0; dd < 360; dd += 30) {
+    var a3 = (dd - 90) * Math.PI / 180;
+    var rr = R - 118;
+    x.save();
+    x.translate(cc + Math.cos(a3) * rr, cc + Math.sin(a3) * rr);
+    x.fillText(String(dd), 0, 0);
+    x.restore();
+  }
+
+  x.fillStyle = CY + '0.95)';
+  x.font = '700 30px "Microsoft YaHei", "PingFang SC", sans-serif';
+  [[0, 'REF 0°'], [180, '180°']].forEach(function (it) {
+    var a4 = (it[0] - 90) * Math.PI / 180;
+    x.save();
+    x.translate(cc + Math.cos(a4) * (R - 196), cc + Math.sin(a4) * (R - 196));
+    x.fillText(it[1], 0, 0);
+    x.restore();
+  });
+
+  for (var s = 0; s < 8; s++) {
+    var a5 = s * Math.PI / 4;
+    x.strokeStyle = CY + '0.34)'; x.lineWidth = 2;
+    x.beginPath();
+    x.arc(cc, cc, R * 0.50, a5 + 0.06, a5 + Math.PI / 4 - 0.06);
+    x.stroke();
+  }
+
+  var tex2 = new THREE.CanvasTexture(cv);
+  tex2.colorSpace = THREE.SRGBColorSpace;
+  tex2.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+  var D2 = 16.4;
+  dialMesh = new THREE.Mesh(
+    new THREE.PlaneGeometry(D2, D2),
+    new THREE.MeshBasicMaterial({ map: tex2, transparent: true, depthWrite: false, fog: false, opacity: 0.86, toneMapped: false })
+  );
+  dialMesh.rotation.x = -Math.PI / 2;
+  dialMesh.position.set(0.42, -2.63, -1.80);
+  scene.add(dialMesh);
+
+  /* 底座下的冷光池，让刻度盘从地雾里“亮”出来 */
+  (function glowPool() {
+    var gc = document.createElement('canvas'); gc.width = gc.height = 512;
+    var g2 = gc.getContext('2d');
+    var rg = g2.createRadialGradient(256, 256, 0, 256, 256, 256);
+    rg.addColorStop(0, 'rgba(96,186,236,0.26)');
+    rg.addColorStop(0.42, 'rgba(60,140,200,0.13)');
+    rg.addColorStop(1, 'rgba(20,60,110,0)');
+    g2.fillStyle = rg; g2.fillRect(0, 0, 512, 512);
+    var gt = new THREE.CanvasTexture(gc);
+    gt.colorSpace = THREE.SRGBColorSpace;
+    var pool = new THREE.Mesh(
+      new THREE.PlaneGeometry(21, 21),
+      new THREE.MeshBasicMaterial({ map: gt, transparent: true, depthWrite: false, fog: false, opacity: 0.6, toneMapped: false })
+    );
+    pool.rotation.x = -Math.PI / 2;
+    pool.position.set(0.42, -2.65, -1.80);
+    scene.add(pool);
+  })();
+})();
 
 /* =====================================================================
    D 组：单件
