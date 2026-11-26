@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-25 17:40:11",
+  "updated_at": "2026-11-26 17:15:45",
   "hits": [
     {
       "found_at": "2026-10-29",
@@ -381,12 +381,12 @@
     }
   ],
   "last_run": {
-    "date": "2026-11-25",
+    "date": "2026-11-26",
     "sources": [
       "bing"
     ],
     "ccgp_blocked": true,
-    "raw": 59,
+    "raw": 69,
     "added": 0,
     "stale_days": 1
   }
