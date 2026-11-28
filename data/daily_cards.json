@@ -1,9 +1,15 @@
 {
-  "updated": "2026-11-27",
-  "streak": 33,
-  "issue": 33,
+  "updated": "2026-11-28",
+  "streak": 34,
+  "issue": 34,
   "total": 72,
   "days": [
+    {
+      "date": "2026-11-28",
+      "card_id": "K15",
+      "index": 33,
+      "issue": 34
+    },
     {
       "date": "2026-11-27",
       "card_id": "K05",
